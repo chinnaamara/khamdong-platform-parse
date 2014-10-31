@@ -10,7 +10,7 @@ section.container
                     .loader-div(ng-show='loading')
                         h4 Loading, Please wait...
                     .main-div
-                        button.btn.btn-info.pull-left(data-toggle="modal", title='Add New Ward',id='btn-newWard', data-target="#newWardWindow", ng-click='btnAdd()')
+                        button.btn.btn-info.pull-left.input-sm(data-toggle="modal", title='Add New Ward',id='btn-newWard', data-target="#newWardWindow", ng-click='btnAdd()')
                             i.glyphicon.glyphicon-plus
                             |   Add New
                         br
@@ -22,18 +22,50 @@ section.container
                                         th.smallTd #
                                         th Ward Id
                                         th Ward Name
+                                        th Created Date
+                                        th Updated Date
                                 tbody
                                     tr(ng-repeat='ward in wards')
                                         td
-                                            a.btn.btn-sm.btn-warning(href="",title="Edit", data-toggle="modal",id='btn-editWard', data-target="#newWardWindow", ng-click="editWard(ward)")
+                                            a.btn.btn-sm.btn-warning(href="",title="Edit", data-toggle="modal",id='btn-editWard', data-target="#newWardWindow", ng-click="btnEdit(ward)")
                                                 i.glyphicon.glyphicon-edit
-                                            a.btn.btn-sm.btn-danger(href="",title="Delete", id='btn-deleteWard', ng-click="deleteWard(ward)")
+                                            a.btn.btn-sm.btn-danger(href="",title="Delete", id='btn-deleteWard', data-toggle="modal", data-target="#deleteConfirm", ng-click="deleteConformation(ward)")
                                                 i.glyphicon.glyphicon-remove
                                         td
                                             span {{ ward.id }}
                                         td
                                             span {{ ward._serverData.wardName }}
+                                        td
+                                            span {{ ward.createdAt }}
+                                        td
+                                            span {{ ward.updatedAt }}
+                            .pull-right
+                                button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
+                                    i.glyphicon.glyphicon-arrow-left
+                                    |   Previous
+                                button.btn.btn-info.btn-sm#next(ng-click='pageNext()', ng-disabled='noNext')
+                                    |   Next
+                                    | &nbsp;
+                                    i.glyphicon.glyphicon-arrow-right
 
+
+#deleteConfirm.modal.fade.bs-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+    .modal-dialog
+        .modal-content
+            .modal-header.bg-danger
+                | Delete Confirmation
+                button.close(type='button btn-primary', data-dismiss='modal' data-target='.bs-example-modal-lg')
+                    span(aria-hidden='true') ×
+                    span.sr-only Close
+            .modal-body
+                | Are you sure to delete <strong> {{ deleteWardName }} </strong> Ward?
+            .modal-footer
+                button.btn.btn-success(type='button', data-dismiss='modal', ng-click="deleteWard()" )
+                    i.glyphicon.glyphicon-ok
+                        |  Yes
+                button.btn.btn-danger(type='button', data-dismiss='modal')
+                    i.glyphicon.glyphicon-remove
+                        |  No
 
 #newWardWindow.modal.fade.bs-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
     .modal-dialog
@@ -53,7 +85,7 @@ section.container
                             input#wardName.form-control(type='text',name='wardName',ng-model='wardName', placeholder='Ward Name', required)
                             small(class="label label-danger",ng-show="wardsForm.wardName.$invalid && wardsForm.wardName.$dirty")
             .modal-footer
-                button.btn.btn-success.btn-sm(ng-click="addNewWard()", ng-disabled='wardsForm.$invalid', id='btnAdd', data-dismiss='modal')
+                button.btn.btn-success.btn-sm(ng-click="addEditClick()", ng-disabled='wardsForm.$invalid', id='btnAdd', data-dismiss='modal')
                     i.glyphicon.glyphicon-ok
                     |   {{ buttonText }}
                 button.btn.btn-warning.btn-sm(data-dismiss='modal')

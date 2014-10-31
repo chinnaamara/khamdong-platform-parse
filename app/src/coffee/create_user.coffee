@@ -38,7 +38,18 @@ app.factory 'CreateUserFactory',['$http', ($http) ->
 ]
 
 
-app.controller 'CreateUserController', ($scope, CreateUserFactory, WardsFactory) ->
+app.controller 'CreateUserController', ($scope, $rootScope, CreateUserFactory, DataFactory) ->
+  $scope.init = ->
+    $scope.currentUser = $.parseJSON(localStorage.getItem 'Parse/l0JxXhedCkA8D1Z2EKyfG9AMbEF0L8oDW743XI13/currentUser')
+    if $scope.currentUser
+      $rootScope.userName = $scope.currentUser.username
+      role = $scope.currentUser.role
+      $rootScope.administrator = role == 'Admin'
+      $rootScope.superUser = role == 'Super User'
+
+    else
+      $location.path '/error'
+    return
 
   $scope.addUser = ->
     $scope.errorMessage = false
@@ -52,7 +63,6 @@ app.controller 'CreateUserController', ($scope, CreateUserFactory, WardsFactory)
       role: $scope.user.role
 
     CreateUserFactory.createUser(newUser, (res) ->
-      console.log res
       $scope.showSuccess()
       return
     )
@@ -64,44 +74,23 @@ app.controller 'CreateUserController', ($scope, CreateUserFactory, WardsFactory)
       )
       return
 
-#  $scope.signUp = (data) ->
-#    smsData = {
-#      mobile: $scope.user.mobileNumber
-#      message: "Hi " + $scope.user.name + ", you are registered as represent at Khamdong, for " + $scope.user.ward + " ward. Login with email: " + $scope.user.email  + ", pwd: " + $scope.user.password
-#    }
-#    auth.$createUser(data.email, data.password).then((user) ->
-##      console.log 'User: ' , user
-#      $scope.$watch(CreateUserFactory.sendSms(smsData), (status) ->
-#        if status
-#          console.log "sms sent to " + smsData.mobile
-#      )
-#      $scope.successMessage = true
-#      $scope.successText = "User created successfully.!"
-#      return
-#    , (error) ->
-#      console.log 'error: ' + error.code
-#      removeUser data.id
-#      $scope.errorMessage = true
-#      $scope.errorText = "Email already used.! Try another Email."
-#      return
-#    )
-#    return
-
   $scope.getRoles = ->
-    CreateUserFactory.getRoles((res) ->
+    DataFactory.getRoles((res) ->
       $scope.$apply(() ->
         $scope.roles = res
       )
     )
+    return
+
   $scope.getWards = ->
-    WardsFactory.getWards((res) ->
-#      console.log res[0]._serverData.name
+    DataFactory.getWards((res) ->
       $scope.$apply(() ->
         $scope.wards = res
-#        console.log $scope.wards
       )
     )
+    return
+
+  $scope.init()
   $scope.getWards()
   $scope.getRoles()
-
   return

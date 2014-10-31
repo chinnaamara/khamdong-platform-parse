@@ -131,6 +131,7 @@ app.controller "AddSchemeController", ($scope, SchemesFactory, DataFactory, $roo
     SchemesFactory.addNewScheme(scheme, (res) ->
       if res
         $scope.getSchemes($scope.filterKey)
+        $scope.NumberOfPages()
       else
         alert 'Scheme not Added.'
     )
@@ -140,6 +141,7 @@ app.controller "AddSchemeController", ($scope, SchemesFactory, DataFactory, $roo
     SchemesFactory.updateScheme(scheme, (res) ->
       if res
         $scope.getSchemes($scope.filterKey)
+        $scope.NumberOfPages()
       else
         alert 'Scheme not updated.'
     )
@@ -153,6 +155,7 @@ app.controller "AddSchemeController", ($scope, SchemesFactory, DataFactory, $roo
   $scope.deleteScheme = ->
     SchemesFactory.deleteScheme($scope.deleteSchemeId, (res) ->
       $scope.getSchemes($scope.filterKey)
+      $scope.NumberOfPages()
     )
     return
 
@@ -164,6 +167,7 @@ app.controller "AddSchemeController", ($scope, SchemesFactory, DataFactory, $roo
         $scope.noNext = $scope.maxNumberOfPages == $scope.filterKey.pageNumber ||  $scope.maxNumberOfPages < 1 ? true : false
       )
     )
+    return
 
   $scope.pageNext = ->
     $scope.filterKey.pageNumber += 1

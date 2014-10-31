@@ -1,7 +1,7 @@
 app.factory 'DepartmentsFactory', () ->
   Parse.initialize "l0JxXhedCkA8D1Z2EKyfG9AMbEF0L8oDW743XI13", "Sz4w7HWy38q4hqrIJxuGVkIGSFa3V0WoqElHKoqW"
-  Departments = Parse.Object.extend 'Departments'
 
+  Departments = Parse.Object.extend 'Departments'
   createDepartment = (dept, callback) ->
     departments = new Departments
     departments.save({departmentCode: dept.departmentCode, departmentName: dept.departmentName}, {
@@ -95,6 +95,7 @@ app.controller "AddDepartmentController", ($scope, DepartmentsFactory, $rootScop
     $scope.departmentName = ''
     $scope.departmentCode = ''
     $scope.buttonText = 'Add'
+    return
 
   $scope.btnEdit = (dept) ->
     $scope.modelTitle = dept.id
@@ -119,6 +120,7 @@ app.controller "AddDepartmentController", ($scope, DepartmentsFactory, $rootScop
     DepartmentsFactory.addNewDepartment(dept, (res) ->
       if res
         $scope.getDepartments($scope.filterKey)
+        $scope.NumberOfPages()
       else
         alert 'Department not Added.'
     )
@@ -128,6 +130,7 @@ app.controller "AddDepartmentController", ($scope, DepartmentsFactory, $rootScop
     DepartmentsFactory.updateDepartment(dept, (res) ->
       if res
         $scope.getDepartments($scope.filterKey)
+        $scope.NumberOfPages()
       else
         alert 'Department not updated.'
     )
@@ -141,6 +144,7 @@ app.controller "AddDepartmentController", ($scope, DepartmentsFactory, $rootScop
   $scope.deleteDepartment = ->
     DepartmentsFactory.delete($scope.deleteDeptId, (res) ->
       $scope.getDepartments($scope.filterKey)
+      $scope.NumberOfPages()
     )
     return
 
@@ -152,6 +156,7 @@ app.controller "AddDepartmentController", ($scope, DepartmentsFactory, $rootScop
         $scope.noNext = $scope.maxNumberOfPages == $scope.filterKey.pageNumber ||  $scope.maxNumberOfPages < 1 ? true : false
       )
     )
+    return
 
   $scope.pageNext = ->
     $scope.filterKey.pageNumber += 1

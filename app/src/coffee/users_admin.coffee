@@ -1,6 +1,16 @@
-app.factory 'AdminUsersFactory', ($firebase, BASEURI, $http) ->
-  getUsersRef = new Firebase BASEURI + 'users'
-  usersList = $firebase getUsersRef
+app.factory 'AdminUsersFactory', ($http) ->
+  Parse.initialize "l0JxXhedCkA8D1Z2EKyfG9AMbEF0L8oDW743XI13", "Sz4w7HWy38q4hqrIJxuGVkIGSFa3V0WoqElHKoqW"
+#  Wards = Parse.Object.extend 'Wards'
+  getUsers = (callback) ->
+    getQuery = new Parse.Query 'User'
+    getQuery.find({
+      success: (res) ->
+        console.log res
+        callback res
+      error: (error) ->
+        alert 'Error: ' + error.message
+    })
+    return
 
   sendSms = (message, mobile) ->
     $http
@@ -16,60 +26,37 @@ app.factory 'AdminUsersFactory', ($firebase, BASEURI, $http) ->
   userById = {}
 
   return {
-    usersRef: getUsersRef
-    usersList: usersList
+    getUsers: getUsers
     sendSms: sendSms
     userById: userById
   }
 
-app.controller 'AdminUsersController', ($scope, AdminUsersFactory, $rootScope, $window, DataFactory, $filter, ngTableParams) ->
+app.controller 'AdminUsersController', ($scope, AdminUsersFactory, $rootScope, DataFactory) ->
   $scope.init = ->
-    session = localStorage.getItem('firebaseSession')
-    if ! session
-      $window.location = '#/error'
-    else
-      $rootScope.userName = localStorage.getItem('name').toUpperCase()
-      role = localStorage.getItem('role')
+    $scope.currentUser = $.parseJSON(localStorage.getItem 'Parse/l0JxXhedCkA8D1Z2EKyfG9AMbEF0L8oDW743XI13/currentUser')
+    if $scope.currentUser
+      $rootScope.userName = $scope.currentUser.username
+      role = $scope.currentUser.role
       $rootScope.administrator = role == 'Admin'
-      $rootScope.superUser = role == 'SuperUser'
+      $rootScope.superUser = role == 'Super User'
 
-  $scope.init()
-
-  $scope.loadDone = false
-  $scope.loading = true
-  getQuery = AdminUsersFactory.usersRef
-
-  getUsersList = ->
-    $scope.adminUsersTable = new ngTableParams(
-      page: 1
-      count: 7
-      sorting:
-        role:'asc'
-    ,
-      counts: []
-      total: 0
-      getData: ($defer, params) ->
-        filteredData = $filter("filter")($scope.userslist, $scope.filter)
-        orderedData = (if params.sorting() then $filter("orderBy")(filteredData, params.orderBy()) else filteredData)
-        params.total orderedData.length
-        $defer.resolve orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count())
-        return
-      $scope: $scope
-    )
+    else
+      $location.path '/error'
     return
 
-  getQuery.on('value', (snapshot) ->
-    $scope.userslist = _.values snapshot.val()
-    getUsersList()
-    $scope.loadDone = true
-    $scope.loading = false
-  )
-  $scope.searchFilter = ->
-    $scope.$watch "filter.$", ->
-      $scope.adminUsersTable.reload()
-      return
+  $scope.getUsers = ->
+    AdminUsersFactory.getUsers((res) ->
+      $scope.$apply(() ->
+        $scope.users = res
+        console.log $scope.users
+      )
+    )
     return
 
   $scope.manageUser = (user) ->
     AdminUsersFactory.userById = user
     $window.location = '#/admin/users/manage'
+    return
+
+  $scope.init()
+  $scope.getUsers()

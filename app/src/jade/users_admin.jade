@@ -13,7 +13,7 @@ section.container
                         .search.col-xs-4.pull-right
                             input(type="search", class="form-control", ng-model="filter.$", placeholder="search user", ng-keypress="searchFilter()")
                         .table-responsive
-                            table(class="table table-striped table-bordered table-condensed", ng-table='adminUsersTable')
+                            table(class="table table-striped table-bordered table-condensed")
                                 thead
                                     th #
                                     th User Id
@@ -23,7 +23,7 @@ section.container
                                     th Role
                                     th Email
                                 tbody
-                                    tr(ng-repeat='user in $data | orderByPriority | filter: searchKey')
+                                    tr(ng-repeat='user in users')
                                         td
                                             button.btn.btn-info.btn-sm#manage(ng-click="manageUser(user)")
                                                 i.glyphicon.glyphicon-edit
@@ -31,13 +31,13 @@ section.container
                                         td
                                             span {{ user.id }}
                                         td
-                                            span {{ user.name }}
+                                            span {{ user._serverData.name }}
                                         td
-                                            span {{ user.mobileNumber }}
+                                            span {{ user._serverData.mobileNumber }}
                                         td
-                                            span {{ user.ward }}
+                                            span {{ user._serverData.ward }}
                                         td
-                                            span {{ user.role }}
+                                            span {{ user._serverData.role }}
                                         td
-                                            span {{ user.email }}
+                                            span {{ user._serverData.email }}
 

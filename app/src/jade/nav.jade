@@ -25,19 +25,19 @@ div#nav-bar
                         a(ui-sref='admin', ng-if='administrator') Grievances
                     li(class='divider', ng-if='administrator')
                     li
-                        a(ui-sref='newDepartment', ng-if='administrator') Departments
-                    li(class='divider', ng-if='administrator')
-                    li
-                        a(ui-sref='newScheme', ng-if='administrator') Schemes
-                    li(class='divider', ng-if='administrator')
-                    li
                         a(ui-sref='createUser', ng-if='administrator') Create User
                     li(class='divider', ng-if='administrator')
                     li
                         a(ui-sref='adminUsers', ng-if='administrator') Manage Users
                     li(class='divider', ng-if='administrator')
                     li
-                        a(ui-sref='wards', ng-if='administrator') Manage Wards
+                        a(ui-sref='wards', ng-if='administrator') Wards
+                    li(class='divider', ng-if='administrator')
+                    li
+                        a(ui-sref='newDepartment', ng-if='administrator') Departments
+                    li(class='divider', ng-if='administrator')
+                    li
+                        a(ui-sref='newScheme', ng-if='administrator') Schemes
                     li(class='divider', ng-if='administrator')
                     li
                         a(ui-sref='users_list', ng-if='superUser') Users List
