@@ -63,7 +63,7 @@ app.factory 'WardsFactory', () ->
     deleteWard: deleteWard
   }
 
-app.controller 'WardsController', ($scope, $rootScope, WardsFactory, $window) ->
+app.controller 'WardsController', ($scope, $rootScope, WardsFactory, $location) ->
   $scope.filterKey = {
     pageNumber: 1
     pageLimit: 6
@@ -76,7 +76,6 @@ app.controller 'WardsController', ($scope, $rootScope, WardsFactory, $window) ->
       role = $scope.currentUser.role
       $rootScope.administrator = role == 'Admin'
       $rootScope.superUser = role == 'Super User'
-
     else
       $location.path '/error'
     return
@@ -170,3 +169,4 @@ app.controller 'WardsController', ($scope, $rootScope, WardsFactory, $window) ->
   $scope.init()
   $scope.getWards($scope.filterKey)
   $scope.NumberOfPages()
+  return

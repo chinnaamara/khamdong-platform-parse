@@ -64,7 +64,7 @@ app.factory 'SchemesFactory', () ->
     deleteScheme: deleteScheme
   }
 
-app.controller "AddSchemeController", ($scope, SchemesFactory, DataFactory, $rootScope) ->
+app.controller "AddSchemeController", ($scope, SchemesFactory, DataFactory, $rootScope, $location) ->
   $scope.filterKey = {
     pageNumber: 1
     pageLimit: 8
@@ -188,31 +188,3 @@ app.controller "AddSchemeController", ($scope, SchemesFactory, DataFactory, $roo
   $scope.getSchemes($scope.filterKey)
   $scope.NumberOfPages()
   return
-#  $scope.success = false
-#  $scope.error = false
-#  $scope.getDepartments = ->
-#    DataFactory.getDepartments((res) ->
-#      $scope.$apply(() ->
-#        $scope.departments = res
-#      )
-#    )
-#  $scope.getDepartments()
-#  $scope.addScheme = ->
-#    $scope.success = false
-#    $scope.error = false
-#    newScheme =
-#      departmentName: $scope.scheme.department
-#      schemeCode: $scope.scheme.schemeCode
-#      schemeName: $scope.scheme.schemeName
-#    SchemesFactory.addNewScheme(newScheme, (res) ->
-#      if res
-#        $scope.$apply(() ->
-#          $scope.success = true
-#          $scope.statusText = 'Scheme added success.!'
-#        )
-#      else
-#        $scope.error = true
-#        $scope.statusText = 'Scheme not added, Try again.!'
-#    )
-#    return
-#  return

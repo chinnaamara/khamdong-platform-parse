@@ -31,19 +31,19 @@ div#nav-bar
                         a(ui-sref='adminUsers', ng-if='administrator') Manage Users
                     li(class='divider', ng-if='administrator')
                     li
-                        a(ui-sref='wards', ng-if='administrator') Wards
-                    li(class='divider', ng-if='administrator')
-                    li
                         a(ui-sref='newDepartment', ng-if='administrator') Departments
                     li(class='divider', ng-if='administrator')
                     li
                         a(ui-sref='newScheme', ng-if='administrator') Schemes
                     li(class='divider', ng-if='administrator')
                     li
-                        a(ui-sref='users_list', ng-if='superUser') Users List
+                        a(ui-sref='wards', ng-if='administrator') Wards
+                    li(class='divider', ng-if='administrator')
+                    li
+                        a(ui-sref='users_list', ng-if='superUser') Users
                     li(class='divider', ng-if='superUser')
                     li
-                        a(ui-sref='categories', ng-if='superUser') Manage Categories
+                        a(ui-sref='categories', ng-if='superUser') Categories
                     li(class='divider', ng-if='superUser')
                     li
                         a(ng-click='logout()') Logout

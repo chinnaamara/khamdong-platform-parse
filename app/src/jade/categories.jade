@@ -12,9 +12,9 @@ section.container
                     .main-div
                         button.btn.btn-info.pull-left(data-toggle="modal",id='btn-newCategory', data-target="#newCategoryWindow", ng-click='btnAdd()')
                             i.glyphicon.glyphicon-plus
-                            |   Add New Category
-                        .search.col-xs-4.pull-right
-                            input(type="search", class="form-control", ng-model="searchTerm", placeholder="search category..")
+                            |   Add New
+                        br
+                        br
                         .table-responsive
                             table#categoriesTable(class="table table-striped table-bordered table-condensed")
                                 thead
@@ -25,30 +25,48 @@ section.container
                                         th Created Date
                                         th Updated Date
                                 tbody
-                                    tr(ng-repeat='cat in categories | orderByPriority | filter : searchTerm')
+                                    tr(ng-repeat='cat in categories')
                                         td
-                                            a.btn.btn-sm.btn-warning(href="",title="Edit", data-toggle="modal",id='btn-editCategory', data-target="#newCategoryWindow", ng-click="editCategory(cat)")
+                                            a.btn.btn-sm.btn-warning(href="",title="Edit", data-toggle="modal",id='btn-editCategory', data-target="#newCategoryWindow", ng-click="btnEdit(cat)")
                                                 i.glyphicon.glyphicon-edit
 
-                                            a.btn.btn-sm.btn-danger(href="",title="Delete", id='btn-deleteCategory', ng-click="deleteCategory(cat)")
+                                            a.btn.btn-sm.btn-danger(href="",title="Delete", id='btn-deleteCategory', data-toggle="modal", data-target="#deleteConfirm", ng-click="deleteConformation(cat)")
                                                 i.glyphicon.glyphicon-remove
 
                                         td
                                             span {{ cat.id }}
                                         td
-                                            span {{ cat.name }}
+                                            span {{ cat._serverData.categoryName }}
                                         td
-                                            span {{ cat.createdDate }}
+                                            span {{ cat.createdAt }}
                                         td
-                                            span {{ cat.updatedDate }}
-                            //.pull-left
-                            //    button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
-                            //        i.glyphicon.glyphicon-arrow-left
-                            //        |   Previous
-                            //    button.btn.btn-info.btn-sm#next(ng-click='pageNext()', ng-disabled='noNext')
-                            //        |   Next
-                            //        &nbsp;
-                            //        i.glyphicon.glyphicon-arrow-right
+                                            span {{ cat.updatedAt }}
+                            .pull-right
+                                button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
+                                    i.glyphicon.glyphicon-arrow-left
+                                    |   Previous
+                                button.btn.btn-info.btn-sm#next(ng-click='pageNext()', ng-disabled='noNext')
+                                    |   Next
+                                    | &nbsp;
+                                    i.glyphicon.glyphicon-arrow-right
+
+#deleteConfirm.modal.fade.bs-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+    .modal-dialog
+        .modal-content
+            .modal-header.bg-danger
+                | Delete Confirmation
+                button.close(type='button btn-primary', data-dismiss='modal' data-target='.bs-example-modal-lg')
+                    span(aria-hidden='true') ×
+                    span.sr-only Close
+            .modal-body
+                | Are you sure to delete <strong> {{ deleteCategoryName }} </strong> Category?
+            .modal-footer
+                button.btn.btn-success(type='button', data-dismiss='modal', ng-click="deleteCategory()" )
+                    i.glyphicon.glyphicon-ok
+                        |  Yes
+                button.btn.btn-danger(type='button', data-dismiss='modal')
+                    i.glyphicon.glyphicon-remove
+                        |  No
 
 #newCategoryWindow.modal.fade.bs-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
     .modal-dialog
@@ -68,7 +86,7 @@ section.container
                             input#categoryName.form-control(type='text',name='categoryName',ng-model='categoryName', placeholder='Category Name', required)
                             small(class="label label-danger",ng-show="categoryForm.categoryName.$invalid && categoryForm.categoryName.$dirty")
             .modal-footer
-                button.btn.btn-success.btn-sm(ng-click="addNewCategory()", ng-disabled='categoryForm.$invalid', id='btnAdd')
+                button.btn.btn-success.btn-sm(ng-click="addEditClick()", ng-disabled='categoryForm.$invalid', id='btnAdd', data-dismiss='modal')
                     i.glyphicon.glyphicon-ok
                     |   {{ buttonText }}
                 button.btn.btn-warning.btn-sm(data-dismiss='modal')

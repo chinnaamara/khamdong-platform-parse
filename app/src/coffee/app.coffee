@@ -103,7 +103,7 @@ app.config(($stateProvider) ->
       url: '/superuser/userslist'
       views: {
         'viewA@': {templateUrl: 'html/nav.html', controller: 'LoginController'}
-        'viewB@': {templateUrl: 'html/users_list.html', controller: 'UsersController'}
+        'viewB@': {templateUrl: 'html/users_list.html', controller: 'MembersController'}
       }
     })
   .state('adminUsers', {

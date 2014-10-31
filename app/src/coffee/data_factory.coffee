@@ -82,6 +82,16 @@ app.factory 'DataFactory', () ->
     })
     return
 
+  getCategories = (callback) ->
+    getCategoriesQuery = new Parse.Query 'Categories'
+    getCategoriesQuery.find({
+      success: (result) ->
+        callback result
+      error: (error) ->
+        alert 'Error: ' + error.message
+    })
+    return
+
   return {
     getDepartments: getDepartments
     getRoles: getRoles
@@ -91,4 +101,5 @@ app.factory 'DataFactory', () ->
     getWards: getWards
     getGrievanceTypes: getGrievanceTypes
     getSchemes: getSchemes
+    getCategories: getCategories
   }

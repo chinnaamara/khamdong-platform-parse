@@ -40,7 +40,7 @@ app.factory 'DetailsFactory', ($http) ->
     sendSms: sendSms
   }
 
-app.controller 'DetailsController', ($scope, DetailsFactory, $rootScope, DataFactory) ->
+app.controller 'DetailsController', ($scope, DetailsFactory, $rootScope, DataFactory, $location) ->
   $scope.init = ->
     $scope.currentUser = $.parseJSON(localStorage.getItem 'Parse/l0JxXhedCkA8D1Z2EKyfG9AMbEF0L8oDW743XI13/currentUser')
     if $scope.currentUser

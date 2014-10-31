@@ -1,204 +1,265 @@
-app.factory 'UsersFactory', ($firebase, BASEURI, $http) ->
-  getUsersRef = new Firebase BASEURI + 'superusers'
-  categoriesRef = new Firebase BASEURI + 'categories'
-  #  getCatgeries = $firebase categoriesRef
-  usersList = $firebase getUsersRef
+app.factory 'MembersFactory', ($http) ->
+  Parse.initialize "l0JxXhedCkA8D1Z2EKyfG9AMbEF0L8oDW743XI13", "Sz4w7HWy38q4hqrIJxuGVkIGSFa3V0WoqElHKoqW"
 
-  pageNext = (filterKey, id, noOfRecords, cb) ->
-    getRef = new Firebase BASEURI + filterKey
-    getRef.startAt(null, id).limit(noOfRecords).once('value', (snapshot) ->
-      cb _.values snapshot.val()
+  Members = Parse.Object.extend 'Members'
+  createMember = (member, callback) ->
+    members = new Members
+    members.save({name: member.name, mobileNumber: member.mobileNumber, email: member.email, category: member.category}, {
+      success: (object) ->
+        callback object
+      error: (error) ->
+        alert("Error: " + error.message)
+    })
+    return
+
+  readMembers = (filterKey, callback) ->
+    getQuery = new Parse.Query Members
+    getQuery.descending "createdAt"
+    getQuery.limit filterKey.pageLimit
+    getQuery.skip(filterKey.pageLimit * (filterKey.pageNumber - 1))
+    getQuery.find({
+      success: (result) ->
+        callback result
+      error: (error) ->
+        alert 'Error: ' + error.message
+    })
+    return
+
+  getCount = (callback) ->
+    getQuery = new Parse.Query Members
+    getQuery.count({ success: (result) -> callback result })
+    return
+
+  updateMember = (data, callback) ->
+    updateQuery = new Parse.Query Members
+    updateQuery.equalTo 'objectId', data.id
+    updateQuery.first({
+      success: (object) ->
+        object.save(null, {
+          success: (object) ->
+            object.set 'name', data.name
+            object.set 'mobileNumber', data.mobileNumber
+            object.set 'email', data.email
+            object.set 'category', data.category
+            object.save()
+            callback object
+        })
+    })
+    return
+
+  deleteMember = (memberId, callback) ->
+    deleteQuery = new Parse.Query Members
+    deleteQuery.equalTo 'objectId', memberId
+    deleteQuery.each((object) ->
+      object.destroy({
+        success: (object) ->
+          callback object
+      })
     )
+    return
 
-  pageBack = (filterKey, id, noOfRecords, cb) ->
-    getRef = new Firebase BASEURI + filterKey
-    getRef.endAt(null, id).limit(noOfRecords).once('value', (snapshot) ->
-      cb _.values snapshot.val()
-    )
-
-  sendSms = (message, mobile) ->
+  sendSms = (message, mobile, callback) ->
     $http
     .post('http://api.mVaayoo.com/mvaayooapi/MessageCompose?user=Dilip@cannybee.in:8686993306&senderID=TEST SMS&receipientno=' + mobile + '&msgtxt= ' + message + ' &state=4')
     .success((data, status, headers, config) ->
-#      alert "Message sent success to your mobile number"
+      callback status
     )
     .error((status) ->
+      callback status.responseText
 #      alert status.responseText
-#      alert "Message sent to your mobile number"
     )
 
-
-  addNewUser = (user) ->
-    addRef = new Firebase BASEURI + 'superusers/' + user.id
-    addWithCategoryRef = new Firebase BASEURI + 'categories/' + user.category + '/users/' + user.id
-    addRef.child('id').set user.id
-    addRef.child('name').set user.name
-    addRef.child('email').set user.email
-    addRef.child('mobileNumber').set user.mobileNumber
-    addRef.child('category').set user.category
-    addRef.child('createdDate').set user.createdDate
-    addRef.child('updatedDate').set user.updatedDate
-
-    addWithCategoryRef.child('id').set user.id
-    addWithCategoryRef.child('name').set user.name
-    addWithCategoryRef.child('email').set user.email
-    addWithCategoryRef.child('mobileNumber').set user.mobileNumber
-    addWithCategoryRef.child('category').set user.category
-    addWithCategoryRef.child('createdDate').set user.createdDate
-    addWithCategoryRef.child('updatedDate').set user.updatedDate
-    return 'true'
-
-  saveSentMessage = (data) ->
-    addMessageRef = new Firebase BASEURI + 'sentMessages/' + data.messageId
-    addMessageRef.child('id').set data.messageId
-    addMessageRef.child('numbers').set data.mobileNumbers
-    addMessageRef.child('messageText').set data.messageText
-    addMessageRef.child('dateTime').set data.dateTime
-
-    return 'true'
-
-#    addRef.child(user.id).setWithPriority({
-#      id: user.id
-#      name: user.name
-#      email: user.email
-#      mobileNumber: user.mobileNumber
-#      category: user.category
-#      createdDate: user.createdDate
-#      updatedDate: user.updatedDate
-#    }, user.category)
-
-  deleteUser = (id) ->
-    deleteRef = getUsersRef.child(id)
-    deleteRef.remove()
-    return 'true'
+  saveSentMessage = (data, callback) ->
+    Messages = Parse.Object.extend 'SentMessages'
+    message = new Messages()
+    message.save({mobileNumber: data.mobileNumber, text: data.text}, {
+      success: (object) ->
+        callback object
+      error: (error) ->
+        alert("Error: " + error.message)
+    })
+    return
 
   return {
-    usersRef: getUsersRef
-    usersList: usersList
-    pageNext: pageNext
-    pageBack: pageBack
+    addNewMember: createMember
+    getMembers: readMembers
+    updateMember: updateMember
+    deleteMember: deleteMember
+    getCount: getCount
     sendSms: sendSms
-    addNewUser: addNewUser
-    delete: deleteUser
     saveSentMessage: saveSentMessage
   }
 
-app.controller 'UsersController', ($scope, UsersFactory, $rootScope, $window, CategoriesFactory, $firebase, BASEURI) ->
+app.controller 'MembersController', ($scope, MembersFactory, $rootScope, $location, DataFactory) ->
+  $scope.filterKey = {
+    pageNumber: 1
+    pageLimit: 6
+  }
+
   $scope.init = ->
-    session = localStorage.getItem('firebaseSession')
-    if ! session
-      $window.location = '#/error'
-    else
-      $rootScope.userName = localStorage.getItem('name').toUpperCase()
-      role = localStorage.getItem('role')
+    $scope.currentUser = $.parseJSON(localStorage.getItem 'Parse/l0JxXhedCkA8D1Z2EKyfG9AMbEF0L8oDW743XI13/currentUser')
+    if $scope.currentUser
+      $rootScope.userName = $scope.currentUser.username
+      role = $scope.currentUser.role
       $rootScope.administrator = role == 'Admin'
-      $rootScope.superUser = role == 'SuperUser'
+      $rootScope.superUser = role == 'Super User'
+    else
+      $location.path '/error'
+    return
 
-  $scope.init()
+  $scope.getCategories = () ->
+    DataFactory.getCategories((res) ->
+      $scope.$apply(() ->
+        $scope.categories = res
+      )
+    )
 
-  $scope.loadDone = false
-  $scope.loading = true
-
-#  getQuery = UsersFactory.usersRef
-  $scope.pageNumber = 0
-  $scope.lastPageNumber = null
-  recordsPerPage = 5
-  bottomRecord = null
-  $scope.noPrevious = true
-  $scope.userslist = {}
-  filterKey = 'superusers'
-
-  getFirstPageData = ->
-    getQuery = new Firebase BASEURI + filterKey
-    getQuery.startAt().limit(recordsPerPage).on('value', (snapshot) ->
-      $scope.userslist = _.values snapshot.val()
-      $scope.loadDone = true
-      $scope.loading = false
-      bottomRecord = $scope.userslist[$scope.userslist.length - 1]
-      if bottomRecord
-        UsersFactory.pageNext(filterKey, bottomRecord.id, recordsPerPage + 1, (res) ->
-          if res
-            $scope.noNext = res.length <= 1
-        )
-      else
-        $scope.noNext = true
-      return
+  $scope.getMembers = (filterKey) ->
+    MembersFactory.getMembers(filterKey, (res) ->
+      $scope.$apply(() ->
+        $scope.members = res
+      )
     )
     return
 
-  getFirstPageData()
+  $scope.btnAdd = ->
+    $scope.modelTitle = 'Add New Member'
+    $scope.name = ''
+    $scope.mobileNumber = ''
+    $scope.email = ''
+    $scope.category = ''
+    $scope.buttonText = 'Add'
+    return
 
+  $scope.btnEdit = (member) ->
+    $scope.modelTitle = member.id
+    $scope.buttonText = 'Update'
+    $scope.memberId = member.id
+    $scope.name = member._serverData.name
+    $scope.mobileNumber = member._serverData.mobileNumber
+    $scope.email = member._serverData.email
+    $scope.category = member._serverData.category
+    return
+
+  $scope.addEditClick = ->
+    data =
+      name: $scope.name
+      mobileNumber: $scope.mobileNumber
+      email: $scope.email
+      category: $scope.category
+    console.log data
+    if $scope.buttonText == 'Add'
+      addNewMember(data)
+    else
+      data.id = $scope.memberId
+      updateMember(data)
+    return
+
+  addNewMember = (member) ->
+    MembersFactory.addNewMember(member, (res) ->
+      if res
+        $scope.getMembers($scope.filterKey)
+        $scope.NumberOfPages()
+      else
+        alert 'Member not added.'
+    )
+    return
+
+  updateMember = (member) ->
+    MembersFactory.updateMember(member, (res) ->
+      if res
+        $scope.getMembers($scope.filterKey)
+        $scope.NumberOfPages()
+      else
+        alert 'Member not updated.'
+    )
+    return
+
+  $scope.deleteConformation = (member) ->
+    $scope.deleteMemberName = member._serverData.name
+    $scope.deleteMemberId = member.id
+    return
+
+  $scope.deleteMember = ->
+    MembersFactory.deleteMember($scope.deleteMemberId, (res) ->
+      $scope.getMembers($scope.filterKey)
+      $scope.NumberOfPages()
+    )
+    return
+
+  $scope.NumberOfPages = () ->
+    MembersFactory.getCount((res) ->
+      $scope.$apply(() ->
+        $scope.maxNumberOfPages = Math.ceil  res / $scope.filterKey.pageLimit
+        $scope.noPrevious = true
+        $scope.noNext = $scope.maxNumberOfPages == $scope.filterKey.pageNumber ||  $scope.maxNumberOfPages < 1 ? true : false
+      )
+    )
+    return
 
   $scope.pageNext = ->
-    $scope.pageNumber++
+    $scope.filterKey.pageNumber += 1
+    $scope.noNext = $scope.filterKey.pageNumber == $scope.maxNumberOfPages ? true : false
+    $scope.getMembers($scope.filterKey)
     $scope.noPrevious = false
-    bottomRecord = $scope.userslist[$scope.userslist.length - 1]
-    UsersFactory.pageNext(filterKey, bottomRecord.id, recordsPerPage + 1, (res) ->
-      if res
-        res.shift()
-        $scope.userslist = res
-        bottomRecord = $scope.userslist[$scope.userslist.length - 1]
-    )
-    UsersFactory.pageNext(filterKey, bottomRecord.id, recordsPerPage + 1, (res) ->
-      if res
-        $scope.noNext = res.length <= 1
-    )
+    return
 
   $scope.pageBack = ->
-    $scope.pageNumber--
+    $scope.filterKey.pageNumber -= 1
+    $scope.noPrevious = $scope.filterKey.pageNumber == 1 ? true : false
+    $scope.getMembers($scope.filterKey)
     $scope.noNext = false
-    topRecord = $scope.userslist[0]
-    UsersFactory.pageBack(filterKey, topRecord.id, recordsPerPage + 1, (res) ->
-      if res
-        res.pop()
-        $scope.userslist = res
-        $scope.noPrevious = $scope.pageNumber is 0
-    )
+    return
+
+  $scope.init()
+  $scope.getCategories()
+  $scope.getMembers($scope.filterKey)
+  $scope.NumberOfPages()
 
   $scope.cantSendMessage = true
-  $scope.allUsersClicked = () ->
-    newValue = ! $scope.allUsersMet()
-    _.forEach($scope.userslist, (user) ->
-      user.done = newValue
+  $scope.allMembersClicked = () ->
+    newValue = ! $scope.allMembersMet()
+    _.forEach($scope.members, (member) ->
+      member.done = newValue
       return
     )
     return
 
-  $scope.allUsersMet = ->
-    usersMet = _.reduce($scope.userslist, (count, user) ->
-      return count + user.done ? 1 : 0
+  $scope.allMembersMet = ->
+    membersMet = _.reduce($scope.members, (count, member) ->
+      return count + member.done ? 1 : 0
     , 0)
-    $scope.cantSendMessage = $scope.getUsers().length == 0
-    return (usersMet == $scope.userslist.length)
+    $scope.cantSendMessage = $scope.pickedMembers().length == 0
+    return (membersMet == $scope.members.length)
 
-  $scope.selectedUsers = []
-  $scope.isUser = ->
-    $scope.selectedUsers = $scope.getUsers()
+  $scope.selectedMembers = []
+  $scope.isMember = ->
+    $scope.selectedMembers = $scope.pickedMembers()
     $scope.str = 'to '
-    _.forEach($scope.selectedUsers, (user) ->
-      $scope.str += user + ', '
+    _.forEach($scope.selectedMembers, (member) ->
+      $scope.str += member + ', '
     )
     console.log $scope.str.substring(0, $scope.str.length - 2)
 
-  $scope.getUsers = ->
-    users = []
-    _.forEach($scope.userslist, (user) ->
-      if user.done
-        users.push Number user.mobileNumber
+  $scope.pickedMembers = ->
+    members = []
+    _.forEach($scope.members, (member) ->
+      if member.done
+        members.push Number member.mobileNumber
     )
-    return users
+    return members
 
   $scope.sendSms = ->
-    _.forEach($scope.selectedUsers, (user) ->
-      UsersFactory.sendSms($scope.messageText, user)
+    _.forEach($scope.selectedMembers, (member) ->
+      MembersFactory.sendSms($scope.messageText, member, (res) ->
+        console.log ''
+      )
     )
     newMessage =
-      messageId: new Date().getTime()
-      mobileNumbers: $scope.str.substring(0, $scope.str.length - 2)
+      mobileNumber: $scope.str.substring(0, $scope.str.length - 2)
       messageText: $scope.messageText
-      dateTime: new Date().toLocaleString()
 
-    $scope.$watch(UsersFactory.saveSentMessage(newMessage), (res) ->
+    MembersFactory.saveSentMessage(newMessage, (res) ->
       if res
         console.log 'message saved in sent items..'
     )
@@ -207,98 +268,16 @@ app.controller 'UsersController', ($scope, UsersFactory, $rootScope, $window, Ca
     #    $scope.successMessage = true
     return
 
-  #  $scope.reset = ->
-  #    $scope.messageText = ''
-  ##    $scope.successMessage = false
-  #    return
-
-  $scope.isNewUser = ->
-    $scope.modelTitle = 'Add New User'
-    $scope.buttonText = 'Add'
-    $scope.newUserName = ""
-    $scope.mobileNumber = ""
-    $scope.email = ""
-    $scope.successMessage = false
-    $scope.category = ""
-
-  CategoriesFactory.getCategories(100, (res) ->
-    $scope.categories = res
-  )
-
-  userId = (category) ->
-    date = new Date()
-    refID = date.getTime()
-    str1 = category.substring(0, 2).toUpperCase()
-    refID + str1
-
-  $scope.addNewUser = ->
-    if $scope.buttonText == 'Add'
-      $scope.statusText = 'User Created Successfully.!'
-      newUser =
-        id: userId $scope.category
-        category: $scope.category
-        name: $scope.newUserName
-        mobileNumber: $scope.mobileNumber
-        email: $scope.email
-        createdDate: new Date().toLocaleString()
-        updatedDate: new Date().toLocaleString()
-    else
-      $scope.statusText = 'User Updated Successfully.!'
-      newUser =
-        id: $scope.userById.id
-        category: $scope.category
-        name: $scope.newUserName
-        mobileNumber: $scope.mobileNumber
-        email: $scope.email
-        createdDate: new Date().toLocaleString()
-        updatedDate: new Date().toLocaleString()
-    $scope.$watch(UsersFactory.addNewUser(newUser), (res) ->
-      if res
-        $scope.successMessage = true
-    )
-
-  $scope.userById = {}
-  $scope.editUser = (user) ->
-    $scope.userById.id = user.id
-    $scope.modelTitle = 'Edit User'
-    $scope.buttonText = 'Update'
-    $scope.newUserName = user.name
-    $scope.mobileNumber = user.mobileNumber
-    $scope.email = user.email
-    $scope.successMessage = false
-    $scope.category = user.category
-
-  $scope.getCategoryUsers = ->
-    if $scope.selectCategory
-      filterKey = 'categories/' + $scope.selectCategory + '/users'
-      getFirstPageData()
-    else
-      filterKey = 'superusers'
-      getFirstPageData()
-    return
-
-  $scope.deleteUser = (user) ->
-    $scope.$watch(UsersFactory.delete(user.id), (res) ->
-      if res
-        console.log 'deleted success'
-      else
-        console.log 'not deleted'
-    )
-
-app.directive('ngConfirmClick',[ () ->
-  return {
-  priority: -1
-  restrict: 'A'
-  link: (scope, element, attrs) ->
-    element.on('click', (e) ->
-      message = attrs.ngConfirmClick
-      if(message && !confirm(message))
-        e.originalEvent.stopImmediatePropagation()
-        e.preventDefault()
+    $scope.reset = ->
+      $scope.messageText = ''
+  #    $scope.successMessage = false
       return
-    )
+
+  $scope.getCategoryMembers = ->
+    if $scope.selectCategory
+      $scope.filterKey = 'categories/' + $scope.selectCategory + '/users'
+      getFirstPageData()
+    else
+      $scope.filterKey = 'superusers'
+      getFirstPageData()
     return
-  }
-])
-
-

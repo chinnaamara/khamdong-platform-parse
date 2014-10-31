@@ -38,7 +38,7 @@ app.factory 'CreateUserFactory',['$http', ($http) ->
 ]
 
 
-app.controller 'CreateUserController', ($scope, $rootScope, CreateUserFactory, DataFactory) ->
+app.controller 'CreateUserController', ($scope, $rootScope, CreateUserFactory, DataFactory, $location) ->
   $scope.init = ->
     $scope.currentUser = $.parseJSON(localStorage.getItem 'Parse/l0JxXhedCkA8D1Z2EKyfG9AMbEF0L8oDW743XI13/currentUser')
     if $scope.currentUser

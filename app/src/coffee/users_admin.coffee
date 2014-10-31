@@ -31,7 +31,7 @@ app.factory 'AdminUsersFactory', ($http) ->
     userById: userById
   }
 
-app.controller 'AdminUsersController', ($scope, AdminUsersFactory, $rootScope, DataFactory) ->
+app.controller 'AdminUsersController', ($scope, AdminUsersFactory, $rootScope, DataFactory, $location) ->
   $scope.init = ->
     $scope.currentUser = $.parseJSON(localStorage.getItem 'Parse/l0JxXhedCkA8D1Z2EKyfG9AMbEF0L8oDW743XI13/currentUser')
     if $scope.currentUser

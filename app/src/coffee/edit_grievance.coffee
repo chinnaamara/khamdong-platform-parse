@@ -39,7 +39,7 @@ app.factory 'EditGrievanceFactory', ($http) ->
     updateGrievance: update
   }
 
-app.controller 'EditGrievanceController', ($scope, EditGrievanceFactory, DataFactory, $rootScope) ->
+app.controller 'EditGrievanceController', ($scope, EditGrievanceFactory, DataFactory, $rootScope, $location) ->
   $scope.init = ->
     $scope.currentUser = $.parseJSON(localStorage.getItem 'Parse/l0JxXhedCkA8D1Z2EKyfG9AMbEF0L8oDW743XI13/currentUser')
     if $scope.currentUser
