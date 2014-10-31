@@ -1,0 +1,43 @@
+//
+   Created by chinna on 11/9/14.
+
+section.container
+    .row
+        .col-lg-12
+            .panel.panel-primary
+                .panel-heading Admin Users
+                .panel-body
+                    .loader-div(ng-show='loading')
+                        h4 Loading, Please wait...
+                    .main-div(ng-show="loadDone")
+                        .search.col-xs-4.pull-right
+                            input(type="search", class="form-control", ng-model="filter.$", placeholder="search user", ng-keypress="searchFilter()")
+                        .table-responsive
+                            table(class="table table-striped table-bordered table-condensed", ng-table='adminUsersTable')
+                                thead
+                                    th #
+                                    th User Id
+                                    th User Name
+                                    th Mobile Number
+                                    th Ward
+                                    th Role
+                                    th Email
+                                tbody
+                                    tr(ng-repeat='user in $data | orderByPriority | filter: searchKey')
+                                        td
+                                            button.btn.btn-info.btn-sm#manage(ng-click="manageUser(user)")
+                                                i.glyphicon.glyphicon-edit
+                                                |   Manage
+                                        td
+                                            span {{ user.id }}
+                                        td
+                                            span {{ user.name }}
+                                        td
+                                            span {{ user.mobileNumber }}
+                                        td
+                                            span {{ user.ward }}
+                                        td
+                                            span {{ user.role }}
+                                        td
+                                            span {{ user.email }}
+

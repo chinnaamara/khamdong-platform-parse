@@ -1,0 +1,35 @@
+//
+   Created by chinna on 5/8/14.
+
+div(id='loginModal', tabindex='-1', role='dialog', aria-hidden='true')
+    .modal-dialog
+        .modal-content
+            .modal-header.btn-primary
+                h4(class='text-center') SignIn
+            .modal-body
+                form.white-row(ng-submit='signIn(credentials)')
+                    .row
+                        .form-group(ng-class="{'has-error':(error),'has-success':(passwordError)}")
+                            .col-md-12
+                                label Username
+                                input#username.form-control(ng-model='credentials.username', name='username', type='text', value='', placeholder='username', autofocus, required)
+                    | &nbsp;
+                    .row
+                        .form-group(ng-class="{'has-error':(passwordError),'has-error':(error)}")
+                            .col-md-12
+                                label Password
+                                input#password.form-control(ng-model='credentials.password', name='password', type='password', value='', placeholder='Password', required)
+                    | &nbsp;
+                    .row
+                        .form-group
+                            .col-md-12
+                                button.btn.btn-info.pull-left(type='submit', id='btn-signIn', ng-disabled='sighning')
+                                    i.glyphicon.glyphicon-log-in
+                                    |   SignIn
+                    | &nbsp;
+                    .row
+                        .alert.alert-danger(ng-show="loginFail")
+                            i.fa.fa-frown-o
+                            | {{ errorMessage }}
+
+            .modal-footer(id='footer')

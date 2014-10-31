@@ -1,0 +1,52 @@
+//
+   Created by chinna on 5/8/14.
+
+div#nav-bar
+    nav.navbar.navbar-inverse.navbar-default(role='navigation')
+        div.navbar-header
+            div.navbar-left
+                img(src='../images/logo.png' alt='KHAMDONG APPLICATION' id='logo-img')
+                div.titleclass
+                    strong
+                        | KHAMDONG PLATFORM
+        ul.nav.navbar-nav.navbar-right(ng-if='userName')
+            li
+                a(ui-sref='userDashboard') Grievances
+            li
+                a(ui-sref='newGrievance') New Grievance
+            li(class='dropdown')
+                a(class='dropdown-toggle', data-toggle='dropdown')
+                    i.glyphicon.glyphicon-user
+                    strong
+                        |   {{ userName }}
+                    b(class='caret')
+                ul(class='dropdown-menu')
+                    li
+                        a(ui-sref='admin', ng-if='administrator') Grievances
+                    li(class='divider', ng-if='administrator')
+                    li
+                        a(ui-sref='newDepartment', ng-if='administrator') Departments
+                    li(class='divider', ng-if='administrator')
+                    li
+                        a(ui-sref='newScheme', ng-if='administrator') Schemes
+                    li(class='divider', ng-if='administrator')
+                    li
+                        a(ui-sref='createUser', ng-if='administrator') Create User
+                    li(class='divider', ng-if='administrator')
+                    li
+                        a(ui-sref='adminUsers', ng-if='administrator') Manage Users
+                    li(class='divider', ng-if='administrator')
+                    li
+                        a(ui-sref='wards', ng-if='administrator') Manage Wards
+                    li(class='divider', ng-if='administrator')
+                    li
+                        a(ui-sref='users_list', ng-if='superUser') Users List
+                    li(class='divider', ng-if='superUser')
+                    li
+                        a(ui-sref='categories', ng-if='superUser') Manage Categories
+                    li(class='divider', ng-if='superUser')
+                    li
+                        a(ng-click='logout()') Logout
+                        //a(ng-click='logout()', ui-sref='logout') Logout
+
+

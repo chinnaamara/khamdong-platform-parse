@@ -1,0 +1,135 @@
+//
+   Created by chinna on 8/8/14.
+
+section.container
+    .row(uploader="uploader")
+        .col-lg-12
+            .panel.panel-primary
+                .panel-heading
+                    | Reference Number:  {{ grievance.id }}
+                .panel-body
+                    form#grievanceForm(name='grievanceForm',class='form-horizonal',type='form',novalidate)
+                        .col-lg-4
+                            .form-group.has-warning
+                                label.control-label(for='name')
+                                    | Name
+                                div
+                                    input#name.form-control(type='text', name='name', ng-model='grievance._serverData.name', readonly)
+                            .form-group.has-warning
+                                label.control-label(for='fatherName')
+                                    | Father Name
+                                div
+                                    input#fatherName.form-control(type='text', name='fatherName', ng-model='grievance._serverData.fatherName', readonly)
+                            .form-group.has-warning
+                                label.control-label(for='dob')
+                                    | Birth Date
+                                div
+                                    input#dob.form-control(type='text', name='dob', ng-model='grievance._serverData.dob', readonly)
+                            .form-group.has-warning
+                                label.control-label(for='age')
+                                    | Age(Years)
+                                div
+                                    input#age.form-control(type='text', name='age', ng-model='age', readonly)
+                            .form-group.has-warning
+                                label.control-label(for='education')
+                                    | Education
+                                div
+                                    input#education.form-control(type='text', name='education', ng-model='grievance._serverData.education', readonly)
+                            .form-group.has-warning
+                                label.control-label(for='address')
+                                    | Address
+                                div
+                                    textarea#address.form-control(name='address',ng-model='grievance._serverData.address', readonly)
+                        .col-lg-4
+                            .form-group.has-warning
+                                label.control-label(for='phoneNumber')
+                                    | Phone Number
+                                div
+                                    input#phoneNumber.form-control(type='tel', name='phoneNumber', ng-model='grievance._serverData.phoneNumber', readonly)
+                            .form-group.has-warning
+                                label.control-label(for='constituency')
+                                    | Constituency
+                                div
+                                    input#constituency.form-control(type='text', name='constituency', ng-model='grievance._serverData.constituency', readonly)
+                            .form-group.has-warning
+                                label.control-label(for='gpu')
+                                    | GPU
+                                div
+                                    input#gpu.form-control(type='text', name='gpu', ng-model='grievance._serverData.gpu', readonly)
+                            .form-group.has-warning
+                                label.control-label(for='ward')
+                                    | Ward
+                                div
+                                    input#ward.form-control(type='text', name='ward', ng-model='grievance._serverData.ward', readonly)
+                            .form-group.has-warning
+                                label.control-label(for='note')
+                                    | Note
+                                div
+                                    textarea#note.form-control(name='note',ng-model='grievance._serverData.note',placeholder='Note' readonly)
+                            .form-group.has-warning
+                                label.control-label(for='grievanceType')
+                                    | Grievance Type
+                                select#grievanceType.form-control.input-sm(
+                                name='grievanceType',
+                                ng-options='obj._serverData.typeName as obj._serverData.typeName for obj in grievanceTypes',
+                                ng-model='grievance._serverData.grievanceType',
+                                required)
+                                    option(value='',selected) -- Select Grievance Type --
+                        .col-lg-4
+                            .form-group.has-warning
+                                label.control-label(for='department')
+                                    | Department
+                                    span(class='star-label') *
+                                select#department.form-control.input-sm(
+                                name='department',
+                                ng-options='obj._serverData.departmentName as obj._serverData.departmentName for obj in departments'
+                                ng-model='grievance._serverData.department',
+                                ng-change='getSchemes()',
+                                required)
+                                    option(value='',selected) -- Select Department --
+                            .form-group.has-warning
+                                label.control-label(for='scheme')
+                                    | Scheme
+                                    span(class='star-label') *
+                                select#scheme.form-control.input-sm(
+                                name='scheme',
+                                ng-options='obj._serverData.schemeName as obj._serverData.schemeName for obj in schemes'
+                                ng-model='grievance._serverData.scheme',
+                                required)
+                                    option(value='',selected) -- Select Scheme --
+                            .form-group.has-warning
+                                label.control-label(for='requirement')
+                                    | Requirement
+                                div
+                                    textarea#requirement.form-control(name='requirement',ng-model='grievance._serverData.requirement',placeholder='requirement')
+
+                            .form-group.has-warning
+                                label.control-label.input-group(for='status') Status
+                                .btn-group(data-toggle='buttons')
+                                    input(type="radio", ng-model="status", value="Approve", ng-change='newValue(status)')
+                                    | Approve
+                                    | &nbsp;
+                                    | &nbsp;
+                                    input(type="radio", ng-model="status", value="Reject", ng-change='newValue(status)')
+                                    | Reject
+                                br
+                            .form-group.has-warning
+                                label.control-label.input-group(for='message') Status Message
+                                textarea.form-control(name='rejectMessage',ng-model='message', ng-disabled='reject', placeholder='Reject Message')
+                                //br
+                                //tt status = {{status | json}}
+                            .form-group.has-warning
+                                button.btn.btn-success(id='btn-createGrievance', ng-disabled='accept', ng-click='submit()')
+                                    i.glyphicon.glyphicon-ok
+                                    |   Accept
+                                button.btn.btn-danger(id='btn-print', ng-disabled='reject', ng-click='submit()')
+                                    i.glyphicon.glyphicon-remove
+                                    |   Reject
+                                button.btn.btn-warning(id='btn-close', ui-sref="admin")
+                                    i.glyphicon.glyphicon-circle-arrow-left
+                                    |   Back
+
+                    .col-lg-12
+                        .alert.alert-warning(ng-show='responce')
+                            i.fa.fa-check-circle-o
+                                | {{ responceMessage }}

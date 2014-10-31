@@ -1,0 +1,113 @@
+//
+   Created by chinna on 11/8/14.
+
+section.container
+    .row
+        .col-lg-12
+            .panel.panel-primary
+                .panel-heading Schemes
+                .panel-body
+                    .loader-div(ng-show='loading')
+                        h4 Loading, Please wait...
+                    .main-div
+                        button.btn.btn-info.pull-left.input-sm(data-toggle="modal", title='Add New Scheme',id='btn-newScheme', data-target="#newSchemeWindow", ng-click='btnAdd()')
+                            i.glyphicon.glyphicon-plus
+                            |   Add New
+                        br
+                        br
+                        .table-responsive
+                            table#schemesTable(class="table table-striped table-bordered table-condensed")
+                                thead
+                                    tr
+                                        th.smallTd #
+                                        th Id
+                                        th Code
+                                        th Scheme Name
+                                        th Department
+                                        th Created Date
+                                        th Updated Date
+                                tbody
+                                    tr(ng-repeat='scheme in schemes')
+                                        td
+                                            a.btn.btn-sm.btn-warning(title="Edit", data-toggle="modal",id='btn-editScheme', data-target="#newSchemeWindow", ng-click="btnEdit(scheme)")
+                                                i.glyphicon.glyphicon-edit
+                                            a.btn.btn-sm.btn-danger(title="Delete", id='btn-deleteScheme', data-toggle="modal", data-target="#deleteConfirm", ng-click="deleteConformation(scheme)")
+                                                i.glyphicon.glyphicon-remove
+                                        td
+                                            span {{ scheme.id }}
+                                        td
+                                            span {{ scheme._serverData.schemeCode }}
+                                        td
+                                            span {{ scheme._serverData.schemeName }}
+                                        td
+                                            span {{ scheme._serverData.departmentName }}
+                                        td
+                                            span {{ scheme.createdAt }}
+                                        td
+                                            span {{ scheme.updatedAt }}
+
+                            .pull-right
+                                button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
+                                    i.glyphicon.glyphicon-arrow-left
+                                    |   Previous
+                                button.btn.btn-info.btn-sm#next(ng-click='pageNext()', ng-disabled='noNext')
+                                    |   Next
+                                    | &nbsp;
+                                    i.glyphicon.glyphicon-arrow-right
+
+#deleteConfirm.modal.fade.bs-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+    .modal-dialog
+        .modal-content
+            .modal-header.bg-danger
+                | Delete Confirmation
+                button.close(type='button btn-primary', data-dismiss='modal' data-target='.bs-example-modal-lg')
+                    span(aria-hidden='true') ×
+                    span.sr-only Close
+            .modal-body
+                | Are you sure to delete <strong> {{ deleteSchemeName }} </strong> scheme?
+            .modal-footer
+                button.btn.btn-success(type='button', data-dismiss='modal', ng-click="deleteScheme()" )
+                    i.glyphicon.glyphicon-ok
+                        |  Yes
+                button.btn.btn-danger(type='button', data-dismiss='modal')
+                    i.glyphicon.glyphicon-remove
+                        |  No
+
+#newSchemeWindow.modal.fade.bs-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+    .modal-dialog
+        .modal-content
+            .modal-header.bg-primary
+                | {{ modelTitle }}
+                button.close(type='button btn-primary', data-dismiss='modal' data-target='.bs-example-modal-lg')
+                    span(aria-hidden='true') ×
+                    span.sr-only Close
+            .modal-body
+                form#addScheme(name='addSchemeForm', class='form-horizonal', type='form', novalidate)
+                    .form-group.has-warning
+                        label.control-label(for='schemeCode')
+                            | Select Department
+                            span(class='star-label') *
+                        select.form-control(ng-model='departmentName', required)
+                            option(value='',selected) -- Select Department --
+                            option(value='{{obj._serverData.departmentName}}', ng-repeat='obj in departments') {{obj._serverData.departmentName}}
+                    .form-group.has-warning
+                        label.control-label(for='schemeCode')
+                            | Scheme Code
+                            span(class='star-label') *
+                        div(ng-class="{ 'has-error' : addSchemeForm.schemeCode.$invalid }")
+                            input#schemeCode.form-control(type='text',name='schemeCode',ng-model='schemeCode',placeholder='Scheme Code', required)
+                            small.label.label-danger(ng-show="addSchemeForm.schemeCode.$invalid && addSchemeForm.schemeCode.$dirty") Required Scheme Code.!
+                    .form-group.has-warning
+                        label.control-label(for='schemeName')
+                            | Scheme Name
+                            span(class='star-label') *
+                        div(ng-class="{ 'has-error' : addSchemeForm.schemeName.$invalid }")
+                            input#schemeName.form-control(type='text',name='schemeName',ng-model='schemeName',placeholder='Scheme Name', required)
+                            small.label.label-danger(ng-show="addSchemeForm.schemeName.$invalid && addSchemeForm.schemeName.$dirty") Required Scheme Name.!
+            .modal-footer
+                button.btn.btn-success.btn-sm(ng-click="addEditClick()", ng-disabled='addSchemeForm.$invalid', id='btnAdd', data-dismiss='modal')
+                    i.glyphicon.glyphicon-ok
+                    |   {{ buttonText }}
+                button.btn.btn-warning.btn-sm(data-dismiss='modal')
+                    i.glyphicon.glyphicon-remove
+                    |   Close

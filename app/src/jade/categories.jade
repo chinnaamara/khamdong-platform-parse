@@ -1,0 +1,76 @@
+//
+   Created by chinna on 15/9/14.
+
+section.container
+    .row
+        .col-lg-12
+            .panel.panel-primary
+                .panel-heading Categories
+                .panel-body
+                    .loader-div(ng-show='loading')
+                        h4 Loading, Please wait...
+                    .main-div
+                        button.btn.btn-info.pull-left(data-toggle="modal",id='btn-newCategory', data-target="#newCategoryWindow", ng-click='btnAdd()')
+                            i.glyphicon.glyphicon-plus
+                            |   Add New Category
+                        .search.col-xs-4.pull-right
+                            input(type="search", class="form-control", ng-model="searchTerm", placeholder="search category..")
+                        .table-responsive
+                            table#categoriesTable(class="table table-striped table-bordered table-condensed")
+                                thead
+                                    tr
+                                        th.smallTd #
+                                        th Category Id
+                                        th Category Name
+                                        th Created Date
+                                        th Updated Date
+                                tbody
+                                    tr(ng-repeat='cat in categories | orderByPriority | filter : searchTerm')
+                                        td
+                                            a.btn.btn-sm.btn-warning(href="",title="Edit", data-toggle="modal",id='btn-editCategory', data-target="#newCategoryWindow", ng-click="editCategory(cat)")
+                                                i.glyphicon.glyphicon-edit
+
+                                            a.btn.btn-sm.btn-danger(href="",title="Delete", id='btn-deleteCategory', ng-click="deleteCategory(cat)")
+                                                i.glyphicon.glyphicon-remove
+
+                                        td
+                                            span {{ cat.id }}
+                                        td
+                                            span {{ cat.name }}
+                                        td
+                                            span {{ cat.createdDate }}
+                                        td
+                                            span {{ cat.updatedDate }}
+                            //.pull-left
+                            //    button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
+                            //        i.glyphicon.glyphicon-arrow-left
+                            //        |   Previous
+                            //    button.btn.btn-info.btn-sm#next(ng-click='pageNext()', ng-disabled='noNext')
+                            //        |   Next
+                            //        &nbsp;
+                            //        i.glyphicon.glyphicon-arrow-right
+
+#newCategoryWindow.modal.fade.bs-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+    .modal-dialog
+        .modal-content
+            .modal-header.bg-primary
+                | {{ modelTitle }}
+                button.close(type='button btn-primary', data-dismiss='modal' data-target='.bs-example-modal-lg')
+                    span(aria-hidden='true') ×
+                    span.sr-only Close
+            .modal-body
+                form#categoryForm(name='categoryForm',class='form-horizonal',type='form',novalidate)
+                    .form-group.has-warning
+                        label.control-label(for='categoryName')
+                            | Category Name
+                            span(class='star-label') *
+                        div
+                            input#categoryName.form-control(type='text',name='categoryName',ng-model='categoryName', placeholder='Category Name', required)
+                            small(class="label label-danger",ng-show="categoryForm.categoryName.$invalid && categoryForm.categoryName.$dirty")
+            .modal-footer
+                button.btn.btn-success.btn-sm(ng-click="addNewCategory()", ng-disabled='categoryForm.$invalid', id='btnAdd')
+                    i.glyphicon.glyphicon-ok
+                    |   {{ buttonText }}
+                button.btn.btn-warning.btn-sm(data-dismiss='modal')
+                    i.glyphicon.glyphicon-remove
+                    |   Close

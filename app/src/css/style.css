@@ -1,0 +1,244 @@
+/*
+    -----------------
+  nav bar styles
+  -----------
+*/
+#logo-img{
+    float: left;
+}
+.titleclass{
+    text-align: center;
+    margin-top: 24px;
+    width: 330px;
+    color: white;
+    font-size: 18px;
+}
+.navbar-left a{
+    margin-top:10px;
+}
+.navbar.navbar-inverse.navbar-default {
+    background: linear-gradient(to bottom right,#72BDFD 0,#357ebd 100%);
+    border: none;
+    min-height: inherit;
+
+}
+.nav.navbar-nav.navbar-right{
+    margin: 15px;
+    font-size: 18px;
+}
+.navbar.navbar-inverse.navbar-default  a{
+    color: #ffffff;
+    font-size: 15px;
+}
+.open>.dropdown-menu{
+    background: #3492E4;
+}
+.navbar.navbar-inverse.navbar-default  a:hover{
+    color: #000;
+}
+.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover{
+    background: #D7DAEB !important;
+}
+/* ---------ends------------  */
+.smallBox {
+    width:4%;
+}
+.smallTd{
+    width:9%;
+}
+/*
+    ---------------
+  grievance print page
+    -------------------
+*/
+#printThis{
+    border: 4px ridge #36383A;
+    display:block;
+    padding:1%;
+    margin:1%;
+    font: bold normal normal 15px/1.0 "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+#printThis p{
+    margin: 12px 75px;
+    color: rgb(50, 1, 119);
+    padding: 7px;
+    font: bold normal  normal 18px/1.2 "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+}
+#printThis p .span4{
+    float: right;
+    font-weight: 500;
+    font-style: normal;
+    color: #455594;
+    word-wrap: break-word;
+    width: 45%;
+}
+header img #printLogo{
+    margin: 10px;
+}
+header div {
+    text-align: center;
+    color: lightslategrey;
+    font-size:30px;
+}
+/* ----------
+    ends here
+    --------------
+*/
+.modal-content {
+    margin-top: 100px !important;
+}
+.my-nav-btn {
+    margin-top: 10px;
+    margin-left: 5px;
+}
+textarea {
+    resize: none;
+}
+
+#grievancePrint{
+    margin-top: 5%;
+}
+tbody .buttons-td {
+    /*width:15%;*/
+}
+tbody a {
+    margin-left: 5px;
+}
+#document {
+    width:500px;
+    height: 400px;
+    padding-left: 20px;
+}
+#grievancesTable {
+    margin-top: 40px;
+}
+#userGrievancesTable {
+    margin-top: 40px;
+}
+.star-label {
+    color: red;
+}
+.imageDownload{
+    width:100%;
+}
+.noImage{
+    width:20%;
+}
+#submitedDocs{
+
+}
+@-moz-document url-prefix() {
+    fieldset { display: table-cell; }
+}
+/*------
+for model dialog print---------- */
+@media screen {
+    #printSection {
+        display: none;
+    }
+}
+
+@media print {
+    body * {
+        visibility:hidden;
+    }
+    #printSection, #printSection * {
+        visibility:visible;
+    }
+    #printSection {
+        position:absolute;
+        left:0;
+        top:0;
+    }
+}
+/* -----ends here-------  */
+
+
+/*
+ ---------------------
+                    screen for tablets of screen width:768px
+ -----------------------
+ */
+@media only screen and (max-width:768px) {
+    html{
+        margin: auto;
+        width: 97%;
+        clear: both;
+    }
+    .titleclass{
+        text-align: center;
+        margin-top: 18px;
+        width: 61%;
+        font-size: 22px;
+    }
+    .navbar{
+        position: relative;
+    }
+    .navbar ul{
+        padding-left: 0;
+    }
+    .navbar ul li{
+        width: 100%;
+        text-align: center;
+        padding: 1%;
+    }
+    .navbar-left a{
+        margin-top:15px;
+    }
+    .navbar.navbar-inverse.navbar-default  a:link,.navbar.navbar-inverse.navbar-default  a:visited{
+        display: block;
+        height: 30px;
+        padding: 10px 45px;
+    }
+    .navbar-left img{
+        width: 15%;
+    }
+    .navbar.navbar-inverse.navbar-default  a:hover,.navbar.navbar-inverse.navbar-default  a:active
+    .navbar.navbar-inverse.navbar-default  a:link,.navbar.navbar-inverse.navbar-default  a:visited
+    {
+        background-color: #D7DAEB;
+        text-shadow: none;
+    }
+    .navbar-inverse .navbar-nav .open .dropdown-menu .divider {
+        background-color: transparent;
+    }
+    .navbar-nav .open .dropdown-menu{
+        position: absolute;
+        /*background-color: rgba(109, 103, 236, 0.11);*/
+        background: linear-gradient(to bottom right,#72BDFD 0,#357ebd 100%);
+        font-size: 24px;
+        width: 100%;
+    }
+    .navbar-inverse .navbar-nav .open .dropdown-menu>li>a:focus, .navbar-inverse .navbar-nav .open .dropdown-menu>li>a:hover{
+        color: #ffffff;
+    }
+    .navbar-inverse .navbar-nav .open .dropdown-menu>li>a {
+        color: #0F0F0F;
+    }
+    .navbar.navbar-inverse.navbar-default a:active .navbar.navbar-inverse.navbar-default a:link, .navbar.navbar-inverse.navbar-default a:hover, .navbar.navbar-inverse.navbar-default a:visited{
+        font-size: 22px;
+    }
+    .navbar.navbar-inverse.navbar-default  a{
+        font-size: 24px;
+    }
+}
+.top-div{
+    margin-bottom: 10px;
+}
+table{
+    word-break:break-word;
+}
+
+#submitedDocs{
+    max-height: 420px;
+    overflow-y: auto;
+}
+.search{
+    padding: 1%;
+}
+
+#loadingPic{
+    padding: 3%;
+    margin-top: 2%;
+}

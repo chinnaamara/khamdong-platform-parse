@@ -1,0 +1,137 @@
+//
+   Created by chinna on 7/8/14.
+section.container
+    .row(uploader="uploader")
+        .col-lg-12
+            .panel.panel-primary
+                .panel-heading Grievances
+                .panel-body
+                    .alert.alert-info(ng-show='loading')
+                        | Loading Grievances...
+                    .main-div(ng-show="loadDone")
+                        .col-xs-4.pull-left
+                            select.input-sm(
+                            name='selectWard',
+                            ng-options='ward._serverData.wardName as ward._serverData.wardName for ward in wards',
+                            ng-model='selectedWard',
+                            ng-change='filterGrievances()',
+                            title='Grievances By Wards',
+                            required)
+                                option(value='',selected) -- All Wards --
+                        .col-xs-8
+                            .pull-right
+                                input(type="search", class="input-sm", ng-model="searchKey", placeholder="enter mobile number", title='enter mobile number to search here.')
+                                a.btn.btn-sm.btn-warning(ng-click='searchResult()')
+                                    i.glyphicon.glyphicon-search
+                                    |   Search
+
+                        .table-responsive
+                            table#grievancesTable(class="table table-striped table-bordered table-condensed")
+                                thead
+                                    tr
+                                        th(class='buttons-td') #
+                                        //th Reference Id
+                                        //th Grievance Type
+                                        //th Department
+                                        th Scheme
+                                        th Requirement
+                                        th Name
+                                        th Mobile Number
+                                        //th Constituency
+                                        th Applied Date
+                                        th Responded Date
+                                        th Status
+                                tbody
+                                    tr(ng-repeat='grievance in grievances')
+                                        td
+                                            a.btn.btn-sm.btn-info(href="", data-toggle="modal", data-target="#myDoc", ng-click="showDocuments(grievance)")
+                                                i.glyphicon.glyphicon-file
+                                                |   File
+                                            a.btn.btn-sm.btn-info(href="", id='grievancePrint', ng-click="showDetails(grievance)")
+                                                i.glyphicon.glyphicon-info-sign
+                                                |   Info
+                                        //td
+                                        //    span {{ grievance.id }}
+                                        //td
+                                        //    span {{ grievance._serverData.grievanceType }}
+                                        //td
+                                        //    span {{ grievance._serverData.department }}
+                                        td
+                                            span {{ grievance._serverData.scheme }}
+                                        td
+                                            span {{ grievance._serverData.requirement }}
+                                        td
+                                            span {{ grievance._serverData.name }}
+                                        td
+                                            span {{ grievance._serverData.phoneNumber }}
+                                        //td
+                                        //    span {{ grievance.constituency }}
+                                        td
+                                            span {{ grievance._serverData.applicationDate }}
+                                        td
+                                            span {{ grievance._serverData.respondedDate }}
+                                        td
+                                            span {{ grievance._serverData.status }}
+
+                            .pull-right
+                                button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
+                                    i.glyphicon.glyphicon-arrow-left
+                                    |   Previous
+                                button.btn.btn-info.btn-sm#next(ng-click='pageNext()', ng-disabled='noNext')
+                                    |   Next
+                                    | &nbsp;
+                                    i.glyphicon.glyphicon-arrow-right
+
+                            .alert.alert-info(ng-show='noRecords')
+                                | No records found!
+
+#myDoc.modal.fade.bs-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+    .modal-dialog.modal-lg
+        .modal-content
+            .modal-header
+                button.close(type='button', data-dismiss='modal')
+                    span(aria-hidden='true') ×
+                    span.sr-only Close
+            #submitedDocs.modal-body
+                div(ng-show='recommendedDoc')
+                    h3 Copy of Recommended Document
+                    canvas.imageDownload(id='recommendedDocCanvas')
+                    a.btn.btn-sm.btn-info(type='button', id='downloadrecommendedDoc')
+                        i.glyphicon.glyphicon-download
+                        |   Download
+                    hr
+                div(ng-show='COIDoc')
+                    h3 Copy of Certificate of Identity
+                    canvas.imageDownload(id='COIDocCanvas')
+                    a.btn.btn-sm.btn-info(type='button', id='downloadCOIDoc')
+                        i.glyphicon.glyphicon-download
+                        |   Download
+                    hr
+                div(ng-show='voterDoc')
+                    h3 Copy of Voter Card
+                    canvas.imageDownload(id='voterIdCanvas')
+                    a.btn.btn-sm.btn-info(type='button', id='downloadVoter')
+                        i.glyphicon.glyphicon-download
+                        |   Download
+                    hr
+                div(ng-show='casteDoc')
+                    h3 Copy of Caste Certificate
+                    canvas.imageDownload(id='casteCertificateCanvas')
+                    a.btn.btn-sm.btn-info(type='button', id='downloadCasteCertificate')
+                        i.glyphicon.glyphicon-download
+                        |   Download
+                    hr
+                div(ng-show='otherDoc')
+                    h3 Copy of Other Document
+                    canvas.imageDownload(id='otherDocCanvas')
+                    a.btn.btn-sm.btn-info(type='button', id='downloadOther')
+                        i.glyphicon.glyphicon-download
+                        |   Download
+                div(ng-show='noDocs')
+                    h3 No Uploaded Documents
+                    img.noImage(src = '../images/no_documents.png')
+
+            .modal-footer
+                button.btn.btn-sm.btn-danger(data-dismiss='modal')
+                    i.glyphicon.glyphicon-remove
+                    |   Close

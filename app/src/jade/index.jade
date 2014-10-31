@@ -1,0 +1,16 @@
+//
+   Created by chinna on 5/8/14.
+
+doctype
+html(ng-app='Khamdong')
+    head
+        title Khamdong Platform
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        link(href="css/lib.min.css", rel="stylesheet")
+        link(href="css/all.min.css", rel="stylesheet")
+
+    body(class='boxed')
+        div(ui-view="viewA")
+        div(ui-view="viewB")
+        script(src="js/lib.min.js")
+        script(src="js/app.js")
