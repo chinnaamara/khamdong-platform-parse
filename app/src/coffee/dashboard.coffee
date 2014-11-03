@@ -1,5 +1,4 @@
 app.factory 'DashboardFactory', ($http) ->
-
   Parse.initialize "l0JxXhedCkA8D1Z2EKyfG9AMbEF0L8oDW743XI13", "Sz4w7HWy38q4hqrIJxuGVkIGSFa3V0WoqElHKoqW"
 
   getCount = (filterKey, callback) ->
@@ -102,12 +101,15 @@ app.controller 'DashboardController', ($scope, DashboardFactory, DetailsFactory,
     return
 
   $scope.searchResult = ->
+    $scope.filterKey.pageNumber = 1
     if $scope.searchKey
-      $scope.filterKey.pageNumber = 1
       $scope.filterKey.columnName = 'phoneNumber'
       $scope.filterKey.queryValue = $scope.searchKey
-      $scope.NumberOfPages($scope.filterKey)
-      $scope.getGrievances($scope.filterKey)
+    else
+      $scope.filterKey.columnName = undefined
+      $scope.filterKey.queryValue = undefined
+    $scope.NumberOfPages($scope.filterKey)
+    $scope.getGrievances($scope.filterKey)
     return
 
   $scope.init()

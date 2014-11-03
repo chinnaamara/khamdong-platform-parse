@@ -121,12 +121,15 @@ app.controller 'GrievancesController', ($scope, $location, GrievancesFactory, Ed
     return
 
   $scope.searchResult = ->
+    $scope.filterKey.pageNumber = 1
     if $scope.searchKey
-      $scope.filterKey.pageNumber = 1
       $scope.filterKey.columnName = 'phoneNumber'
       $scope.filterKey.queryValue = $scope.searchKey
-      $scope.NumberOfPages($scope.filterKey)
-      $scope.getGrievances($scope.filterKey)
+    else
+      $scope.filterKey.columnName = 'ward'
+      $scope.filterKey.queryValue = $scope.currentUser.ward
+    $scope.NumberOfPages($scope.filterKey)
+    $scope.getGrievances($scope.filterKey)
     return
 
   $scope.init()

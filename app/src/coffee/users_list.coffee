@@ -14,6 +14,7 @@ app.factory 'MembersFactory', ($http) ->
 
   readMembers = (filterKey, callback) ->
     getQuery = new Parse.Query Members
+    getQuery.equalTo filterKey.columnName, filterKey.keyValue
     getQuery.descending "createdAt"
     getQuery.limit filterKey.pageLimit
     getQuery.skip(filterKey.pageLimit * (filterKey.pageNumber - 1))
@@ -72,7 +73,7 @@ app.factory 'MembersFactory', ($http) ->
   saveSentMessage = (data, callback) ->
     Messages = Parse.Object.extend 'SentMessages'
     message = new Messages()
-    message.save({mobileNumber: data.mobileNumber, text: data.text}, {
+    message.save({mobileNumber: data.mobileNumber, text: data.messageText}, {
       success: (object) ->
         callback object
       error: (error) ->
@@ -94,6 +95,8 @@ app.controller 'MembersController', ($scope, MembersFactory, $rootScope, $locati
   $scope.filterKey = {
     pageNumber: 1
     pageLimit: 6
+    columnName: undefined
+    keyValue: undefined
   }
 
   $scope.init = ->
@@ -211,11 +214,6 @@ app.controller 'MembersController', ($scope, MembersFactory, $rootScope, $locati
     $scope.noNext = false
     return
 
-  $scope.init()
-  $scope.getCategories()
-  $scope.getMembers($scope.filterKey)
-  $scope.NumberOfPages()
-
   $scope.cantSendMessage = true
   $scope.allMembersClicked = () ->
     newValue = ! $scope.allMembersMet()
@@ -230,26 +228,30 @@ app.controller 'MembersController', ($scope, MembersFactory, $rootScope, $locati
       return count + member.done ? 1 : 0
     , 0)
     $scope.cantSendMessage = $scope.pickedMembers().length == 0
-    return (membersMet == $scope.members.length)
+    if $scope.members
+      return (membersMet == $scope.members.length)
+    return
 
   $scope.selectedMembers = []
   $scope.isMember = ->
     $scope.selectedMembers = $scope.pickedMembers()
-    $scope.str = 'to '
+    $scope.str = ''
     _.forEach($scope.selectedMembers, (member) ->
       $scope.str += member + ', '
     )
-    console.log $scope.str.substring(0, $scope.str.length - 2)
+    return
+#    console.log $scope.str.substring(0, $scope.str.length - 2)
 
   $scope.pickedMembers = ->
     members = []
     _.forEach($scope.members, (member) ->
       if member.done
-        members.push Number member.mobileNumber
+        members.push Number member._serverData.mobileNumber
     )
     return members
 
   $scope.sendSms = ->
+    console.log $scope.selectedMembers
     _.forEach($scope.selectedMembers, (member) ->
       MembersFactory.sendSms($scope.messageText, member, (res) ->
         console.log ''
@@ -268,16 +270,30 @@ app.controller 'MembersController', ($scope, MembersFactory, $rootScope, $locati
     #    $scope.successMessage = true
     return
 
-    $scope.reset = ->
-      $scope.messageText = ''
-  #    $scope.successMessage = false
-      return
-
   $scope.getCategoryMembers = ->
-    if $scope.selectCategory
-      $scope.filterKey = 'categories/' + $scope.selectCategory + '/users'
-      getFirstPageData()
+    if $scope.selectedCategory
+      $scope.filterKey.columnName = 'category'
+      $scope.filterKey.keyValue = $scope.selectedCategory
     else
-      $scope.filterKey = 'superusers'
-      getFirstPageData()
+      $scope.filterKey.columnName = undefined
+      $scope.filterKey.keyValue = undefined
+    $scope.getMembers($scope.filterKey)
+    $scope.NumberOfPages()
     return
+
+  $scope.searchResult = ->
+    if $scope.searchKey
+      $scope.filterKey.columnName = 'mobileNumber'
+      $scope.filterKey.keyValue = $scope.searchKey
+    else
+      $scope.filterKey.columnName = undefined
+      $scope.filterKey.keyValue = undefined
+    $scope.getMembers($scope.filterKey)
+    $scope.NumberOfPages()
+    return
+
+  $scope.init()
+  $scope.getCategories()
+  $scope.getMembers($scope.filterKey)
+  $scope.NumberOfPages()
+  return
