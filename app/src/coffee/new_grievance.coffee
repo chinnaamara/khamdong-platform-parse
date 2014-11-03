@@ -58,15 +58,14 @@ app.factory 'NewGrievanceFactory', ($http) ->
 app.controller 'NewGrievanceController', ($scope, $location, NewGrievanceFactory, DataFactory, $rootScope) ->
   $scope.init = ->
     $scope.currentUser = $.parseJSON(localStorage.getItem 'Parse/l0JxXhedCkA8D1Z2EKyfG9AMbEF0L8oDW743XI13/currentUser')
-#    console.log $scope.currentUser
     if $scope.currentUser
       $rootScope.userName = $scope.currentUser.username
-      role = $scope.currentUser.role
-      $rootScope.administrator = role == 'Admin'
-      $rootScope.superUser = role == 'Super User'
+      $scope.currentUser.role = localStorage.getItem 'role'
+      $rootScope.administrator = $scope.currentUser.role == 'Admin'
+      $rootScope.superUser = $scope.currentUser.role == 'Super User'
+      $scope.currentUser.ward = localStorage.getItem 'ward'
     else
       $location.path '/error'
-    #    $scope.$emit 'LOAD'
     return
   $scope.init()
 

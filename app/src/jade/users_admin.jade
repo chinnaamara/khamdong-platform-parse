@@ -7,11 +7,23 @@ section.container
             .panel.panel-primary
                 .panel-heading Admin Users
                 .panel-body
-                    .loader-div(ng-show='loading')
-                        h4 Loading, Please wait...
-                    .main-div(ng-show="loadDone")
-                        .search.col-xs-4.pull-right
-                            input(type="search", class="form-control", ng-model="filter.$", placeholder="search user", ng-keypress="searchFilter()")
+                    .main-div
+                        .col-xs-4.pull-left
+                            select.input-sm(
+                            name='selectWard',
+                            ng-options='ward._serverData.wardName as ward._serverData.wardName for ward in wards',
+                            ng-model='selectedWard',
+                            ng-change='filterUsers()',
+                            title='Users By Wards',
+                            required)
+                                option(value='',selected) -- All Wards --
+                        .pull-right
+                            input(type="search", class="input-sm", ng-model="searchKey", placeholder="enter mobile number", title='enter mobile number to search here.')
+                            a.btn.btn-sm.btn-warning(ng-click='searchResult()')
+                                i.glyphicon.glyphicon-search
+                                |   Search
+                        br
+                        br
                         .table-responsive
                             table(class="table table-striped table-bordered table-condensed")
                                 thead
@@ -21,7 +33,8 @@ section.container
                                     th Mobile Number
                                     th Ward
                                     th Role
-                                    th Email
+                                    th Created At
+                                    th Updated At
                                 tbody
                                     tr(ng-repeat='user in users')
                                         td
@@ -31,7 +44,7 @@ section.container
                                         td
                                             span {{ user.id }}
                                         td
-                                            span {{ user._serverData.name }}
+                                            span {{ user._serverData.username }}
                                         td
                                             span {{ user._serverData.mobileNumber }}
                                         td
@@ -39,5 +52,15 @@ section.container
                                         td
                                             span {{ user._serverData.role }}
                                         td
-                                            span {{ user._serverData.email }}
+                                            span {{ user.createdAt }}
+                                        td
+                                            span {{ user.updatedAt }}
+                            .pull-right
+                                button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
+                                    i.glyphicon.glyphicon-arrow-left
+                                    |   Previous
+                                button.btn.btn-info.btn-sm#next(ng-click='pageNext()', ng-disabled='noNext')
+                                    |   Next
+                                    | &nbsp;
+                                    i.glyphicon.glyphicon-arrow-right
 

@@ -1,37 +1,55 @@
-app.controller 'ManageUserController', ($scope, AdminUsersFactory, CreateUserFactory, $rootScope, $window, DataFactory) ->
+app.controller 'ManageUserController', ($scope, AdminUsersFactory, $rootScope, DataFactory) ->
   $scope.init = ->
-    session = localStorage.getItem('firebaseSession')
-    if ! session
-      $window.location = '#/error'
+    $scope.currentUser = $.parseJSON(localStorage.getItem 'Parse/l0JxXhedCkA8D1Z2EKyfG9AMbEF0L8oDW743XI13/currentUser')
+    if $scope.currentUser
+      $rootScope.userName = $scope.currentUser.username
+      $scope.currentUser.role = localStorage.getItem 'role'
+      $rootScope.administrator = $scope.currentUser.role == 'Admin'
+      $rootScope.superUser = $scope.currentUser.role == 'Super User'
+      $scope.currentUser.ward = localStorage.getItem 'ward'
     else
-      $rootScope.userName = localStorage.getItem('name').toUpperCase()
-      role = localStorage.getItem('role')
-      $rootScope.administrator = role == 'Admin'
-      $rootScope.superUser = role == 'SuperUser'
+      $location.path '/error'
+    return
 
-  $scope.init()
-
-  $scope.wards = DataFactory.wards
-  $scope.userRoles = DataFactory.userRoles
   $scope.userById = AdminUsersFactory.userById
-  $scope.successMessage = false
-  $scope.errorMessage = false
-  $scope.updateUser = ->
+
+  $scope.getWards = ->
+    DataFactory.getWards((res) ->
+      $scope.$apply(() ->
+        $scope.wards = res
+      )
+    )
+    return
+
+  $scope.getRoles = ->
+    DataFactory.getRoles((res) ->
+      $scope.$apply(() ->
+        $scope.roles = res
+      )
+    )
+    return
+
+  $scope.btnTransfer = ->
+    $scope.successMessage = false
+    $scope.transferUserName = $scope.userById._serverData.username
+    $scope.transferWardName = $scope.userById._serverData.ward
+    return
+
+  $scope.transferUser = ->
     updateRec =
       id: $scope.userById.id
-      name: $scope.userById.name
-      email: $scope.userById.email
-      mobileNumber: $scope.userById.mobileNumber
-      ward: $scope.userById.ward
-      role: $scope.userById.role
-      createdDate: $scope.userById.createdDate
-      updatedDate: new Date().toLocaleString()
-
-    $scope.$watch(CreateUserFactory.register(updateRec), (res) ->
-      if res
+      username: $scope.userById._serverData.username
+      mobileNumber: $scope.userById._serverData.mobileNumber
+      ward: $scope.userById._serverData.ward
+      role: $scope.userById._serverData.role
+    AdminUsersFactory.transferUser(updateRec, (res) ->
+      $scope.$apply(() ->
         $scope.successMessage = true
-        $scope.successText = 'User Updated Successfully.!'
-      else
-        $scope.errorMessage = true
-        $scope.successText = 'User not updated.!'
+        $scope.successText = "User Transferred successfully!"
+      )
     )
+    return
+
+  $scope.init()
+  $scope.getWards()
+  $scope.getRoles()

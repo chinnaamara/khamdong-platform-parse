@@ -7,7 +7,7 @@ section.container
             .col-lg-8.col-lg-push-2
                 .panel.panel-primary
                     .panel-heading
-                        | Transfer User
+                        | {{ userById.id }}
                     .panel-body
                         form#transferUserForm(name='transferUserForm', class='form-horizonal', type='form', novalidate)
                             .col-lg-6
@@ -16,21 +16,14 @@ section.container
                                         | Name
                                         span(class='star-label') *
                                     div(ng-class="{ 'has-error' : transferUserForm.name.$invalid }")
-                                        input#name.form-control(type='text',name='name',ng-model='userById.name',placeholder='Name', readonly)
+                                        input#name.form-control(type='text',name='name',ng-model='userById._serverData.username',placeholder='Name', readonly)
                                         small(class="label label-danger",ng-show="transferUserForm.name.$invalid && transferUserForm.name.$dirty") Required Name.!
-                                .form-group.has-warning
-                                    label.control-label(for='email')
-                                        | Email
-                                        span(class='star-label') *
-                                    div(ng-class="{ 'has-error' : transferUserForm.email.$invalid }")
-                                        input#email.form-control(type='email',name='email',ng-model='userById.email',placeholder='Email', readonly)
-                                        small(class="label label-danger",ng-show="transferUserForm.email.$invalid && transferUserForm.email.$dirty") Required Email.!
                                 .form-group.has-warning
                                     label.control-label(for='mobileNumber')
                                         | Mobile Number
                                         span(class='star-label') *
                                     div(ng-class="{ 'has-error' : transferUserForm.mobileNumber.$invalid }")
-                                        input#mobileNumber.form-control(type='tel',name='mobileNumber',ng-model='userById.mobileNumber',placeholder='Mobile Number',ng-maxlength="10", ng-minlength="10", required)
+                                        input#mobileNumber.form-control(type='tel',name='mobileNumber',ng-model='userById._serverData.mobileNumber',placeholder='Mobile Number',ng-maxlength="10", ng-minlength="10", required)
                                         small(class="label label-danger",ng-show="transferUserForm.mobileNumber.$invalid && transferUserForm.mobileNumber.$dirty") Required 10 digits mobile number
                             .col-lg-6
                                 .form-group.has-warning
@@ -39,8 +32,8 @@ section.container
                                         span(class='star-label') *
                                     select#role.form-control(
                                     name='role',
-                                    ng-options='r.role as r.role for r in userRoles',
-                                    ng-model='userById.role',
+                                    ng-options='r._serverData.userRole as r._serverData.userRole for r in roles',
+                                    ng-model='userById._serverData.role',
                                     required)
                                         option(value='',selected) -- Select Role --
                                 .form-group.has-warning
@@ -49,24 +42,38 @@ section.container
                                         span(class='star-label') *
                                     select#ward.form-control(
                                     name='ward',
-                                    ng-options='w.name as w.name for w in wards',
-                                    ng-model='userById.ward',
+                                    ng-options='w._serverData.wardName as w._serverData.wardName for w in wards',
+                                    ng-model='userById._serverData.ward',
                                     required)
                                         option(value='',selected) -- Select Ward --
+                            .col-lg-12
                                 .form-group.has-warning
                                     .pull-right
-                                            button.btn.btn-warning.btn-sm(id='btn-tranferUser', ng-click='updateUser()', ng-disabled='transferUserForm.$invalid')
+                                            button.btn.btn-warning.btn-sm(id='btn-tranferUser', ng-click='btnTransfer()', data-toggle="modal", data-target="#tranferConfirm", ng-disabled='transferUserForm.$invalid')
                                                 i.glyphicon.glyphicon-transfer
                                                 |  Transfer
                                             button.btn.btn-info.btn-sm(id='btn-back', ui-sref='adminUsers')
                                                 i.glyphicon.glyphicon-circle-arrow-left
                                                 |  Back
-
-                            .col-lg-6
-                                .form-group.has-warning
-                                    .alert.alert-success(ng-show='successMessage')
-                                        i.fa.fa-check-circle-o
-                                        | {{ successText }}
-                                    .alert.alert-danger(ng-show='errorMessage')
-                                        i.fa.fa-check-circle-o
-                                        | {{ successText }}
+                                .col-lg-6
+                                    .form-group.has-warning
+                                        .alert.alert-success(ng-show='successMessage')
+                                            i.fa.fa-check-circle-o
+                                            | {{ successText }}
+#tranferConfirm.modal.fade.bs-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+    .modal-dialog
+        .modal-content
+            .modal-header.bg-info
+                | Tranfer Confirmation
+                button.close(type='button btn-primary', data-dismiss='modal' data-target='.bs-example-modal-lg')
+                    span(aria-hidden='true') ×
+                    span.sr-only Close
+            .modal-body
+                | Are you sure to transfer user <strong> {{ transferUserName }} </strong> to <strong> {{ transferWardName }} </strong>?
+            .modal-footer
+                button.btn.btn-success(type='button', data-dismiss='modal', ng-click="transferUser()" )
+                    i.glyphicon.glyphicon-ok
+                        |  Yes
+                button.btn.btn-danger(type='button', data-dismiss='modal')
+                    i.glyphicon.glyphicon-remove
+                        |  No

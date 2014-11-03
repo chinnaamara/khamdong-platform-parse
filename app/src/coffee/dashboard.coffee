@@ -7,6 +7,7 @@ app.factory 'DashboardFactory', ($http) ->
     getQuery.count({ success: (result) -> callback result })
 
   getGrievances = (filterKey, callback) ->
+    console.log filterKey
     getQuery = new Parse.Query 'Grievances'
     getQuery.equalTo filterKey.columnName, filterKey.queryValue
     getQuery.limit filterKey.pageLimit
@@ -38,9 +39,11 @@ app.controller 'DashboardController', ($scope, DashboardFactory, DetailsFactory,
     $scope.currentUser = $.parseJSON(localStorage.getItem 'Parse/l0JxXhedCkA8D1Z2EKyfG9AMbEF0L8oDW743XI13/currentUser')
     if $scope.currentUser
       $rootScope.userName = $scope.currentUser.username
-      role = $scope.currentUser.role
-      $rootScope.administrator = role == 'Admin'
-      $rootScope.superUser = role == 'Super User'
+      $scope.currentUser.role = localStorage.getItem 'role'
+      $rootScope.administrator = $scope.currentUser.role == 'Admin'
+      $rootScope.superUser = $scope.currentUser.role == 'Super User'
+      $scope.currentUser.ward = localStorage.getItem 'ward'
+      $scope.filterKey.queryValue = $scope.currentUser.ward
     else
       $location.path '/error'
     return
@@ -64,6 +67,7 @@ app.controller 'DashboardController', ($scope, DashboardFactory, DetailsFactory,
     )
 
   $scope.getGrievances = (filterKey) ->
+    console.log filterKey
     DashboardFactory.retrieveGrievances(filterKey, (res) ->
       $scope.$apply(() ->
         $scope.grievances = res
@@ -118,7 +122,6 @@ app.controller 'DashboardController', ($scope, DashboardFactory, DetailsFactory,
   $scope.getWards()
 
   $scope.showDocuments = (data) ->
-    console.log data
     $scope.noDocs = false
     if data._serverData.recommendedDoc
       $scope.recommendedDoc = true

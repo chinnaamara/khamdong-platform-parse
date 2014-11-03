@@ -13,6 +13,17 @@ app.factory 'LoginFactory', () ->
     })
     return
 
+  getUserInfo = (username, callback) ->
+    getQuery = new Parse.Query 'UserInfo'
+    getQuery.equalTo 'username', username
+    getQuery.find({
+      success: (res) ->
+        callback res
+      error: (error) ->
+        alert 'Error: ' + error.message
+    })
+    return
+
   logOut = ->
     Parse.User.logOut();
     return
@@ -25,6 +36,7 @@ app.factory 'LoginFactory', () ->
   return {
     login: login
     logOut: logOut
+    getUserInfo: getUserInfo
 #    getUser: getUser
   }
 
@@ -42,8 +54,14 @@ app.controller 'LoginController', ($scope, $rootScope, LoginFactory, $location) 
           $scope.errorMessage = res
         )
       else
-        $scope.$apply(() ->
-          $location.path '/user/grievances'
+        LoginFactory.getUserInfo(res._serverData.username, (info) ->
+          localStorage.setItem('username', info[0]._serverData.username)
+          localStorage.setItem('ward', info[0]._serverData.ward)
+          localStorage.setItem('role', info[0]._serverData.role)
+          localStorage.setItem('mobile', info[0]._serverData.mobileNumber)
+          $scope.$apply(() ->
+            $location.path '/user/grievances'
+          )
         )
         return
     )
@@ -53,6 +71,7 @@ app.controller 'LoginController', ($scope, $rootScope, LoginFactory, $location) 
     $rootScope.userName = null
     $rootScope.administrator = null
     $rootScope.superUser = null
-    $location.path '/logout'
     LoginFactory.logOut()
+    localStorage.clear()
+    $location.path '/logout'
     return

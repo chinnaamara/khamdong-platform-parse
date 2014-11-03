@@ -68,13 +68,15 @@ app.controller 'CategoriesController', ($scope, $rootScope, CategoriesFactory, $
     pageNumber: 1
     pageLimit: 6
   }
+
   $scope.init = ->
     $scope.currentUser = $.parseJSON(localStorage.getItem 'Parse/l0JxXhedCkA8D1Z2EKyfG9AMbEF0L8oDW743XI13/currentUser')
     if $scope.currentUser
       $rootScope.userName = $scope.currentUser.username
-      role = $scope.currentUser.role
-      $rootScope.administrator = role == 'Admin'
-      $rootScope.superUser = role == 'Super User'
+      $scope.currentUser.role = localStorage.getItem 'role'
+      $rootScope.administrator = $scope.currentUser.role == 'Admin'
+      $rootScope.superUser = $scope.currentUser.role == 'Super User'
+      $scope.currentUser.ward = localStorage.getItem 'ward'
     else
       $location.path '/error'
     return
@@ -110,23 +112,29 @@ app.controller 'CategoriesController', ($scope, $rootScope, CategoriesFactory, $
     return
 
   addNewCategory = (category) ->
-    CategoriesFactory.createCategory(category.categoryName, (res) ->
-      if res
-        $scope.getCategories($scope.filterKey)
-        $scope.NumberOfPages()
-      else
-        console.log 'Category not added.'
-    )
+    if $scope.currentUser.role == 'Super User'
+      CategoriesFactory.createCategory(category.categoryName, (res) ->
+        if res
+          $scope.getCategories($scope.filterKey)
+          $scope.NumberOfPages()
+        else
+          console.log 'Category not added.'
+      )
+    else
+      alert 'You are not authorized!'
     return
 
   updateCategory = (category) ->
-    CategoriesFactory.updateCategory(category, (res) ->
-      if res
-        $scope.getCategories($scope.filterKey)
-        $scope.NumberOfPages()
-      else
-        alert 'Category not updated.'
-    )
+    if $scope.currentUser.role == 'Super User'
+      CategoriesFactory.updateCategory(category, (res) ->
+        if res
+          $scope.getCategories($scope.filterKey)
+          $scope.NumberOfPages()
+        else
+          alert 'Category not updated.'
+      )
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.deleteConformation = (category) ->
@@ -135,10 +143,13 @@ app.controller 'CategoriesController', ($scope, $rootScope, CategoriesFactory, $
     return
 
   $scope.deleteCategory = ->
-    CategoriesFactory.deleteCategory($scope.deleteCategoryId, (res) ->
-      $scope.getCategories($scope.filterKey)
-      $scope.NumberOfPages()
-    )
+    if $scope.currentUser.role == 'Super User'
+      CategoriesFactory.deleteCategory($scope.deleteCategoryId, (res) ->
+        $scope.getCategories($scope.filterKey)
+        $scope.NumberOfPages()
+      )
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.NumberOfPages = () ->

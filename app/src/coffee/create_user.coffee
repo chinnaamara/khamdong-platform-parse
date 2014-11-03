@@ -10,8 +10,8 @@ app.factory 'CreateUserFactory',['$http', ($http) ->
         alert 'Error: ' + error.message
     })
 
-  createUser = (userData, callback) ->
-    Parse.User.signUp(userData.name, userData.password, { ACL: new Parse.ACL(), mobileNumber: userData.mobileNumber, email: userData.email, role: userData.role, ward: userData.ward}, {
+  signUpUser = (userData, callback) ->
+    Parse.User.signUp(userData.username, userData.password, { ACL: new Parse.ACL(), email: userData.email}, {
       success: (user) ->
 #        loggedInUser = user
 #        alert 'user saved..'
@@ -19,6 +19,18 @@ app.factory 'CreateUserFactory',['$http', ($http) ->
 
       error: (user, error) ->
         alert 'Error: ' + error.message
+    })
+    return
+
+  saveUser = (userData, callback) ->
+    console.log userData
+    UserInfo = Parse.Object.extend 'UserInfo'
+    newUser = new UserInfo()
+    newUser.save({username: userData.username, ward: userData.ward, role: userData.role, mobileNumber: userData.mobileNumber}, {
+      success: (object) ->
+        callback(object)
+      error: (error) ->
+        alert("Error: " + error.message)
     })
     return
 
@@ -31,7 +43,8 @@ app.factory 'CreateUserFactory',['$http', ($http) ->
     )
 
   return {
-    createUser: createUser
+    createUser: signUpUser
+    saveUser: saveUser
     sendSms: sendSms
     getRoles: getRoles
   }
@@ -43,10 +56,10 @@ app.controller 'CreateUserController', ($scope, $rootScope, CreateUserFactory, D
     $scope.currentUser = $.parseJSON(localStorage.getItem 'Parse/l0JxXhedCkA8D1Z2EKyfG9AMbEF0L8oDW743XI13/currentUser')
     if $scope.currentUser
       $rootScope.userName = $scope.currentUser.username
-      role = $scope.currentUser.role
-      $rootScope.administrator = role == 'Admin'
-      $rootScope.superUser = role == 'Super User'
-
+      $scope.currentUser.role = localStorage.getItem 'role'
+      $rootScope.administrator = $scope.currentUser.role == 'Admin'
+      $rootScope.superUser = $scope.currentUser.role == 'Super User'
+      $scope.currentUser.ward = localStorage.getItem 'ward'
     else
       $location.path '/error'
     return
@@ -55,24 +68,30 @@ app.controller 'CreateUserController', ($scope, $rootScope, CreateUserFactory, D
     $scope.errorMessage = false
     $scope.successMessage = false
     newUser =
-      name: $scope.user.name
+      username: $scope.user.name
       password: $scope.user.password
       email: $scope.user.email
       mobileNumber: $scope.user.mobileNumber
       ward: $scope.user.ward
       role: $scope.user.role
 
-    CreateUserFactory.createUser(newUser, (res) ->
-      $scope.showSuccess()
-      return
-    )
-    $scope.showSuccess = ->
-      $scope.$apply(() ->
-        $scope.successMessage = true
-        $scope.successText = "User created successfully.!"
+    if $scope.currentUser.role == 'Admin'
+      CreateUserFactory.createUser(newUser, (res) ->
+        CreateUserFactory.saveUser(newUser, (data) ->
+          showSuccess(data._serverData.username)
+        )
         return
       )
+    else
+      alert 'You are not authorized!'
+
+  showSuccess = (username) ->
+    $scope.$apply(() ->
+      $scope.successMessage = true
+      $scope.successText = "User created successfully with username: " + username
       return
+    )
+    return
 
   $scope.getRoles = ->
     DataFactory.getRoles((res) ->
