@@ -116,19 +116,20 @@ app.controller 'DetailsController', ($scope, DetailsFactory, $rootScope, DataFac
           $scope.responce = true
         )
         sendMessage()
+      return
     )
     return
 
-    sendMessage = () ->
-      smsData = {
-        mobileNumber: $scope.grievance._serverData.phoneNumber
-        text: "Hi " + $scope.grievance._serverData.name + ", your grievance request with reference number " + $scope.grievance.id + $scope.smsText
-      }
-      DetailsFactory.sendSms(smsData, (status) ->
-        if status
-          console.log status
-      )
-      return
+  sendMessage = () ->
+    smsData = {
+      mobileNumber: $scope.grievance._serverData.phoneNumber
+      text: "Hi " + $scope.grievance._serverData.name + ", your grievance request with reference number " + $scope.grievance.id + $scope.smsText
+    }
+    DetailsFactory.sendSms(smsData, (status) ->
+      if status
+        console.log status
+    )
+    return
 
   $scope.grievance = DetailsFactory.retrieveGrievance
 
