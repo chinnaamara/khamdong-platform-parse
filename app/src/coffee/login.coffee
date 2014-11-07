@@ -45,6 +45,7 @@ app.controller 'LoginController', ($scope, $rootScope, LoginFactory, $location) 
     $scope.sighning = true
     $scope.loginFail = false
     $scope.errorMessage = 'Login Failed!'
+    $rootScope.adminCredentials = userData
 
     LoginFactory.login(userData, (res) ->
       if typeof res == 'string'

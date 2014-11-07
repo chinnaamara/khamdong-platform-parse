@@ -24,7 +24,7 @@ app.factory 'DetailsFactory', ($http) ->
 
   sendSms = (data, callback) ->
     $http
-    .post('http://api.mVaayoo.com/mvaayooapi/MessageCompose?user=Dilip@cannybee.in:8686993306&senderID=TEST SMS&receipientno=' + data.mobile + '&msgtxt= ' + data.message + ' &state=4')
+    .post('http://api.mVaayoo.com/mvaayooapi/MessageCompose?user=Dilip@cannybee.in:8686993306&senderID=TEST SMS&receipientno=' + data.mobileNumber + '&msgtxt= ' + data.text + ' &state=4')
     .success((data, status, headers, config) ->
 #      alert 'success'
       callback data
@@ -100,11 +100,6 @@ app.controller 'DetailsController', ($scope, DetailsFactory, $rootScope, DataFac
     return
 
   $scope.submit = ->
-#    smsData = {
-#      mobile: $scope.grievance.phoneNumber
-#      message: "Hi " + $scope.grievance.name + ", your grievance request with reference number " + $scope.grievance.referenceNum + $scope.smsText
-#    }
-
     resMessage = {
       id: $scope.grievance.id
       grievanceType: $scope.grievance._serverData.grievanceType
@@ -120,12 +115,20 @@ app.controller 'DetailsController', ($scope, DetailsFactory, $rootScope, DataFac
         $scope.$apply(() ->
           $scope.responce = true
         )
-#        DetailsFactory.sendSms(smsData, (status) ->
-#          if status
-#            console.log "sms sent to " + smsData.mobile
-#        )
+        sendMessage()
     )
     return
+
+    sendMessage = () ->
+      smsData = {
+        mobileNumber: $scope.grievance._serverData.phoneNumber
+        text: "Hi " + $scope.grievance._serverData.name + ", your grievance request with reference number " + $scope.grievance.id + $scope.smsText
+      }
+      DetailsFactory.sendSms(smsData, (status) ->
+        if status
+          console.log status
+      )
+      return
 
   $scope.grievance = DetailsFactory.retrieveGrievance
 

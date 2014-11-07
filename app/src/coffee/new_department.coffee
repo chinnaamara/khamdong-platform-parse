@@ -28,6 +28,7 @@ app.factory 'DepartmentsFactory', () ->
   getCount = (callback) ->
     getQuery = new Parse.Query Departments
     getQuery.count({ success: (result) -> callback result })
+    return
 
   updateDepartment = (data, callback) ->
     updateQuery = new Parse.Query Departments
@@ -91,18 +92,24 @@ app.controller "AddDepartmentController", ($scope, DepartmentsFactory, $rootScop
     return
 
   $scope.btnAdd = ->
-    $scope.modelTitle = 'Add New Department'
-    $scope.departmentName = ''
-    $scope.departmentCode = ''
-    $scope.buttonText = 'Add'
+    if $scope.currentUser.role == 'Admin'
+      $scope.modelTitle = 'Add New Department'
+      $scope.departmentName = ''
+      $scope.departmentCode = ''
+      $scope.buttonText = 'Add'
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.btnEdit = (dept) ->
-    $scope.modelTitle = dept.id
-    $scope.buttonText = 'Update'
-    $scope.deptId = dept.id
-    $scope.departmentCode = dept._serverData.departmentCode
-    $scope.departmentName = dept._serverData.departmentName
+    if $scope.currentUser.role == 'Admin'
+      $scope.modelTitle = dept.id
+      $scope.buttonText = 'Update'
+      $scope.deptId = dept.id
+      $scope.departmentCode = dept._serverData.departmentCode
+      $scope.departmentName = dept._serverData.departmentName
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.addEditClick = ->
@@ -117,35 +124,47 @@ app.controller "AddDepartmentController", ($scope, DepartmentsFactory, $rootScop
     return
 
   addNewDepartment = (dept) ->
-    DepartmentsFactory.addNewDepartment(dept, (res) ->
-      if res
-        $scope.getDepartments($scope.filterKey)
-        $scope.NumberOfPages()
-      else
-        alert 'Department not Added.'
-    )
+    if $scope.currentUser.role == 'Admin'
+      DepartmentsFactory.addNewDepartment(dept, (res) ->
+        if res
+          $scope.getDepartments($scope.filterKey)
+          $scope.NumberOfPages()
+        else
+          alert 'Department not Added.'
+      )
+    else
+      alert 'You are not authorized!'
     return
 
   updateDepartment = (dept) ->
-    DepartmentsFactory.updateDepartment(dept, (res) ->
-      if res
-        $scope.getDepartments($scope.filterKey)
-        $scope.NumberOfPages()
-      else
-        alert 'Department not updated.'
-    )
+    if $scope.currentUser.role == 'Admin'
+      DepartmentsFactory.updateDepartment(dept, (res) ->
+        if res
+          $scope.getDepartments($scope.filterKey)
+          $scope.NumberOfPages()
+        else
+          alert 'Department not updated.'
+      )
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.deleteConformation = (dept) ->
-    $scope.deleteDeptName = dept._serverData.departmentName
-    $scope.deleteDeptId = dept.id
+    if $scope.currentUser.role == 'Admin'
+      $scope.deleteDeptName = dept._serverData.departmentName
+      $scope.deleteDeptId = dept.id
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.deleteDepartment = ->
-    DepartmentsFactory.delete($scope.deleteDeptId, (res) ->
-      $scope.getDepartments($scope.filterKey)
-      $scope.NumberOfPages()
-    )
+    if $scope.currentUser.role == 'Admin'
+      DepartmentsFactory.delete($scope.deleteDeptId, (res) ->
+        $scope.getDepartments($scope.filterKey)
+        $scope.NumberOfPages()
+      )
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.NumberOfPages = () ->

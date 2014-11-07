@@ -127,22 +127,28 @@ app.controller 'MembersController', ($scope, MembersFactory, $rootScope, $locati
     return
 
   $scope.btnAdd = ->
-    $scope.modelTitle = 'Add New Member'
-    $scope.name = ''
-    $scope.mobileNumber = ''
-    $scope.email = ''
-    $scope.category = ''
-    $scope.buttonText = 'Add'
+    if $scope.currentUser.role == 'Super User'
+      $scope.modelTitle = 'Add New Member'
+      $scope.name = ''
+      $scope.mobileNumber = ''
+      $scope.email = ''
+      $scope.category = ''
+      $scope.buttonText = 'Add'
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.btnEdit = (member) ->
-    $scope.modelTitle = member.id
-    $scope.buttonText = 'Update'
-    $scope.memberId = member.id
-    $scope.name = member._serverData.name
-    $scope.mobileNumber = member._serverData.mobileNumber
-    $scope.email = member._serverData.email
-    $scope.category = member._serverData.category
+    if $scope.currentUser.role == 'Super User'
+      $scope.modelTitle = member.id
+      $scope.buttonText = 'Update'
+      $scope.memberId = member.id
+      $scope.name = member._serverData.name
+      $scope.mobileNumber = member._serverData.mobileNumber
+      $scope.email = member._serverData.email
+      $scope.category = member._serverData.category
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.addEditClick = ->
@@ -160,35 +166,47 @@ app.controller 'MembersController', ($scope, MembersFactory, $rootScope, $locati
     return
 
   addNewMember = (member) ->
-    MembersFactory.addNewMember(member, (res) ->
-      if res
-        $scope.getMembers($scope.filterKey)
-        $scope.NumberOfPages()
-      else
-        alert 'Member not added.'
-    )
+    if $scope.currentUser.role == 'Super User'
+      MembersFactory.addNewMember(member, (res) ->
+        if res
+          $scope.getMembers($scope.filterKey)
+          $scope.NumberOfPages()
+        else
+          alert 'Member not added.'
+      )
+    else
+      alert 'You are not authorized!'
     return
 
   updateMember = (member) ->
-    MembersFactory.updateMember(member, (res) ->
-      if res
-        $scope.getMembers($scope.filterKey)
-        $scope.NumberOfPages()
-      else
-        alert 'Member not updated.'
-    )
+    if $scope.currentUser.role == 'Super User'
+      MembersFactory.updateMember(member, (res) ->
+        if res
+          $scope.getMembers($scope.filterKey)
+          $scope.NumberOfPages()
+        else
+          alert 'Member not updated.'
+      )
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.deleteConformation = (member) ->
-    $scope.deleteMemberName = member._serverData.name
-    $scope.deleteMemberId = member.id
+    if $scope.currentUser.role == 'Super User'
+      $scope.deleteMemberName = member._serverData.name
+      $scope.deleteMemberId = member.id
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.deleteMember = ->
-    MembersFactory.deleteMember($scope.deleteMemberId, (res) ->
-      $scope.getMembers($scope.filterKey)
-      $scope.NumberOfPages()
-    )
+    if $scope.currentUser.role == 'Super User'
+      MembersFactory.deleteMember($scope.deleteMemberId, (res) ->
+        $scope.getMembers($scope.filterKey)
+        $scope.NumberOfPages()
+      )
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.NumberOfPages = () ->
@@ -252,45 +270,54 @@ app.controller 'MembersController', ($scope, MembersFactory, $rootScope, $locati
     return members
 
   $scope.sendSms = ->
-    console.log $scope.selectedMembers
-    _.forEach($scope.selectedMembers, (member) ->
-      MembersFactory.sendSms($scope.messageText, member, (res) ->
-        console.log ''
+#    console.log $scope.selectedMembers
+    if $scope.currentUser.role == 'Super User'
+      _.forEach($scope.selectedMembers, (member) ->
+        MembersFactory.sendSms($scope.messageText, member, (res) ->
+          console.log res
+        )
       )
-    )
-    newMessage =
-      mobileNumber: $scope.str.substring(0, $scope.str.length - 2)
-      messageText: $scope.messageText
+      newMessage =
+        mobileNumber: $scope.str.substring(0, $scope.str.length - 2)
+        messageText: $scope.messageText
 
-    MembersFactory.saveSentMessage(newMessage, (res) ->
-      if res
-        console.log 'message saved in sent items..'
-    )
+      MembersFactory.saveSentMessage(newMessage, (res) ->
+        if res
+          console.log 'message saved in sent items..'
+      )
 
-    $scope.messageText = ''
-    #    $scope.successMessage = true
+      $scope.messageText = ''
+      #    $scope.successMessage = true
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.getCategoryMembers = ->
-    if $scope.selectedCategory
-      $scope.filterKey.columnName = 'category'
-      $scope.filterKey.keyValue = $scope.selectedCategory
+    if $scope.currentUser.role == 'Super User'
+      if $scope.selectedCategory
+        $scope.filterKey.columnName = 'category'
+        $scope.filterKey.keyValue = $scope.selectedCategory
+      else
+        $scope.filterKey.columnName = undefined
+        $scope.filterKey.keyValue = undefined
+      $scope.getMembers($scope.filterKey)
+      $scope.NumberOfPages()
     else
-      $scope.filterKey.columnName = undefined
-      $scope.filterKey.keyValue = undefined
-    $scope.getMembers($scope.filterKey)
-    $scope.NumberOfPages()
+      alert 'You are not authorized!'
     return
 
   $scope.searchResult = ->
-    if $scope.searchKey
-      $scope.filterKey.columnName = 'mobileNumber'
-      $scope.filterKey.keyValue = $scope.searchKey
+    if $scope.currentUser.role == 'Super User'
+      if $scope.searchKey
+        $scope.filterKey.columnName = 'mobileNumber'
+        $scope.filterKey.keyValue = $scope.searchKey
+      else
+        $scope.filterKey.columnName = undefined
+        $scope.filterKey.keyValue = undefined
+      $scope.getMembers($scope.filterKey)
+      $scope.NumberOfPages()
     else
-      $scope.filterKey.columnName = undefined
-      $scope.filterKey.keyValue = undefined
-    $scope.getMembers($scope.filterKey)
-    $scope.NumberOfPages()
+      alert 'You are not authorized!'
     return
 
   $scope.init()

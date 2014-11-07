@@ -28,6 +28,7 @@ app.factory 'SchemesFactory', () ->
   getCount = (callback) ->
     getQuery = new Parse.Query Schemes
     getQuery.count({ success: (result) -> callback result })
+    return
 
   updateScheme = (data, callback) ->
     updateQuery = new Parse.Query Schemes
@@ -99,20 +100,26 @@ app.controller "AddSchemeController", ($scope, SchemesFactory, DataFactory, $roo
     return
 
   $scope.btnAdd = ->
-    $scope.modelTitle = 'Add New Scheme'
-    $scope.schemeName = ''
-    $scope.schemeCode = ''
-    $scope.departmentName = ''
-    $scope.buttonText = 'Add'
+    if $scope.currentUser.role == 'Admin'
+      $scope.modelTitle = 'Add New Scheme'
+      $scope.schemeName = ''
+      $scope.schemeCode = ''
+      $scope.departmentName = ''
+      $scope.buttonText = 'Add'
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.btnEdit = (scheme) ->
-    $scope.modelTitle = scheme.id
-    $scope.buttonText = 'Update'
-    $scope.schemeId = scheme.id
-    $scope.schemeCode = scheme._serverData.schemeCode
-    $scope.schemeName = scheme._serverData.schemeName
-    $scope.departmentName = scheme._serverData.departmentName
+    if $scope.currentUser.role == 'Admin'
+      $scope.modelTitle = scheme.id
+      $scope.buttonText = 'Update'
+      $scope.schemeId = scheme.id
+      $scope.schemeCode = scheme._serverData.schemeCode
+      $scope.schemeName = scheme._serverData.schemeName
+      $scope.departmentName = scheme._serverData.departmentName
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.addEditClick = ->
@@ -128,35 +135,47 @@ app.controller "AddSchemeController", ($scope, SchemesFactory, DataFactory, $roo
     return
 
   addNewScheme = (scheme) ->
-    SchemesFactory.addNewScheme(scheme, (res) ->
-      if res
-        $scope.getSchemes($scope.filterKey)
-        $scope.NumberOfPages()
-      else
-        alert 'Scheme not Added.'
-    )
+    if $scope.currentUser.role == 'Admin'
+      SchemesFactory.addNewScheme(scheme, (res) ->
+        if res
+          $scope.getSchemes($scope.filterKey)
+          $scope.NumberOfPages()
+        else
+          alert 'Scheme not Added.'
+      )
+    else
+      alert 'You are not authorized!'
     return
 
   updateScheme = (scheme) ->
-    SchemesFactory.updateScheme(scheme, (res) ->
-      if res
-        $scope.getSchemes($scope.filterKey)
-        $scope.NumberOfPages()
-      else
-        alert 'Scheme not updated.'
-    )
+    if $scope.currentUser.role == 'Admin'
+      SchemesFactory.updateScheme(scheme, (res) ->
+        if res
+          $scope.getSchemes($scope.filterKey)
+          $scope.NumberOfPages()
+        else
+          alert 'Scheme not updated.'
+      )
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.deleteConformation = (scheme) ->
-    $scope.deleteSchemeName = scheme._serverData.schemeName
-    $scope.deleteSchemeId = scheme.id
+    if $scope.currentUser.role == 'Admin'
+      $scope.deleteSchemeName = scheme._serverData.schemeName
+      $scope.deleteSchemeId = scheme.id
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.deleteScheme = ->
-    SchemesFactory.deleteScheme($scope.deleteSchemeId, (res) ->
-      $scope.getSchemes($scope.filterKey)
-      $scope.NumberOfPages()
-    )
+    if $scope.currentUser.role == 'Admin'
+      SchemesFactory.deleteScheme($scope.deleteSchemeId, (res) ->
+        $scope.getSchemes($scope.filterKey)
+        $scope.NumberOfPages()
+      )
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.NumberOfPages = () ->

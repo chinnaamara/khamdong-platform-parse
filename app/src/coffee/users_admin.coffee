@@ -35,9 +35,9 @@ app.factory 'AdminUsersFactory', ($http) ->
     })
     return
 
-  sendSms = (message, mobile) ->
+  sendSms = (data, callback) ->
     $http
-    .post('http://api.mVaayoo.com/mvaayooapi/MessageCompose?user=Dilip@cannybee.in:8686993306&senderID=TEST SMS&receipientno=' + mobile + '&msgtxt= ' + message + ' &state=4')
+    .post('http://api.mVaayoo.com/mvaayooapi/MessageCompose?user=Dilip@cannybee.in:8686993306&senderID=TEST SMS&receipientno=' + data.mobileNumber + '&msgtxt= ' + data.text + ' &state=4')
     .success((data, status, headers, config) ->
 #      alert "Message sent success to your mobile number"
     )
@@ -118,29 +118,38 @@ app.controller 'AdminUsersController', ($scope, AdminUsersFactory, $rootScope, D
     return
 
   $scope.manageUser = (user) ->
-    AdminUsersFactory.userById = user
-    $location.path '/admin/users/manage'
+    if $scope.currentUser.role == 'Admin'
+      AdminUsersFactory.userById = user
+      $location.path '/admin/users/manage'
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.filterUsers = ->
-    $scope.searchKey = ''
-    $scope.filterKey.columnName = 'ward'
-    $scope.filterKey.keyValue = $scope.selectedWard
-    $scope.filterKey.pageNumber = 1
-    $scope.NumberOfPages()
-    $scope.getUsers($scope.filterKey)
+    if $scope.currentUser.role == 'Admin'
+      $scope.searchKey = ''
+      $scope.filterKey.columnName = 'ward'
+      $scope.filterKey.keyValue = $scope.selectedWard
+      $scope.filterKey.pageNumber = 1
+      $scope.NumberOfPages()
+      $scope.getUsers($scope.filterKey)
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.searchResult = ->
-    $scope.filterKey.pageNumber = 1
-    if $scope.searchKey
-      $scope.filterKey.columnName = 'mobileNumber'
-      $scope.filterKey.keyValue = $scope.searchKey
+    if $scope.currentUser.role == 'Admin'
+      $scope.filterKey.pageNumber = 1
+      if $scope.searchKey
+        $scope.filterKey.columnName = 'mobileNumber'
+        $scope.filterKey.keyValue = $scope.searchKey
+      else
+        $scope.filterKey.columnName = undefined
+        $scope.filterKey.queryValue = undefined
+      $scope.NumberOfPages($scope.filterKey)
+      $scope.getUsers($scope.filterKey)
     else
-      $scope.filterKey.columnName = undefined
-      $scope.filterKey.queryValue = undefined
-    $scope.NumberOfPages($scope.filterKey)
-    $scope.getUsers($scope.filterKey)
+      alert 'You are not authorized!'
     return
 
   $scope.init()

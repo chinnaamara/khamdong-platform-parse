@@ -67,7 +67,6 @@ app.controller 'NewGrievanceController', ($scope, $location, NewGrievanceFactory
     else
       $location.path '/error'
     return
-  $scope.init()
 
   $scope.getData = ->
     DataFactory.getEducations((res) ->
@@ -102,8 +101,6 @@ app.controller 'NewGrievanceController', ($scope, $location, NewGrievanceFactory
     )
     return
 
-  $scope.getData()
-
   $scope.getSchemes = ->
     DataFactory.getSchemes($scope.grievance.department, (res) ->
       $scope.$apply(() ->
@@ -111,6 +108,8 @@ app.controller 'NewGrievanceController', ($scope, $location, NewGrievanceFactory
       )
     )
 
+  $scope.init()
+  $scope.getData()
   $scope.address = " "
   $scope.note = " "
   $scope.recommendedDoc = ""
@@ -227,7 +226,6 @@ app.controller 'NewGrievanceController', ($scope, $location, NewGrievanceFactory
     }
 
     NewGrievanceFactory.submitGrievance(newGrievance, (res) ->
-#      console.log res.id
       if res
         $scope.printButton = false
         $scope.$apply(() ->
@@ -278,15 +276,4 @@ app.controller 'NewGrievanceController', ($scope, $location, NewGrievanceFactory
       $scope.notRecommended = true
 
   $(".date").datepicker autoclose: true
-#  $(".date").datepicker({
-#    viewMode: 'years'
-#    format: 'dd/mm/yyyy'
-#    autoclose: true
-#  })
-
-
-app.directive 'SampleDirective', () ->
-  return {
-    restrict: 'E'
-    template: '<input type="text">'
-  }
+  return

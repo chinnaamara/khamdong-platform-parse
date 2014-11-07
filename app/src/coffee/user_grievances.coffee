@@ -5,6 +5,7 @@ app.factory 'GrievancesFactory', () ->
     getQuery = new Parse.Query 'Grievances'
     getQuery.equalTo filterKey.columnName, filterKey.queryValue
     getQuery.count({ success: (result) -> callback result })
+    return
 
   getGrievances = (filterKey, callback) ->
     getQuery = new Parse.Query 'Grievances'
@@ -17,6 +18,7 @@ app.factory 'GrievancesFactory', () ->
       error: (error) ->
         alert 'Error: ' + error.message
     })
+    return
 
   return {
     getGrievances: getGrievances
@@ -24,8 +26,6 @@ app.factory 'GrievancesFactory', () ->
   }
 
 app.controller 'GrievancesController', ($scope, $location, GrievancesFactory, EditGrievanceFactory, $rootScope) ->
-  $scope.loading = true
-
   $scope.filterKey = {
     columnName: 'ward'
     pageNumber: 1
@@ -55,6 +55,7 @@ app.controller 'GrievancesController', ($scope, $location, GrievancesFactory, Ed
         $scope.noNext = $scope.maxNumberOfPages == $scope.filterKey.pageNumber ||  $scope.maxNumberOfPages < 1 ? true : false
       )
     )
+    return
 
   $scope.getGrievances = (filterKey) ->
     GrievancesFactory.getGrievances(filterKey, (res) ->
@@ -136,7 +137,7 @@ app.controller 'GrievancesController', ($scope, $location, GrievancesFactory, Ed
   $scope.getGrievances($scope.filterKey)
   $scope.NumberOfPages($scope.filterKey)
   $scope.noPrevious = true
-
+  $scope.loading = true
 #  $scope.$on 'LOAD', () -> $scope.loading = true
 #  $scope.$on 'UNLOAD', () -> $scope.loading = false
   return

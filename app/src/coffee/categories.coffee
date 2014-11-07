@@ -87,18 +87,25 @@ app.controller 'CategoriesController', ($scope, $rootScope, CategoriesFactory, $
         $scope.categories = res
       )
     )
+    return
 
   $scope.btnAdd = ->
-    $scope.modelTitle = 'Add New Category'
-    $scope.categoryName = ''
-    $scope.buttonText = 'Add'
+    if $scope.currentUser.role == 'Super User'
+      $scope.modelTitle = 'Add New Category'
+      $scope.categoryName = ''
+      $scope.buttonText = 'Add'
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.btnEdit = (category) ->
-    $scope.modelTitle = category.id
-    $scope.buttonText = 'Update'
-    $scope.categoryId = category.id
-    $scope.categoryName = category._serverData.categoryName
+    if $scope.currentUser.role == 'Super User'
+      $scope.modelTitle = category.id
+      $scope.buttonText = 'Update'
+      $scope.categoryId = category.id
+      $scope.categoryName = category._serverData.categoryName
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.addEditClick = ->
@@ -138,8 +145,11 @@ app.controller 'CategoriesController', ($scope, $rootScope, CategoriesFactory, $
     return
 
   $scope.deleteConformation = (category) ->
-    $scope.deleteCategoryName = category._serverData.categoryName
-    $scope.deleteCategoryId = category.id
+    if $scope.currentUser.role == 'Super User'
+      $scope.deleteCategoryName = category._serverData.categoryName
+      $scope.deleteCategoryId = category.id
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.deleteCategory = ->

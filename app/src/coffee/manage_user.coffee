@@ -47,9 +47,20 @@ app.controller 'ManageUserController', ($scope, AdminUsersFactory, $rootScope, D
         $scope.successMessage = true
         $scope.successText = "User Transferred successfully!"
       )
+      sendMessage()
     )
     return
+
+    sendMessage = ->
+      messageData = {
+        mobileNumber: $scope.userById._serverData.mobileNumber
+        text: 'Hi ' + $scope.userById._serverData.username + 'you are transfered to ' + $scope.userById._serverData.ward + 'ward, You can login with your current username and password.'
+      }
+      AdminUsersFactory.sendSms(messageData, (res) ->
+        console.log res
+      )
 
   $scope.init()
   $scope.getWards()
   $scope.getRoles()
+  return

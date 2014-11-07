@@ -63,14 +63,20 @@ app.controller 'MessagesController', ($scope, $rootScope, MessagesFactory, $loca
     )
 
   $scope.deleteConformation = (message) ->
-    $scope.deleteMessageId = message.id
+    if $scope.currentUser.role == 'Super User'
+      $scope.deleteMessageId = message.id
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.deleteMessage = ->
-    MessagesFactory.deleteMessage($scope.deleteMessageId, (res) ->
-      $scope.getMessages($scope.filterKey)
-      $scope.NumberOfPages()
-    )
+    if $scope.currentUser.role == 'Super User'
+      MessagesFactory.deleteMessage($scope.deleteMessageId, (res) ->
+        $scope.getMessages($scope.filterKey)
+        $scope.NumberOfPages()
+      )
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.NumberOfPages = () ->

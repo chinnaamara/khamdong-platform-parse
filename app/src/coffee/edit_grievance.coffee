@@ -1,4 +1,4 @@
-app.factory 'EditGrievanceFactory', ($http) ->
+app.factory 'EditGrievanceFactory', () ->
   Parse.initialize "l0JxXhedCkA8D1Z2EKyfG9AMbEF0L8oDW743XI13", "Sz4w7HWy38q4hqrIJxuGVkIGSFa3V0WoqElHKoqW"
   grievanceById = {}
   Grievance = Parse.Object.extend 'Grievances'
@@ -102,7 +102,6 @@ app.controller 'EditGrievanceController', ($scope, EditGrievanceFactory, DataFac
   $(".date").datepicker autoclose: true
   data = EditGrievanceFactory.retrieveGrievance
   $scope.grievance = data
-#  $scope.deptName = data._serverData.department
   $scope.recommendedDoc = data._serverData.recommendedDoc
   $scope.coiDoc = data._serverData.coiDoc
   $scope.voterCard = data._serverData.voterCard
@@ -196,8 +195,10 @@ app.controller 'EditGrievanceController', ($scope, EditGrievanceFactory, DataFac
           $scope.successMessage = true;
         )
     )
+    return
 
   $scope.init()
   $scope.getData()
   $scope.getSchemes()
   $scope.getAge()
+  return

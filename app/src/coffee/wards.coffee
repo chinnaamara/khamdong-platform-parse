@@ -29,6 +29,7 @@ app.factory 'WardsFactory', () ->
   getCount = (callback) ->
     getQuery = new Parse.Query Wards
     getQuery.count({ success: (result) -> callback result })
+    return
 
   updateWard = (data, callback) ->
     updateQuery = new Parse.Query Wards
@@ -89,16 +90,22 @@ app.controller 'WardsController', ($scope, $rootScope, WardsFactory, $location) 
     )
 
   $scope.btnAdd = ->
-    $scope.modelTitle = 'Add New Ward'
-    $scope.wardName = ''
-    $scope.buttonText = 'Add'
+    if $scope.currentUser.role == 'Admin'
+      $scope.modelTitle = 'Add New Ward'
+      $scope.wardName = ''
+      $scope.buttonText = 'Add'
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.btnEdit = (ward) ->
-    $scope.modelTitle = ward.id
-    $scope.buttonText = 'Update'
-    $scope.wardId = ward.id
-    $scope.wardName = ward._serverData.wardName
+    if $scope.currentUser.role == 'Admin'
+      $scope.modelTitle = ward.id
+      $scope.buttonText = 'Update'
+      $scope.wardId = ward.id
+      $scope.wardName = ward._serverData.wardName
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.addEditClick = ->
@@ -112,35 +119,47 @@ app.controller 'WardsController', ($scope, $rootScope, WardsFactory, $location) 
     return
 
   addNewWard = (ward) ->
-    WardsFactory.createWard(ward.wardName, (res) ->
-      if res
-        $scope.getWards($scope.filterKey)
-        $scope.NumberOfPages()
-      else
-        console.log 'Ward not added.'
-    )
+    if $scope.currentUser.role == 'Admin'
+      WardsFactory.createWard(ward.wardName, (res) ->
+        if res
+          $scope.getWards($scope.filterKey)
+          $scope.NumberOfPages()
+        else
+          console.log 'Ward not added.'
+      )
+    else
+      alert 'You are not authorized!'
     return
 
   updateWard = (ward) ->
-    WardsFactory.updateWard(ward, (res) ->
-      if res
-        $scope.getWards($scope.filterKey)
-        $scope.NumberOfPages()
-      else
-        alert 'Ward not updated.'
-    )
+    if $scope.currentUser.role == 'Admin'
+      WardsFactory.updateWard(ward, (res) ->
+        if res
+          $scope.getWards($scope.filterKey)
+          $scope.NumberOfPages()
+        else
+          alert 'Ward not updated.'
+      )
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.deleteConformation = (ward) ->
-    $scope.deleteWardName = ward._serverData.wardName
-    $scope.deleteWardId = ward.id
+    if $scope.currentUser.role == 'Admin'
+      $scope.deleteWardName = ward._serverData.wardName
+      $scope.deleteWardId = ward.id
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.deleteWard = ->
-    WardsFactory.deleteWard($scope.deleteWardId, (res) ->
-      $scope.getWards($scope.filterKey)
-      $scope.NumberOfPages()
-    )
+    if $scope.currentUser.role == 'Admin'
+      WardsFactory.deleteWard($scope.deleteWardId, (res) ->
+        $scope.getWards($scope.filterKey)
+        $scope.NumberOfPages()
+      )
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.NumberOfPages = () ->

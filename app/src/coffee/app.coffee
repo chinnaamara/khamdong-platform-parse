@@ -141,4 +141,5 @@ app.config(($stateProvider) ->
         'viewB@': {templateUrl: 'html/sent_messages.html', controller: 'MessagesController'}
       }
     })
+  return
 )
