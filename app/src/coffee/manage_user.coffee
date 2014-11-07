@@ -51,14 +51,14 @@ app.controller 'ManageUserController', ($scope, AdminUsersFactory, $rootScope, D
     )
     return
 
-    sendMessage = ->
-      messageData = {
-        mobileNumber: $scope.userById._serverData.mobileNumber
-        text: 'Hi ' + $scope.userById._serverData.username + 'you are transfered to ' + $scope.userById._serverData.ward + 'ward, You can login with your current username and password.'
-      }
-      AdminUsersFactory.sendSms(messageData, (res) ->
-        console.log res
-      )
+  sendMessage = ->
+    messageData = {
+      mobileNumber: $scope.userById._serverData.mobileNumber
+      text: 'Hi ' + $scope.userById._serverData.username + 'you are transfered to ' + $scope.userById._serverData.ward + 'ward, You can login with your current username and password.'
+    }
+    AdminUsersFactory.sendSms(messageData, (res) ->
+      console.log res
+    )
 
   $scope.init()
   $scope.getWards()
