@@ -105,6 +105,22 @@ tbody .buttons-td {
 tbody a {
     margin-left: 5px;
 }
+/*td {
+    -ms-word-break: break-all;
+    -moz-word-break: break-word;
+    -o-word-break: break-word;
+    word-break: break-all;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -o-hyphens: auto;
+    hyphens: auto;
+
+}*/
+td, th {
+    vertical-align: middle !important;
+}
+
 #document {
     width:500px;
     height: 400px;
@@ -127,6 +143,9 @@ tbody a {
 }
 #submitedDocs{
 
+}
+.btn-vertical{
+    display: initial;
 }
 .table-head{
     color:white;
@@ -225,6 +244,17 @@ for model dialog print---------- */
     }
     .navbar.navbar-inverse.navbar-default  a{
         font-size: 24px;
+    }
+    td {
+        -ms-word-break: inherit;
+        -moz-word-break: inherit;
+        -o-word-break: inherit;
+        word-break: inherit;
+        -webkit-hyphens: inherit;
+        -moz-hyphens: inherit;
+        -ms-hyphens: inherit;
+        -o-hyphens: inherit;
+        hyphens: inherit;
     }
 }
 .top-div{
