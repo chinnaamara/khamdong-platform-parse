@@ -128,6 +128,10 @@ tbody a {
 #submitedDocs{
 
 }
+.table-head{
+    color:white;
+    background-color: #428bca;
+}
 @-moz-document url-prefix() {
     fieldset { display: table-cell; }
 }
