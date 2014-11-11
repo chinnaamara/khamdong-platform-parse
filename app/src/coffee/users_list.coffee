@@ -140,7 +140,7 @@ app.controller 'MembersController', ($scope, MembersFactory, $rootScope, $locati
 
   $scope.btnEdit = (member) ->
     if $scope.currentUser.role == 'Super User'
-      $scope.modelTitle = member.id
+      $scope.modelTitle = "Edit Member: " + member.id
       $scope.buttonText = 'Update'
       $scope.memberId = member.id
       $scope.name = member._serverData.name
