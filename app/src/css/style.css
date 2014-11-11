@@ -46,6 +46,9 @@
 .smallTd{
     width:9%;
 }
+li a  strong{
+    font-variant: small-caps;
+}
 /*
     ---------------
   grievance print page
