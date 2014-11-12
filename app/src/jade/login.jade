@@ -12,23 +12,29 @@ div(id='loginModal', tabindex='-1', role='dialog', aria-hidden='true')
                         .col-md-12
                             .form-group(ng-class="{'has-error':(error),'has-success':(passwordError)}")
                                 label.control-label Username
-                                input#username.form-control(ng-model='credentials.username', name='username', type='text', value='', placeholder='Username', autofocus, required)
+                                div.input-group
+                                    span.input-group-addon
+                                        i.glyphicon.glyphicon-user
+                                    input#username.form-control(ng-model='credentials.username', name='username', type='text', value='', placeholder='Username', autofocus, required)
                     .row
                         .col-md-12
                             .form-group(ng-class="{'has-error':(passwordError),'has-error':(error)}")
                                 label.control-label Password
-                                input#password.form-control(ng-model='credentials.password', name='password', type='password', value='', placeholder='Password', required)
+                                div.input-group
+                                    span.input-group-addon
+                                        i.glyphicon.glyphicon-lock
+                                    input#password.form-control(ng-model='credentials.password', name='password', type='password', value='', placeholder='Password', required)
                     .row
                         .col-md-12
                             .form-group
                                 button.btn.btn-info(type='submit', id='btn-signIn', ng-disabled='sighning')
-                                    i.glyphicon.glyphicon-log-in
-                                    |   SignIn
+                                    span.glyphicon.glyphicon-log-in
+                                    |       SignIn
                     br
                     .row
                         .col-lg-12
                             .form-group
                                 .alert.alert-danger(ng-show="loginFail")
-                                    i.fa.fa-frown-o
+                                    span.fa.fa-frown-o
                                     | {{ errorMessage }}
 
