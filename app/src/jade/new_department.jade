@@ -1,56 +1,54 @@
 //
    Created by chinna on 11/8/14.
-
 section.container
-    .row
-        .col-lg-12
-            .panel.panel-primary
-                .panel-heading Departments
-                .panel-body
-                    .loader-div(ng-show='loading')
-                        h4 Loading, Please wait...
-                    .main-div
+    .col-lg-12
+        div
+            h2.text-center Departments
+        div
+            .loader-div(ng-show='loading')
+                h4 Loading, Please wait...
+            .main-div
+                .row
+                    .col-lg-12
                         button.btn.btn-info.pull-left.input-sm(data-toggle="modal", title='Add New Department',id='btn-newDepartment', data-target="#newDepartmentWindow", ng-click='btnAdd()')
                             i.glyphicon.glyphicon-plus
                             |   Add New
-                        br
-                        br
-                        .table-responsive
-                            table#departmentsTable(class="table table-striped table-bordered table-condensed")
-                                thead
-                                    tr
-                                        th.smallTd #
-                                        th Id
-                                        th Code
-                                        th Department Name
-                                        th Created Date
-                                        th Updated Date
-                                tbody
-                                    tr(ng-repeat='dept in departments')
-                                        td
-                                            a.btn.btn-sm.btn-warning(title="Edit", data-toggle="modal",id='btn-editDepartment', data-target="#newDepartmentWindow", ng-click="btnEdit(dept)")
-                                                i.glyphicon.glyphicon-edit
-                                            a.btn.btn-sm.btn-danger(title="Delete", id='btn-deleteDepartment', data-toggle="modal", data-target="#deleteConfirm", ng-click="deleteConformation(dept)")
-                                                i.glyphicon.glyphicon-remove
-                                        td
-                                            span {{ dept.id }}
-                                        td
-                                            span {{ dept._serverData.departmentCode }}
-                                        td
-                                            span {{ dept._serverData.departmentName }}
-                                        td
-                                            span {{ dept.createdAt }}
-                                        td
-                                            span {{ dept.updatedAt }}
+                br
+                .table-responsive
+                    table#departmentsTable(class="table table-striped table-bordered table-condensed")
+                        thead.table-head
+                            tr
+                                th.smallTd
+                                th Id
+                                th Code
+                                th Department Name
+                                th Created Date
+                                th Updated Date
+                        tbody
+                            tr(ng-repeat='dept in departments')
+                                td
+                                    a.btn.btn-sm.btn-warning(title="Edit", data-toggle="modal",id='btn-editDepartment', data-target="#newDepartmentWindow", ng-click="btnEdit(dept)")
+                                        i.glyphicon.glyphicon-edit
+                                    a.btn.btn-sm.btn-danger(title="Delete", id='btn-deleteDepartment', data-toggle="modal", data-target="#deleteConfirm", ng-click="deleteConformation(dept)")
+                                        i.glyphicon.glyphicon-remove
+                                td
+                                    span {{ dept.id }}
+                                td
+                                    span {{ dept._serverData.departmentCode }}
+                                td
+                                    span {{ dept._serverData.departmentName }}
+                                td
+                                    span {{ dept.createdAt }}
+                                td
+                                    span {{ dept.updatedAt }}
 
-                            .pull-right
-                                button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
-                                    i.glyphicon.glyphicon-arrow-left
-                                    |   Previous
-                                button.btn.btn-info.btn-sm#next(ng-click='pageNext()', ng-disabled='noNext')
-                                    |   Next
-                                    | &nbsp;
-                                    i.glyphicon.glyphicon-arrow-right
+                    .pull-right
+                        button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
+                            i.glyphicon.glyphicon-arrow-left
+                            |       Previous
+                        button.btn.btn-info.btn-sm#next(ng-click='pageNext()', ng-disabled='noNext')
+                            |       Next
+                            i.glyphicon.glyphicon-arrow-right
 #deleteConfirm.modal.fade.bs-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
     .modal-dialog
         .modal-content

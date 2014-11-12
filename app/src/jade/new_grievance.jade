@@ -7,10 +7,10 @@ div
                 //h2(class='text-center') Add New Grievance
                 //br
                 .panel.panel-primary
-                    .panel-heading
+                    .panel-heading.text-center
                         | New Grievance Details
                     .panel-body
-                        form#grievanceForm(name='grievanceForm',class='form-horizonal',type='form',novalidate)
+                        form#grievanceForm(name='grievanceForm',role='form', type='form',novalidate)
                             .col-lg-4
                                 .form-group.has-warning
                                     sample-directive
@@ -174,22 +174,22 @@ div
                                     div
                                         textarea#note.form-control.input-sm(name='note', ng-model='note', placeholder='Note')
 
-                            .col-lg-12
+                            .row
                                 .col-lg-6
                                     .form-group.has-warning
                                         button.btn.btn-success(id='btn-createGrievance', ng-click='createGrievance()', ng-disabled='grievanceForm.$invalid')
                                             i.glyphicon.glyphicon-ok
-                                            | Submit
+                                            |   Submit
                                         button.btn.btn-info(id='btn-print', ng-disabled='printButton', href="", data-toggle="modal", data-target="#myDetails")
                                             i.glyphicon.glyphicon-print
-                                            | Print
+                                            |   Print
                                         button.btn.btn-warning(id='btn-close', ui-sref="userDashboard")
                                             i.glyphicon.glyphicon-circle-arrow-left
-                                            | Back
+                                            |   Back
                                 .col-lg-6
                                     .alert.alert-success(ng-show='successMessage')
                                         i.fa.fa-check-circle-o
-                                            | Grievance Submitted Successfully!
+                                            |   Grievance Submitted Successfully!
 div#printThisPdf
     #myDetails.modal.fade.bs-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
         .modal-dialog.modal-lg
