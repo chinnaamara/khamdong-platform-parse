@@ -108,21 +108,10 @@ tbody .buttons-td {
 tbody a {
     margin-left: 5px;
 }
-/*td {
-    -ms-word-break: break-all;
-    -moz-word-break: break-word;
-    -o-word-break: break-word;
-    word-break: break-all;
-    -webkit-hyphens: auto;
-    -moz-hyphens: auto;
-    -ms-hyphens: auto;
-    -o-hyphens: auto;
-    hyphens: auto;
-
-}*/
 td, th {
     vertical-align: middle !important;
     text-align: center;
+    word-break: normal;
 }
 
 #document {
