@@ -32,15 +32,15 @@ section.container
                                     a.btn.btn-sm.btn-danger(title="Delete", id='btn-deleteDepartment', data-toggle="modal", data-target="#deleteConfirm", ng-click="deleteConformation(dept)")
                                         i.glyphicon.glyphicon-remove
                                 td
-                                    span {{ dept.id }}
+                                    | {{ dept.id }}
                                 td
-                                    span {{ dept._serverData.departmentCode }}
+                                    | {{ dept._serverData.departmentCode }}
                                 td
-                                    span {{ dept._serverData.departmentName }}
+                                    | {{ dept._serverData.departmentName }}
                                 td
-                                    span {{ dept.createdAt }}
+                                    | {{ dept.createdAt }}
                                 td
-                                    span {{ dept.updatedAt }}
+                                    | {{ dept.updatedAt }}
 
                     .pull-right
                         button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')

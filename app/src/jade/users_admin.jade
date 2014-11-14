@@ -42,19 +42,19 @@ section.container
                                         span.glyphicon.glyphicon-edit
                                         |   Manage
                                 td
-                                    span {{ user.id }}
+                                    | {{ user.id }}
                                 td
-                                    span {{ user._serverData.username }}
+                                    | {{ user._serverData.username }}
                                 td
-                                    span {{ user._serverData.mobileNumber }}
+                                    | {{ user._serverData.mobileNumber }}
                                 td
-                                    span {{ user._serverData.ward }}
+                                    | {{ user._serverData.ward }}
                                 td
-                                    span {{ user._serverData.role }}
+                                    | {{ user._serverData.role }}
                                 td
-                                    span {{ user.createdAt }}
+                                    | {{ user.createdAt }}
                                 td
-                                    span {{ user.updatedAt }}
+                                    | {{ user.updatedAt }}
                     .pull-right
                         button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
                             span.glyphicon.glyphicon-arrow-left

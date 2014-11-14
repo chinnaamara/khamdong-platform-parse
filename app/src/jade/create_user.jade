@@ -2,65 +2,65 @@
    Created by chinna on 11/8/14.
 section.container
     .row
-        .col-lg-12
-            .col-lg-8.col-lg-push-2
-                .panel.panel-primary
-                    .panel-heading.text-center
+        .col-lg-8.col-lg-push-2
+            .panel.panel-primary
+                .panel-heading.text-center
+                    .h4
                         | Create New User
-                    .panel-body
-                        form#createUserForm(name='createUserForm', type='form', novalidate)
-                            .col-lg-6
-                                .form-group.has-warning
-                                    label.control-label(for='name')
-                                        | Name
-                                        span(class='star-label') *
-                                    div(ng-class="{ 'has-error' : createUserForm.name.$invalid }")
-                                        input#name.form-control(type='text',name='name',ng-model='user.name',placeholder='Name', required, autofocus)
-                                        small(class="label label-danger",ng-show="createUserForm.name.$invalid && createUserForm.name.$dirty") Required Name.!
-                                .form-group.has-warning
-                                    label.control-label(for='email')
-                                        | Email
-                                        span(class='star-label') *
-                                    div(ng-class="{ 'has-error' : createUserForm.email.$invalid }")
-                                        input#email.form-control(type='email',name='email',ng-model='user.email',placeholder='Email', required)
-                                        small(class="label label-danger",ng-show="createUserForm.email.$invalid && createUserForm.email.$dirty") Required Email.!
-                                .form-group.has-warning
-                                    label.control-label(for='password')
-                                        | Password
-                                        span(class='star-label') *
-                                    div(ng-class="{ 'has-error' : createUserForm.password.$invalid }")
-                                        input#password.form-control(type='password',name='password',ng-model='user.password',placeholder='Password', required, ng-minlength="6")
-                                        small(class="label label-danger",ng-show="createUserForm.password.$invalid && createUserForm.password.$dirty") Password should be atleast 6 characters.!
-                            .col-lg-6
-                                .form-group.has-warning
-                                    label.control-label(for='mobileNumber')
-                                        | Mobile Number
-                                        span(class='star-label') *
-                                    div(ng-class="{ 'has-error' : createUserForm.mobileNumber.$invalid }")
-                                        input#mobileNumber.form-control(type='tel',name='mobileNumber',ng-model='user.mobileNumber',placeholder='Mobile Number',ng-maxlength="10", ng-minlength="10",required)
-                                        small(class="label label-danger",ng-show="createUserForm.mobileNumber.$invalid && createUserForm.mobileNumber.$dirty") Required 10 digits mobile number
-                                .form-group.has-warning
-                                    label.control-label(for='ward')
-                                        | Ward
-                                        span(class='star-label') *
-                                    select#ward.form-control(name='ward',ng-model='user.ward', required)
-                                        option(value='',selected) -- Select Ward --
-                                        option(value='{{ward._serverData.wardName}}', ng-repeat='ward in wards') {{ward._serverData.wardName}}
-                                .form-group.has-warning
-                                    label.control-label(for='role')
-                                        | Role
-                                        span(class='star-label') *
-                                    select#role.form-control(name='role',ng-model='user.role', required)
-                                        option(value='',selected) -- Select Role --
-                                        option(value='{{role._serverData.userRole}}', ng-repeat='role in roles') {{role._serverData.userRole}}
-                                .pull-right
-                                        button.btn.btn-primary(id='btn-createUser', ng-click='addUser()', ng-disabled='createUserForm.$invalid')
-                                            i.glyphicon.glyphicon-plus
-                                            |   Add
+                .panel-body
+                    form#createUserForm(name='createUserForm', type='form', novalidate)
+                        .col-lg-6
+                            .form-group.has-warning
+                                label.control-label(for='name')
+                                    | Name
+                                    span(class='star-label') *
+                                div(ng-class="{ 'has-error' : createUserForm.name.$invalid }")
+                                    input#name.form-control(type='text',name='name',ng-model='user.name',placeholder='Name', required, autofocus)
+                                    small(class="label label-danger",ng-show="createUserForm.name.$invalid && createUserForm.name.$dirty") Required Name.!
+                            .form-group.has-warning
+                                label.control-label(for='email')
+                                    | Email
+                                    span(class='star-label') *
+                                div(ng-class="{ 'has-error' : createUserForm.email.$invalid }")
+                                    input#email.form-control(type='email',name='email',ng-model='user.email',placeholder='Email', required)
+                                    small(class="label label-danger",ng-show="createUserForm.email.$invalid && createUserForm.email.$dirty") Required Email.!
+                            .form-group.has-warning
+                                label.control-label(for='password')
+                                    | Password
+                                    span(class='star-label') *
+                                div(ng-class="{ 'has-error' : createUserForm.password.$invalid }")
+                                    input#password.form-control(type='password',name='password',ng-model='user.password',placeholder='Password', required, ng-minlength="6")
+                                    small(class="label label-danger",ng-show="createUserForm.password.$invalid && createUserForm.password.$dirty") Password should be atleast 6 characters.!
+                        .col-lg-6
+                            .form-group.has-warning
+                                label.control-label(for='mobileNumber')
+                                    | Mobile Number
+                                    span(class='star-label') *
+                                div(ng-class="{ 'has-error' : createUserForm.mobileNumber.$invalid }")
+                                    input#mobileNumber.form-control(type='tel',name='mobileNumber',ng-model='user.mobileNumber',placeholder='Mobile Number',ng-maxlength="10", ng-minlength="10",required)
+                                    small(class="label label-danger",ng-show="createUserForm.mobileNumber.$invalid && createUserForm.mobileNumber.$dirty") Required 10 digits mobile number
+                            .form-group.has-warning
+                                label.control-label(for='ward')
+                                    | Ward
+                                    span(class='star-label') *
+                                select#ward.form-control(name='ward',ng-model='user.ward', required)
+                                    option(value='',selected) -- Select Ward --
+                                    option(value='{{ward._serverData.wardName}}', ng-repeat='ward in wards') {{ward._serverData.wardName}}
+                            .form-group.has-warning
+                                label.control-label(for='role')
+                                    | Role
+                                    span(class='star-label') *
+                                select#role.form-control(name='role',ng-model='user.role', required)
+                                    option(value='',selected) -- Select Role --
+                                    option(value='{{role._serverData.userRole}}', ng-repeat='role in roles') {{role._serverData.userRole}}
+                            .pull-right
+                                    button.btn.btn-primary(id='btn-createUser', ng-click='addUser()', ng-disabled='createUserForm.$invalid')
+                                        i.glyphicon.glyphicon-plus
+                                        |   Add
 
-                                        //button.btn.btn-warning(type='reset', ng-click='resetMessage()')
-                                        //    i.glyphicon.glyphicon-refresh
-                                        //    |   Reset
+                                    //button.btn.btn-warning(type='reset', ng-click='resetMessage()')
+                                    //    i.glyphicon.glyphicon-refresh
+                                    //    |   Reset
 
                 .alert.alert-success(ng-show='successMessage')
                     i.fa.fa-check-circle-o

@@ -32,13 +32,13 @@ section.container
                                     a.btn.btn-sm.btn-danger(href="",title="Delete", id='btn-deleteWard', data-toggle="modal", data-target="#deleteConfirm", ng-click="deleteConformation(ward)")
                                         span.glyphicon.glyphicon-remove
                                 td
-                                    span {{ ward.id }}
+                                    | {{ ward.id }}
                                 td
-                                    span {{ ward._serverData.wardName }}
+                                    | {{ ward._serverData.wardName }}
                                 td
-                                    span {{ ward.createdAt }}
+                                    | {{ ward.createdAt }}
                                 td
-                                    span {{ ward.updatedAt }}
+                                    | {{ ward.updatedAt }}
                     .pull-right
                         button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
                             span.glyphicon.glyphicon-arrow-left
