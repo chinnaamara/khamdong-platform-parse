@@ -52,7 +52,7 @@ app.controller 'LoginController', ($scope, $rootScope, LoginFactory, $location) 
         $scope.$apply(() ->
           $scope.sighning = false
           $scope.loginFail = true
-          $scope.errorMessage = res
+          $scope.errorMessage = 'Please enter a correct username and password. Note that both fields are case-sensitive.'
         )
       else
         LoginFactory.getUserInfo(res._serverData.username, (info) ->

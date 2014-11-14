@@ -96,6 +96,7 @@ app.controller 'GrievancesController', ($scope, $location, GrievancesFactory, Ed
   $scope.filterGrievances = ->
     $scope.searchKey = ''
     if $scope.columnName == 'submittedUser'
+      $scope.pageTitle = $scope.currentUser.username
       $scope.filterKey.columnName = $scope.columnName
       $scope.filterKey.pageNumber = 1
       $scope.filterKey.queryValue = $scope.currentUser.username
@@ -103,6 +104,7 @@ app.controller 'GrievancesController', ($scope, $location, GrievancesFactory, Ed
       $scope.filterKey.columnName = 'ward'
       $scope.filterKey.pageNumber = 1
       $scope.filterKey.queryValue = $scope.currentUser.ward
+      $scope.pageTitle = $scope.currentUser.ward
     $scope.NumberOfPages($scope.filterKey)
     $scope.getGrievances($scope.filterKey)
     return
@@ -138,6 +140,7 @@ app.controller 'GrievancesController', ($scope, $location, GrievancesFactory, Ed
   $scope.NumberOfPages($scope.filterKey)
   $scope.noPrevious = true
   $scope.loading = true
+  $scope.pageTitle = $scope.currentUser.ward
 #  $scope.$on 'LOAD', () -> $scope.loading = true
 #  $scope.$on 'UNLOAD', () -> $scope.loading = false
   return

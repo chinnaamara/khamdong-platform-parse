@@ -1,9 +1,9 @@
 //
    Created by chinna on 15/9/14.
-section.container
+section.container(ng-if='superUser')
     .col-lg-12
         div
-            h2.text-center Categories
+            h2.text-center List of Categories
         div
             .loader-div(ng-show='loading')
                 h4 Loading, Please wait...

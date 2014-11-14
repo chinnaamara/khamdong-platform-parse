@@ -19,7 +19,7 @@ app.factory 'CreateUserFactory', ($http) ->
         callback user
 
       error: (user, error) ->
-        alert 'Error: ' + error.message
+        callback 'error'
     })
     return
 
@@ -45,14 +45,17 @@ app.factory 'CreateUserFactory', ($http) ->
     )
     return
 
+  userInfo = {}
+
   return {
     createUser: signUpUser
     saveUser: saveUser
     sendSms: sendSms
     getRoles: getRoles
+    userInfo: userInfo
   }
 
-app.controller 'CreateUserController', ($scope, $rootScope, CreateUserFactory, LoginFactory, DataFactory, $location) ->
+app.controller 'CreateUserController', ($scope, $rootScope, CreateUserFactory, LoginFactory, DataFactory, $location, $modal) ->
   $scope.init = ->
     $scope.currentUser = $.parseJSON(localStorage.getItem 'Parse/l0JxXhedCkA8D1Z2EKyfG9AMbEF0L8oDW743XI13/currentUser')
     if $scope.currentUser
@@ -65,35 +68,40 @@ app.controller 'CreateUserController', ($scope, $rootScope, CreateUserFactory, L
       $location.path '/error'
     return
 
-  $scope.addUser = ->
+  $scope.addUser = (data) ->
+    CreateUserFactory.userInfo = data
     $scope.errorMessage = false
     $scope.successMessage = false
-    newUser =
-      username: $scope.user.name
-      password: $scope.user.password
-      email: $scope.user.email
-      mobileNumber: $scope.user.mobileNumber
-      ward: $scope.user.ward
-      role: $scope.user.role
 
-    if $scope.currentUser.role == 'Admin'
-      CreateUserFactory.createUser(newUser, (res) ->
-        CreateUserFactory.saveUser(newUser, (data) ->
-          LoginFactory.login($rootScope.adminCredentials, (res) ->
-#            showSuccess(data._serverData.username)
-          )
-          sendMessage data
-          showSuccess data._serverData.username
-        )
-        return
-      )
+    if $rootScope.adminCredentials && $scope.currentUser.role == 'Admin'
+      createUser()
     else
-      alert 'You are not authorized!'
+      openPasswordModal()
     return
 
-  sendMessage = (data) ->
+  $scope.$on('createUserContinue', (event, args) ->
+    createUser()
+  )
+
+  createUser = () ->
+    userData = CreateUserFactory.userInfo
+    CreateUserFactory.createUser(userData, (res) ->
+      if res != 'error'
+        CreateUserFactory.saveUser(userData, (data) ->
+          LoginFactory.login($rootScope.adminCredentials, (res) ->
+          )
+          sendMessage data, userData.password
+          showSuccess userData.username
+        )
+      else
+        showError userData.username
+      return
+    )
+
+
+  sendMessage = (data, password) ->
     message = {
-      text: "Hi " + data._serverData.username + ", you are registered as represent at Khamdong, for " + data._serverData.ward + " ward. Login with your username and pwd: " + $scope.user.password
+      text: "Hi " + data._serverData.username + ", you are registered as represent at Khamdong, for " + data._serverData.ward + " ward. Login with your username and pwd: " + password
       mobileNumber: data._serverData.mobileNumber
     }
     CreateUserFactory.sendSms(message, (res) ->
@@ -106,6 +114,11 @@ app.controller 'CreateUserController', ($scope, $rootScope, CreateUserFactory, L
       $scope.successMessage = true
       $scope.successText = "User created successfully with username: " + username
     )
+    return
+
+  showError = (username) ->
+    $scope.errorMessage = true
+    $scope.errorText = "Try another username, User already existed with username: " + username
     return
 
   $scope.getRoles = ->
@@ -124,7 +137,40 @@ app.controller 'CreateUserController', ($scope, $rootScope, CreateUserFactory, L
     )
     return
 
+  openPasswordModal = ->
+    modalInstance = $modal.open({
+#      modalTemplate: '<div id="reportModalTemplate" class="modal modal-dialog modal-content" ng-transclude></div>',
+      width:'custom-width',
+      backdrop: 'static',
+      templateUrl: 'html/admin_password.html',
+      controller: 'PasswordModalController'
+    })
+
+
+
   $scope.init()
   $scope.getWards()
   $scope.getRoles()
+  return
+
+app.controller 'PasswordModalController', ($scope, $modalInstance, $rootScope, LoginFactory) ->
+  $scope.ok = (pwd) ->
+    credentials = {
+      username: $rootScope.userName
+      password: pwd.password
+    }
+    LoginFactory.login(credentials, (res) ->
+      if typeof res == 'string'
+        $scope.$apply(() ->
+          $scope.loginFail = true
+          $scope.errorMessage = 'Please enter correct password.'
+        )
+      else
+        $rootScope.adminCredentials = credentials
+        $rootScope.$broadcast('createUserContinue', {text: 'from PasswordModalController'})
+        $modalInstance.dismiss('cancel')
+    )
+
+  $scope.cancel = ->
+    $modalInstance.dismiss('cancel')
   return
