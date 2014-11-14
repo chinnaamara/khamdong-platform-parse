@@ -12,7 +12,7 @@ section.container(ng-if='administrator')
                 .row
                     .col-lg-12
                         button.btn.btn-info.pull-left.input-sm(data-toggle="modal", title='Add New Ward',id='btn-newWard', data-target="#newWardWindow", ng-click='btnAdd()')
-                            i.glyphicon.glyphicon-plus
+                            span.glyphicon.glyphicon-plus
                             |   Add New
                 br
                 .table-responsive
@@ -28,25 +28,25 @@ section.container(ng-if='administrator')
                             tr(ng-repeat='ward in wards')
                                 td
                                     a.btn.btn-sm.btn-warning(href="",title="Edit", data-toggle="modal",id='btn-editWard', data-target="#newWardWindow", ng-click="btnEdit(ward)")
-                                        i.glyphicon.glyphicon-edit
+                                        span.glyphicon.glyphicon-edit
                                     a.btn.btn-sm.btn-danger(href="",title="Delete", id='btn-deleteWard', data-toggle="modal", data-target="#deleteConfirm", ng-click="deleteConformation(ward)")
-                                        i.glyphicon.glyphicon-remove
+                                        span.glyphicon.glyphicon-remove
                                 td
-                                    span {{ ward.id }}
+                                    | {{ ward.id }}
                                 td
-                                    span {{ ward._serverData.wardName }}
+                                    | {{ ward._serverData.wardName }}
                                 td
-                                    span {{ ward.createdAt }}
+                                    | {{ ward.createdAt }}
                                 td
-                                    span {{ ward.updatedAt }}
+                                    | {{ ward.updatedAt }}
                     .pull-right
                         button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
-                            i.glyphicon.glyphicon-arrow-left
+                            span.glyphicon.glyphicon-arrow-left
                             |   Previous
                         button.btn.btn-info.btn-sm#next(ng-click='pageNext()', ng-disabled='noNext')
                             |   Next
                             | &nbsp;
-                            i.glyphicon.glyphicon-arrow-right
+                            span.glyphicon.glyphicon-arrow-right
 
 
 #deleteConfirm.modal.fade.bs-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
@@ -61,10 +61,10 @@ section.container(ng-if='administrator')
                 | Are you sure to delete <strong> {{ deleteWardName }} </strong> Ward?
             .modal-footer
                 button.btn.btn-success(type='button', data-dismiss='modal', ng-click="deleteWard()" )
-                    i.glyphicon.glyphicon-ok
+                    span.glyphicon.glyphicon-ok
                         |  Yes
                 button.btn.btn-danger(type='button', data-dismiss='modal')
-                    i.glyphicon.glyphicon-remove
+                    span.glyphicon.glyphicon-remove
                         |  No
 
 #newWardWindow.modal.fade.bs-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
@@ -86,8 +86,8 @@ section.container(ng-if='administrator')
                             small(class="label label-danger",ng-show="wardsForm.wardName.$invalid && wardsForm.wardName.$dirty")
             .modal-footer
                 button.btn.btn-success.btn-sm(ng-click="addEditClick()", ng-disabled='wardsForm.$invalid', id='btnAdd', data-dismiss='modal')
-                    i.glyphicon.glyphicon-ok
+                    span.glyphicon.glyphicon-ok
                     |   {{ buttonText }}
                 button.btn.btn-warning.btn-sm(data-dismiss='modal')
-                    i.glyphicon.glyphicon-remove
+                    span.glyphicon.glyphicon-remove
                     |   Close

@@ -8,7 +8,7 @@ section.container(ng-if='administrator')
                 .panel-heading
                     | Reference Number:  {{ grievance.id }}
                 .panel-body
-                    form#grievanceForm(name='grievanceForm',class='form-horizonal',type='form',novalidate)
+                    form#grievanceForm(name='grievanceForm',type='form',novalidate)
                         .col-lg-4
                             .form-group.has-warning
                                 label.control-label(for='name')
@@ -105,14 +105,13 @@ section.container(ng-if='administrator')
 
                             .form-group.has-warning
                                 label.control-label.input-group(for='status') Status
-                                .btn-group(data-toggle='buttons')
-                                    input(type="radio", ng-model="status", value="Approve", ng-change='newValue(status)')
-                                    | Approve
-                                    | &nbsp;
-                                    | &nbsp;
-                                    input(type="radio", ng-model="status", value="Reject", ng-change='newValue(status)')
-                                    | Reject
-                                br
+                                .radio
+                                    label.radio-inline.control-label
+                                        input(type="radio", ng-model="status", value="Approve", ng-change='newValue(status)')
+                                        |   Approve
+                                    label.radio-inline.control-label
+                                        input(type="radio", ng-model="status", value="Reject", ng-change='newValue(status)')
+                                        |   Reject
                             .form-group.has-warning
                                 label.control-label.input-group(for='message') Status Message
                                 textarea.form-control(name='rejectMessage',ng-model='message', ng-disabled='reject', placeholder='Reject Message')

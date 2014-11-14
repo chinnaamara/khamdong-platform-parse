@@ -59,19 +59,20 @@ section.container(ng-if='superUser')
                                     a.btn.btn-sm.btn-danger(title="Delete", id='btn-deleteMember', data-toggle="modal", data-target="#deleteConfirm", ng-click='deleteConformation(member)')
                                         i.glyphicon.glyphicon-remove
                                 td
-                                    span {{ member._serverData.name }}
+                                    | {{ member._serverData.name }}
                                 td
-                                    span {{ member._serverData.mobileNumber }}
+                                    | {{ member._serverData.mobileNumber }}
                                 td
-                                    span {{ member._serverData.category }}
+                                    | {{ member._serverData.category }}
                                 td
-                                    span {{ member._serverData.email }}
+                                    | {{ member._serverData.email }}
                     .pull-right
                         button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
                             i.glyphicon.glyphicon-arrow-left
                             |       Previous
                         button.btn.btn-info.btn-sm#next(ng-click='pageNext()', ng-disabled='noNext')
                             |       Next
+                            |       &nbsp;
                             i.glyphicon.glyphicon-arrow-right
 
 #smsWindow.modal.fade.bs-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
@@ -154,7 +155,7 @@ section.container(ng-if='superUser')
                 button.btn.btn-success.btn-sm(ng-click="addEditClick()", ng-disabled='newMemberForm.$invalid', id='btnAddMember', data-dismiss='modal')
                     i.glyphicon.glyphicon-ok
                     |   {{ buttonText }}
-                button.btn.btn-warning.btn-sm(data-dismiss='modal')
+                button.btn.btn-danger.btn-sm(data-dismiss='modal')
                     i.glyphicon.glyphicon-remove
                     |   Close
 

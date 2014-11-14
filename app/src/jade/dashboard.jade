@@ -50,27 +50,27 @@ section.container(ng-if='administrator')
                                         i.glyphicon.glyphicon-info-sign
                                         |   Info
                                 //td
-                                //    span {{ grievance.id }}
+                                //    | {{ grievance.id }}
                                 //td
-                                //    span {{ grievance._serverData.grievanceType }}
+                                //    | {{ grievance._serverData.grievanceType }}
                                 //td
-                                //    span {{ grievance._serverData.department }}
+                                //    | {{ grievance._serverData.department }}
                                 td
-                                    span {{ grievance._serverData.scheme }}
+                                    | {{ grievance._serverData.scheme }}
                                 td
-                                    span {{ grievance._serverData.requirement }}
+                                    | {{ grievance._serverData.requirement }}
                                 td
-                                    span {{ grievance._serverData.name }}
+                                    | {{ grievance._serverData.name }}
                                 td
-                                    span {{ grievance._serverData.phoneNumber }}
+                                    | {{ grievance._serverData.phoneNumber }}
                                 //td
-                                //    span {{ grievance.constituency }}
+                                //    | {{ grievance.constituency }}
                                 td
-                                    span {{ grievance._serverData.applicationDate }}
+                                    | {{ grievance._serverData.applicationDate }}
                                 td
-                                    span {{ grievance._serverData.respondedDate }}
+                                    | {{ grievance._serverData.respondedDate }}
                                 td
-                                    span {{ grievance._serverData.status }}
+                                    | {{ grievance._serverData.status }}
 
                 .pull-right
                     button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
@@ -78,6 +78,7 @@ section.container(ng-if='administrator')
                         |   Previous
                     button.btn.btn-info.btn-sm#next(ng-click='pageNext()', ng-disabled='noNext')
                         |   Next
+                        |   &nbsp;
                         i.glyphicon.glyphicon-arrow-right
 
                 .alert.alert-info(ng-show='noRecords')

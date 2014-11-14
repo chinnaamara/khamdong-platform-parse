@@ -33,19 +33,20 @@ section.container(ng-if='superUser')
                                         i.glyphicon.glyphicon-remove
 
                                 td
-                                    span {{ cat.id }}
+                                    |     {{ cat.id }}
                                 td
-                                    span {{ cat._serverData.categoryName }}
+                                    |     {{ cat._serverData.categoryName }}
                                 td
-                                    span {{ cat.createdAt }}
+                                    |     {{ cat.createdAt }}
                                 td
-                                    span {{ cat.updatedAt }}
+                                    |     {{ cat.updatedAt }}
                 .pull-right
                     button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
                         i.glyphicon.glyphicon-arrow-left
                         |       Previous
                     button.btn.btn-info.btn-sm#next(ng-click='pageNext()', ng-disabled='noNext')
                         |       Next
+                        |       &nbsp;
                         i.glyphicon.glyphicon-arrow-right
 
 #deleteConfirm.modal.fade.bs-example-modal-lg(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
@@ -87,6 +88,6 @@ section.container(ng-if='superUser')
                 button.btn.btn-success.btn-sm(ng-click="addEditClick()", ng-disabled='categoryForm.$invalid', id='btnAdd', data-dismiss='modal')
                     i.glyphicon.glyphicon-ok
                     |   {{ buttonText }}
-                button.btn.btn-warning.btn-sm(data-dismiss='modal')
+                button.btn.btn-danger.btn-sm(data-dismiss='modal')
                     i.glyphicon.glyphicon-remove
                     |   Close
