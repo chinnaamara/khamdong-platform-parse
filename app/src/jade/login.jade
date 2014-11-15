@@ -35,6 +35,5 @@ div(id='loginModal', tabindex='-1', role='dialog', aria-hidden='true')
                         .col-lg-12
                             .form-group
                                 .alert.alert-danger(ng-show="loginFail")
-                                    span.fa.fa-frown-o
-                                    | {{ errorMessage }}
-
+                                    i.glyphicon.glyphicon-info-sign
+                                    |   {{ errorMessage }}

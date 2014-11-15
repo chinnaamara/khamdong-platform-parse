@@ -1,6 +1,6 @@
 //
    Created by chinna on 11/8/14.
-section.container
+section.container(ng-if='administrator')
     .row
         .col-lg-8.col-lg-push-2
             .panel.panel-primary
@@ -54,14 +54,13 @@ section.container
                                     option(value='',selected) -- Select Role --
                                     option(value='{{role._serverData.userRole}}', ng-repeat='role in roles') {{role._serverData.userRole}}
                             .pull-right
-                                    button.btn.btn-primary(id='btn-createUser', ng-click='addUser()', ng-disabled='createUserForm.$invalid')
-                                        i.glyphicon.glyphicon-plus
-                                        |   Add
+                                button.btn.btn-primary(id='btn-createUser', ng-click='addUser()', ng-disabled='createUserForm.$invalid')
+                                    i.glyphicon.glyphicon-plus
+                                    |   Add
 
-                                    //button.btn.btn-warning(type='reset', ng-click='resetMessage()')
-                                    //    i.glyphicon.glyphicon-refresh
-                                    //    |   Reset
-
+                                //button.btn.btn-warning(type='reset', ng-click='resetMessage()')
+                                //    i.glyphicon.glyphicon-refresh
+                                //    |   Reset
                 .alert.alert-success(ng-show='successMessage')
                     i.fa.fa-check-circle-o
                     | {{ successText }}

@@ -1,8 +1,8 @@
 //   Created by chinna on 5/9/14.
-section.container
+section.container(ng-if='superUser')
     .col-lg-12.col-md-12.col-sm-12.col-xs-12
         div
-            h2.text-center Members
+            h2.text-center List of Members
         div
             .loader-div(ng-show='loading')
                 h4 Loading, Please wait...

@@ -1,4 +1,4 @@
-app = angular.module 'Khamdong', ['ui.router', 'angularFileUpload', 'ngTable']
+app = angular.module 'Khamdong', ['ui.router', 'angularFileUpload', 'ngTable', 'ui.bootstrap']
 app.constant 'AUTH_EVENTS', {
   loginSuccess: 'auth-login-success'
   loginFailed: 'auth-login-failed'

@@ -68,6 +68,7 @@ module.exports = (grunt) ->
         , 'bower_components/angular/angular.js'
         , 'bower_components/ng-file-upload/angular-file-upload.js'
         , 'bower_components/bootstrap/dist/js/bootstrap.js'
+        , 'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'
         , 'bower_components/bootstrap-confirmation2/bootstrap-confirmation.js'
         , 'bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js'
         , 'bower_components/lodash/dist/lodash.compat.js'
