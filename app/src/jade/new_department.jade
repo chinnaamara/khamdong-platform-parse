@@ -31,17 +31,11 @@ section.container(ng-if='administrator')
                                         i.glyphicon.glyphicon-edit
                                     a.btn.btn-sm.btn-danger(title="Delete", id='btn-deleteDepartment', data-toggle="modal", data-target="#deleteConfirm", ng-click="deleteConformation(dept)")
                                         i.glyphicon.glyphicon-remove
-                                td
-                                    | {{ dept.id }}
-                                td
-                                    | {{ dept._serverData.departmentCode }}
-                                td
-                                    | {{ dept._serverData.departmentName }}
-                                td
-                                    | {{ dept.createdAt }}
-                                td
-                                    | {{ dept.updatedAt }}
-
+                                td(ng-bind='dept.id')
+                                td(ng-bind='dept._serverData.departmentCode')
+                                td(ng-bind='dept._serverData.departmentName')
+                                td(ng-bind='dept.createdAt')
+                                td(ng-bind='dept.updatedAt')
                     .pull-right
                         button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
                             i.glyphicon.glyphicon-arrow-left

@@ -29,7 +29,7 @@ app.controller 'GrievancesController', ($scope, $location, GrievancesFactory, Ed
   $scope.filterKey = {
     columnName: 'ward'
     pageNumber: 1
-    pageLimit: 4
+    pageLimit: 5
   }
 
   $scope.init = ->
@@ -41,6 +41,7 @@ app.controller 'GrievancesController', ($scope, $location, GrievancesFactory, Ed
       $rootScope.superUser = $scope.currentUser.role == 'Super User'
       $scope.currentUser.ward = localStorage.getItem 'ward'
       $scope.filterKey.queryValue = $scope.currentUser.ward
+#      $scope.pageTitle = $scope.currentUser.ward
     else
       $location.path '/error'
 #    $scope.$emit 'LOAD'
@@ -140,7 +141,8 @@ app.controller 'GrievancesController', ($scope, $location, GrievancesFactory, Ed
   $scope.NumberOfPages($scope.filterKey)
   $scope.noPrevious = true
   $scope.loading = true
-  $scope.pageTitle = $scope.currentUser.ward
+  if $scope.currentUser
+    $scope.pageTitle = $scope.currentUser.ward
 #  $scope.$on 'LOAD', () -> $scope.loading = true
 #  $scope.$on 'UNLOAD', () -> $scope.loading = false
   return

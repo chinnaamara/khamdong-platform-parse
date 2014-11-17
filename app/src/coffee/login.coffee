@@ -40,7 +40,12 @@ app.factory 'LoginFactory', () ->
 #    getUser: getUser
   }
 
-app.controller 'LoginController', ($scope, $rootScope, LoginFactory, $location) ->
+app.controller 'LoginController', ($scope, $rootScope, LoginFactory, $location, $state) ->
+  $scope.pageReady = ->
+    if $state.current.name == 'start' || $state.current.name ==  'login' || $state.current.name == 'logout'
+      $scope.logout()
+    return
+
   $scope.signIn = (userData) ->
     $scope.sighning = true
     $scope.loginFail = false
@@ -76,3 +81,5 @@ app.controller 'LoginController', ($scope, $rootScope, LoginFactory, $location) 
     localStorage.clear()
     $location.path '/logout'
     return
+
+  $scope.pageReady()

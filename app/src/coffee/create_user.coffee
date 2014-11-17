@@ -12,18 +12,22 @@ app.factory 'CreateUserFactory', ($http) ->
     return
 
   signUpUser = (userData, callback) ->
+    console.log userData
     Parse.User.signUp(userData.username, userData.password, { ACL: new Parse.ACL(), email: userData.email}, {
       success: (user) ->
+        console.log 'success...'
 #        loggedInUser = user
 #        alert 'user saved..'
         callback user
 
       error: (user, error) ->
+        console.log 'error....'
         callback 'error'
     })
     return
 
   saveUser = (userData, callback) ->
+    console.log userData
     UserInfo = Parse.Object.extend 'UserInfo'
     newUser = new UserInfo()
     newUser.save({username: userData.username, ward: userData.ward, role: userData.role, mobileNumber: userData.mobileNumber}, {
@@ -86,9 +90,12 @@ app.controller 'CreateUserController', ($scope, $rootScope, CreateUserFactory, L
   createUser = () ->
     userData = CreateUserFactory.userInfo
     CreateUserFactory.createUser(userData, (res) ->
+      console.log userData
+      console.log res.message
       if res != 'error'
         CreateUserFactory.saveUser(userData, (data) ->
           LoginFactory.login($rootScope.adminCredentials, (res) ->
+            console.log 'logged in admin'
           )
           sendMessage data, userData.password
           showSuccess userData.username
@@ -117,8 +124,10 @@ app.controller 'CreateUserController', ($scope, $rootScope, CreateUserFactory, L
     return
 
   showError = (username) ->
-    $scope.errorMessage = true
-    $scope.errorText = "Try another username, User already existed with username: " + username
+    $scope.$apply(() ->
+      $scope.errorMessage = true
+      $scope.errorText = "Try another username, User already existed with username: " + username
+    )
     return
 
   $scope.getRoles = ->

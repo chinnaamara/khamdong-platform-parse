@@ -111,7 +111,7 @@ app.controller 'EditGrievanceController', ($scope, EditGrievanceFactory, DataFac
   $scope.onFileSelect = ($files, fileName) ->
     $scope.invalidFile = false
     file = $files[0]
-    if file.size < 1000 * 20 && file.type != 'application/pdf'
+    if file.size < 1000 * 20
       reader = new FileReader()
       reader.readAsArrayBuffer file
       reader.onload = (e) ->

@@ -30,7 +30,7 @@ app.controller 'DashboardController', ($scope, DashboardFactory, DetailsFactory,
     columnName: undefined
     queryValue: undefined
     pageNumber: 1
-    pageLimit: 5
+    pageLimit: 8
   }
 
   $scope.init = ->

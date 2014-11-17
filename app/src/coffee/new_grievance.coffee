@@ -122,7 +122,7 @@ app.controller 'NewGrievanceController', ($scope, $location, NewGrievanceFactory
     $scope.invalidFile = false
     file = $files[0]
 #    console.log file.name
-    if file.size < 1000 * 20 && file.type != 'application/pdf'
+    if file.size < 1000 * 20
       reader = new FileReader()
       reader.readAsArrayBuffer file
       reader.onload = (e) ->

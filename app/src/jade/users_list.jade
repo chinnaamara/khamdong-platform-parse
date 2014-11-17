@@ -58,14 +58,10 @@ section.container(ng-if='superUser')
                                         i.glyphicon.glyphicon-edit
                                     a.btn.btn-sm.btn-danger(title="Delete", id='btn-deleteMember', data-toggle="modal", data-target="#deleteConfirm", ng-click='deleteConformation(member)')
                                         i.glyphicon.glyphicon-remove
-                                td
-                                    | {{ member._serverData.name }}
-                                td
-                                    | {{ member._serverData.mobileNumber }}
-                                td
-                                    | {{ member._serverData.category }}
-                                td
-                                    | {{ member._serverData.email }}
+                                td(ng-bind='member._serverData.name')
+                                td(ng-bind='member._serverData.mobileNumber')
+                                td(ng-bind='member._serverData.category')
+                                td(ng-bind='member._serverData.email')
                     .pull-right
                         button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
                             i.glyphicon.glyphicon-arrow-left
