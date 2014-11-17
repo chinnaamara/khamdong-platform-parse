@@ -15,7 +15,7 @@ section.container(ng-if='administrator')
                                     | Name
                                     span(class='star-label') *
                                 div(ng-class="{ 'has-error' : createUserForm.name.$invalid }")
-                                    input#name.form-control(type='text',name='name',ng-model='user.name',placeholder='Name', required, autofocus)
+                                    input#name.form-control(type='text',name='name',ng-model='user.username',placeholder='Name', required, autofocus)
                                     small(class="label label-danger",ng-show="createUserForm.name.$invalid && createUserForm.name.$dirty") Required Name.!
                             .form-group.has-warning
                                 label.control-label(for='email')
@@ -53,14 +53,17 @@ section.container(ng-if='administrator')
                                 select#role.form-control(name='role',ng-model='user.role', required)
                                     option(value='',selected) -- Select Role --
                                     option(value='{{role._serverData.userRole}}', ng-repeat='role in roles') {{role._serverData.userRole}}
-                            .pull-right
-                                button.btn.btn-primary(id='btn-createUser', ng-click='addUser()', ng-disabled='createUserForm.$invalid')
+                            .form-group.pull-right
+                                button.btn.btn-primary(id='btn-createUser', ng-click='addUser(user)', ng-disabled='createUserForm.$invalid')
                                     i.glyphicon.glyphicon-plus
                                     |   Add
-
-                                //button.btn.btn-warning(type='reset', ng-click='resetMessage()')
-                                //    i.glyphicon.glyphicon-refresh
-                                //    |   Reset
-                .alert.alert-success(ng-show='successMessage')
-                    i.fa.fa-check-circle-o
-                    | {{ successText }}
+                        .col-lg-12
+                            .form-group
+                                .alert.alert-success(ng-show='successMessage')
+                                    i.glyphicon.glyphicon-info-sign
+                                    | &nbsp;
+                                    span(ng-bind='successText')
+                                .alert.alert-danger(ng-show='errorMessage')
+                                    i.glyphicon.glyphicon-info-sign
+                                    | &nbsp;
+                                    span(ng-bind='errorText')

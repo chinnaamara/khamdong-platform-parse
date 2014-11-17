@@ -138,31 +138,31 @@ section.container
                                 label.control-label(for='recommendedDoc')
                                     | Upload Copy of Recommended Document
                                 div(ng-class="{ 'has-error' : grievanceForm.recommendedDoc.$invalid }")
-                                    input#recommendedDoc.form-control.input-sm(type='file', name='recommendedDoc', ng-model='recommendedDoc', ng-file-select="onFileSelect($files, 'recommended')", ng-disabled='notRecommended', required)
+                                    input#recommendedDoc.form-control.input-sm(type='file', accept='image/*', name='recommendedDoc', ng-model='recommendedDoc', ng-file-select="onFileSelect($files, 'recommended')", ng-disabled='notRecommended', required)
                                     small(class="label label-danger",ng-show='invalidRecommendedDoc') Invalid file!
                             .form-group.has-warning
                                 label.control-label(for='coiDoc')
                                     | Upload Copy of Certificate of Identity
                                 div(ng-class="{ 'has-error' : grievanceForm.coiDoc.$invalid }")
-                                    input#coiDoc.form-control.input-sm(type='file', name='coiDoc', ng-model='coiDoc', ng-file-select="onFileSelect($files, 'coi')", ng-disabled='notRecommended', required)
+                                    input#coiDoc.form-control.input-sm(type='file', accept='image/*', name='coiDoc', ng-model='coiDoc', ng-file-select="onFileSelect($files, 'coi')", ng-disabled='notRecommended', required)
                                     small(class="label label-danger",ng-show="invalidCOIDoc") Invalid file!
                             .form-group.has-warning
                                 label.control-label(for='voterId')
                                     | Upload Copy of Voter Id Card
                                 div(ng-class="{ 'has-error' : grievanceForm.voterId.$invalid }")
-                                    input#voterId.form-control.input-sm(type='file',name='voterId', ng-model='grievance.voterId', ng-file-select="onFileSelect($files, 'voter')", ng-disabled='notRecommended')
+                                    input#voterId.form-control.input-sm(type='file', accept='image/*', name='voterId', ng-model='grievance.voterId', ng-file-select="onFileSelect($files, 'voter')", ng-disabled='notRecommended')
                                     small(class="label label-danger",ng-show="invalidVoterId") Invalid file!
                             .form-group.has-warning
                                 label.control-label(for='casteCertificate')
                                     | Upload Copy of Caste Certificate
                                 div(ng-class="{ 'has-error' : grievanceForm.casteCertificate.$invalid }")
-                                    input#casteCertificate.form-control.input-sm(type='file',name='casteCertificate', ng-model='grievance.casteCertificate', ng-file-select="onFileSelect($files, 'caste')", ng-disabled='notRecommended')
+                                    input#casteCertificate.form-control.input-sm(type='file', accept='image/*', name='casteCertificate', ng-model='grievance.casteCertificate', ng-file-select="onFileSelect($files, 'caste')", ng-disabled='notRecommended')
                                     small(class="label label-danger",ng-show="invalidCasteCertificate") Invalid file!
                             .form-group.has-warning
                                 label.control-label(for='otherDoc')
                                     | Upload Copy of Any Other Document
                                 div(ng-class="{ 'has-error' : grievanceForm.otherDoc.$invalid }")
-                                    input#otherDoc.form-control.input-sm(type='file',name='otherDoc', ng-model='grievance.otherDoc', ng-file-select="onFileSelect($files, 'other')", ng-disabled='notRecommended')
+                                    input#otherDoc.form-control.input-sm(type='file', accept='image/*', name='otherDoc', ng-model='grievance.otherDoc', ng-file-select="onFileSelect($files, 'other')", ng-disabled='notRecommended')
                                     small(class="label label-danger",ng-show="invalidOtherDoc") Invalid file!
                             .form-group.has-warning
                                 label.control-label(for='note')
