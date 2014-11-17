@@ -141,7 +141,8 @@ app.controller 'GrievancesController', ($scope, $location, GrievancesFactory, Ed
   $scope.NumberOfPages($scope.filterKey)
   $scope.noPrevious = true
   $scope.loading = true
-  $scope.pageTitle = $scope.currentUser.ward ? $scope.currentUser.ward : null
+  if $scope.currentUser
+    $scope.pageTitle = $scope.currentUser.ward
 #  $scope.$on 'LOAD', () -> $scope.loading = true
 #  $scope.$on 'UNLOAD', () -> $scope.loading = false
   return
