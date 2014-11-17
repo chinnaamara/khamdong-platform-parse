@@ -10,15 +10,15 @@ section.container(ng-if='superUser')
                 .row
                     .col-lg-6.pull-left.form-inline
                         .form-group
-                            a.btn.btn-info.form-control(href="", data-toggle="modal",id='btn-sendSms', data-target="#smsWindow", ng-click="isMember()", ng-disabled='cantSendMessage')
+                            a.btn.btn-sm.btn-info.form-control(href="", data-toggle="modal",id='btn-sendSms', data-target="#smsWindow", ng-click="isMember()", ng-disabled='cantSendMessage')
                                 i.glyphicon.glyphicon-send
                                 |   New Messsage
                         .form-group
-                            a.btn.btn-info.form-control(ui-sref='sentMessages')
+                            a.btn.btn-sm.btn-info.form-control(ui-sref='sentMessages')
                                 i.glyphicon.glyphicon-send
                                 |   Sent Messsages
                         .form-group
-                            select.form-control.btn-primary(
+                            select.form-control.btn-sm.btn-primary(
                                 name='selectCategory',
                                 ng-options='cat._serverData.categoryName as cat._serverData.categoryName for cat in categories',
                                 ng-model='selectedCategory',
@@ -29,12 +29,12 @@ section.container(ng-if='superUser')
                     .col-lg-6
                         .pull-right.form-inline
                             .form-group
-                                a.btn.btn-info.form-control(data-toggle="modal",id='btn-addmember', data-target="#newMemberWindow", ng-click="btnAdd()")
+                                a.btn.btn-sm.btn-info.form-control(data-toggle="modal",id='btn-addmember', data-target="#newMemberWindow", ng-click="btnAdd()")
                                     i.glyphicon.glyphicon-plus
                                     |   Add member
                             .form-group
-                                input(type="search", class="input-sm form-control", ng-model="searchKey", placeholder="Enter Mobile Number", title='enter mobile number to search here.')
-                                a.btn.btn-success(ng-click='searchResult()')
+                                input(type="search", class="input-sm form-control", ng-model="searchKey", placeholder="Enter Mobile Number", title='Enter Mobile Number to Search Here.')
+                                a.btn.btn-sm.btn-success(ng-click='searchResult()')
                                     i.glyphicon.glyphicon-search
                                     |   Search
                 br

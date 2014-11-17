@@ -108,9 +108,9 @@ tbody .buttons-td {
 tbody a {
     margin-left: 5px;
 }
-td, th {
+td,th {
     vertical-align: middle !important;
-    text-align: center;
+    text-align: center !important;
     word-break: normal;
 }
 
