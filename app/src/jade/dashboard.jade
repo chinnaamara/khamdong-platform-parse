@@ -14,14 +14,14 @@ section.container(ng-if='administrator')
                         name='selectWard',
                         ng-options='ward._serverData.wardName as ward._serverData.wardName for ward in wards',
                         ng-model='selectedWard',
-                        ng-change='filterGrievances()',
+                        ng-change='filterGrievances(selectedWard)',
                         title='Grievances By Wards',
                         required)
                             option(value='',selected) -- All Wards --
                     .col-xs-8
                         .pull-right.form-inline
                             input(type="search", class="input-sm form-control", ng-model="searchKey", placeholder="Enter Mobile Number", title='Enter Mobile Number to Search Here.')
-                            a.btn.btn-sm.btn-success(ng-click='searchResult()')
+                            a.btn.btn-sm.btn-success(ng-click='searchResult(searchKey)')
                                 i.glyphicon.glyphicon-search
                                 |   Search
                 .table-responsive

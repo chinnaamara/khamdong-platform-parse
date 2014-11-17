@@ -15,7 +15,7 @@ section.container(ng-if='superUser')
                                 .form-group
                                     input.form-control(type="search", ng-model="searchKey", placeholder="Enter Mobile Number", title='Enter Mobile Number to Search Here.')
                                 .form-group
-                                    a.btn.form-control.btn-success(ng-click='searchResult()')
+                                    a.btn.form-control.btn-success(ng-click='searchResult(searchKey)')
                                         i.glyphicon.glyphicon-search
                                         |   Search
                 br

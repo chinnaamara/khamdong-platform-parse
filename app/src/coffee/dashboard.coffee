@@ -83,11 +83,10 @@ app.controller 'DashboardController', ($scope, DashboardFactory, DetailsFactory,
       alert 'You are not authorized!'
     return
 
-  $scope.filterGrievances = ->
+  $scope.filterGrievances = (selectedWard) ->
     if $scope.currentUser.role == 'Admin'
-      $scope.searchKey = ''
       $scope.filterKey.columnName = 'ward'
-      $scope.filterKey.queryValue = $scope.selectedWard
+      $scope.filterKey.queryValue = selectedWard
       $scope.filterKey.pageNumber = 1
       $scope.NumberOfPages($scope.filterKey)
       $scope.getGrievances($scope.filterKey)
@@ -109,12 +108,12 @@ app.controller 'DashboardController', ($scope, DashboardFactory, DetailsFactory,
     $scope.noNext = false
     return
 
-  $scope.searchResult = ->
+  $scope.searchResult = (searchKey) ->
     if $scope.currentUser.role == 'Admin'
       $scope.filterKey.pageNumber = 1
-      if $scope.searchKey
+      if searchKey
         $scope.filterKey.columnName = 'phoneNumber'
-        $scope.filterKey.queryValue = $scope.searchKey
+        $scope.filterKey.queryValue = searchKey
       else
         $scope.filterKey.columnName = undefined
         $scope.filterKey.queryValue = undefined
