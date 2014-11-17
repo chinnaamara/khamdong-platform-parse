@@ -13,7 +13,7 @@ app.constant 'USER_ROLES', {
   superUser: 'superUser'
   user: 'user'
 }
-app.config(($stateProvider) ->
+app.config(($stateProvider, $httpProvider) ->
   $stateProvider
   .state('start', {
       url: ''
@@ -141,5 +141,8 @@ app.config(($stateProvider) ->
         'viewB@': {templateUrl: 'html/sent_messages.html', controller: 'MessagesController'}
       }
     })
+
+  $httpProvider.defaults.useXDomain = true
+  delete $httpProvider.defaults.headers.common['X-Requested-With']
   return
 )
