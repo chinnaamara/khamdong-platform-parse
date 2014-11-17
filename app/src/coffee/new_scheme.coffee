@@ -68,7 +68,7 @@ app.factory 'SchemesFactory', () ->
 app.controller "AddSchemeController", ($scope, SchemesFactory, DataFactory, $rootScope, $location) ->
   $scope.filterKey = {
     pageNumber: 1
-    pageLimit: 8
+    pageLimit: 6
   }
 
   $scope.init = ->

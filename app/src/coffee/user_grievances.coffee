@@ -29,7 +29,7 @@ app.controller 'GrievancesController', ($scope, $location, GrievancesFactory, Ed
   $scope.filterKey = {
     columnName: 'ward'
     pageNumber: 1
-    pageLimit: 4
+    pageLimit: 5
   }
 
   $scope.init = ->

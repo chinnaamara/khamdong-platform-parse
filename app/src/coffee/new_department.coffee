@@ -68,7 +68,7 @@ app.factory 'DepartmentsFactory', () ->
 app.controller "AddDepartmentController", ($scope, DepartmentsFactory, $rootScope, $location) ->
   $scope.filterKey = {
     pageNumber: 1
-    pageLimit: 8
+    pageLimit: 6
   }
 
   $scope.init = ->

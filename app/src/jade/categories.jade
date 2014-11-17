@@ -31,15 +31,10 @@ section.container(ng-if='superUser')
 
                                     a.btn.btn-sm.btn-danger(href="",title="Delete", id='btn-deleteCategory', data-toggle="modal", data-target="#deleteConfirm", ng-click="deleteConformation(cat)")
                                         i.glyphicon.glyphicon-remove
-
-                                td
-                                    |     {{ cat.id }}
-                                td
-                                    |     {{ cat._serverData.categoryName }}
-                                td
-                                    |     {{ cat.createdAt }}
-                                td
-                                    |     {{ cat.updatedAt }}
+                                td(ng-bind='cat.id')
+                                td(ng-bind='cat._serverData.categoryName')
+                                td(ng-bind='cat.cat.createdAt')
+                                td(ng-bind='cat.cat.updatedAt')
                 .pull-right
                     button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
                         i.glyphicon.glyphicon-arrow-left

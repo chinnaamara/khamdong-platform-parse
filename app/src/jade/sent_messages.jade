@@ -32,13 +32,9 @@ section.container(ng-if='superUser')
                                 td
                                     a.btn.btn-danger.pull-left.btn-sm(title='Delete', data-toggle="modal", data-target="#deleteConfirm", ng-click="deleteConformation(msg)")
                                         i.glyphicon.glyphicon-remove
-
-                                td
-                                    | {{ msg._serverData.mobileNumber }}
-                                td
-                                    | {{ msg._serverData.text }}
-                                td
-                                    | {{ msg.createdAt }}
+                                td(ng-bind='msg._serverData.mobileNumber')
+                                td(ng-bind='msg._serverData.text')
+                                td(ng-bind='msg.createdAt')
                     .pull-right
                         button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
                             i.glyphicon.glyphicon-arrow-left
