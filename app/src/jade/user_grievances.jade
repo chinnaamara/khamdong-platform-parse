@@ -35,8 +35,6 @@ section.container
                                 th Reference Id
                                 th Name
                                 th Mobile Number
-                                //th Grievance Type
-                                //th Department
                                 th Scheme
                                 th Requirement
                                 th Applied Date
@@ -52,29 +50,15 @@ section.container
                                     a.btn.btn-sm.btn-warning.btn-vertical(href="", ng-click="editDetails(grievance)", ng-if='grievance._serverData.status == "Open"')
                                         span.glyphicon.glyphicon-edit
                                         |   Edit
-                                td
-                                    | {{ grievance.id }}
-                                td
-                                    | {{ grievance._serverData.name }}
-                                td
-                                    | {{ grievance._serverData.phoneNumber }}
-                                //td
-                                //    span {{ grievance.grievanceType }}
-                                //td
-                                //    span {{ grievance._serverData.department }}
-                                td
-                                    | {{ grievance._serverData.scheme }}
-                                td
-                                    | {{ grievance._serverData.requirement }}
-                                td
-                                    | {{ grievance._serverData.applicationDate }}
-                                td
-                                    | {{ grievance._serverData.respondedDate }}
-                                td
-                                    | {{ grievance._serverData.status }}
-                                td
-                                    | {{ grievance._serverData.message }}
-
+                                td(ng-bind='grievance.id')
+                                td(ng-bind='grievance._serverData.name')
+                                td(ng-bind='grievance._serverData.phoneNumber')
+                                td(ng-bind='grievance._serverData.scheme')
+                                td(ng-bind='grievance._serverData.requirement')
+                                td(ng-bind='grievance._serverData.applicationDate')
+                                td(ng-bind='grievance._serverData.respondedDate')
+                                td(ng-bind='grievance._serverData.status')
+                                td(ng-bind='grievance._serverData.message')
                     .pull-right
                         button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
                             span.glyphicon.glyphicon-arrow-left

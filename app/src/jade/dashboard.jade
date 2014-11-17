@@ -29,14 +29,10 @@ section.container(ng-if='administrator')
                         thead.table-head
                             tr
                                 th
-                                //th Reference Id
-                                //th Grievance Type
-                                //th Department
                                 th Scheme
                                 th Requirement
                                 th Name
                                 th Mobile Number
-                                //th Constituency
                                 th Applied Date
                                 th Responded Date
                                 th Status
@@ -49,29 +45,13 @@ section.container(ng-if='administrator')
                                     a.btn.btn-sm.btn-info.btn-vertical(href="", id='grievancePrint', ng-click="showDetails(grievance)")
                                         i.glyphicon.glyphicon-info-sign
                                         |   Info
-                                //td
-                                //    | {{ grievance.id }}
-                                //td
-                                //    | {{ grievance._serverData.grievanceType }}
-                                //td
-                                //    | {{ grievance._serverData.department }}
-                                td
-                                    | {{ grievance._serverData.scheme }}
-                                td
-                                    | {{ grievance._serverData.requirement }}
-                                td
-                                    | {{ grievance._serverData.name }}
-                                td
-                                    | {{ grievance._serverData.phoneNumber }}
-                                //td
-                                //    | {{ grievance.constituency }}
-                                td
-                                    | {{ grievance._serverData.applicationDate }}
-                                td
-                                    | {{ grievance._serverData.respondedDate }}
-                                td
-                                    | {{ grievance._serverData.status }}
-
+                                td(ng-bind='grievance._serverData.scheme')
+                                td(ng-bind='grievance._serverData.requirement')
+                                td(ng-bind='grievance._serverData.name')
+                                td(ng-bind='grievance._serverData.phoneNumber')
+                                td(ng-bind='grievance._serverData.applicationDate')
+                                td(ng-bind='grievance._serverData.respondedDate')
+                                td(ng-bind='grievance._serverData.status')
                 .pull-right
                     button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
                         i.glyphicon.glyphicon-arrow-left
