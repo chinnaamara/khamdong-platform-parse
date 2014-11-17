@@ -41,6 +41,7 @@ app.controller 'GrievancesController', ($scope, $location, GrievancesFactory, Ed
       $rootScope.superUser = $scope.currentUser.role == 'Super User'
       $scope.currentUser.ward = localStorage.getItem 'ward'
       $scope.filterKey.queryValue = $scope.currentUser.ward
+#      $scope.pageTitle = $scope.currentUser.ward
     else
       $location.path '/error'
 #    $scope.$emit 'LOAD'
@@ -140,7 +141,7 @@ app.controller 'GrievancesController', ($scope, $location, GrievancesFactory, Ed
   $scope.NumberOfPages($scope.filterKey)
   $scope.noPrevious = true
   $scope.loading = true
-  $scope.pageTitle = $scope.currentUser.ward
+  $scope.pageTitle = $scope.currentUser.ward ? $scope.currentUser.ward : null
 #  $scope.$on 'LOAD', () -> $scope.loading = true
 #  $scope.$on 'UNLOAD', () -> $scope.loading = false
   return
