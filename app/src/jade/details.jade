@@ -114,14 +114,14 @@ section.container(ng-if='administrator')
                                         |   Reject
                             .form-group.has-warning
                                 label.control-label.input-group(for='message') Status Message
-                                textarea.form-control(name='rejectMessage',ng-model='message', ng-disabled='reject', placeholder='Reject Message')
+                                textarea.form-control(name='rejectMessage',ng-model='responseMessage', ng-disabled='reject', placeholder='Reject Message')
                                 //br
                                 //tt status = {{status | json}}
                             .form-group.has-warning
                                 button.btn.btn-success(id='btn-createGrievance', ng-disabled='accept', ng-click='submit()')
                                     i.glyphicon.glyphicon-ok
                                     |   Accept
-                                button.btn.btn-danger(id='btn-print', ng-disabled='reject', ng-click='submit()')
+                                button.btn.btn-danger(id='btn-print', ng-disabled='reject', ng-click='submit(responseMessage)')
                                     i.glyphicon.glyphicon-remove
                                     |   Reject
                                 button.btn.btn-warning(id='btn-close', ui-sref="admin")
