@@ -126,7 +126,7 @@ app.controller 'CreateUserController', ($scope, $rootScope, CreateUserFactory, L
   showError = (username) ->
     $scope.$apply(() ->
       $scope.errorMessage = true
-      $scope.errorText = "Try another username, User already existed with username: " + username
+      $scope.errorText = "Please note that the given username or email are already used!"
     )
     return
 

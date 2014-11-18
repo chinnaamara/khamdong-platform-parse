@@ -43,7 +43,11 @@ app.factory 'LoginFactory', () ->
 app.controller 'LoginController', ($scope, $rootScope, LoginFactory, $location, $state) ->
   $scope.pageReady = ->
     if $state.current.name == 'start' || $state.current.name ==  'login' || $state.current.name == 'logout'
-      $scope.logout()
+      $rootScope.userName = null
+      $rootScope.administrator = null
+      $rootScope.superUser = null
+      LoginFactory.logOut()
+      localStorage.clear()
     return
 
   $scope.signIn = (userData) ->
