@@ -125,11 +125,10 @@ app.controller 'AdminUsersController', ($scope, AdminUsersFactory, $rootScope, D
       alert 'You are not authorized!'
     return
 
-  $scope.filterUsers = ->
+  $scope.filterUsers = (selectedWard) ->
     if $scope.currentUser.role == 'Admin'
-      $scope.searchKey = ''
       $scope.filterKey.columnName = 'ward'
-      $scope.filterKey.keyValue = $scope.selectedWard
+      $scope.filterKey.keyValue = selectedWard
       $scope.filterKey.pageNumber = 1
       $scope.NumberOfPages()
       $scope.getUsers($scope.filterKey)
@@ -137,12 +136,12 @@ app.controller 'AdminUsersController', ($scope, AdminUsersFactory, $rootScope, D
       alert 'You are not authorized!'
     return
 
-  $scope.searchResult = ->
+  $scope.searchResult = (searchKey) ->
     if $scope.currentUser.role == 'Admin'
       $scope.filterKey.pageNumber = 1
-      if $scope.searchKey
+      if searchKey
         $scope.filterKey.columnName = 'mobileNumber'
-        $scope.filterKey.keyValue = $scope.searchKey
+        $scope.filterKey.keyValue = searchKey
       else
         $scope.filterKey.columnName = undefined
         $scope.filterKey.queryValue = undefined

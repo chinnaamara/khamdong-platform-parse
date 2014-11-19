@@ -22,7 +22,7 @@ section.container(ng-if='superUser')
                                 name='selectCategory',
                                 ng-options='cat._serverData.categoryName as cat._serverData.categoryName for cat in categories',
                                 ng-model='selectedCategory',
-                                ng-change='getCategoryMembers()',
+                                ng-change='getCategoryMembers(selectedCategory)',
                                 title='Filter Users by Category',
                                 required)
                                     option(value='',selected) -- All Categories --
@@ -34,7 +34,7 @@ section.container(ng-if='superUser')
                                     |   Add member
                             .form-group
                                 input(type="search", class="input-sm form-control", ng-model="searchKey", placeholder="Enter Mobile Number", title='Enter Mobile Number to Search Here.')
-                                a.btn.btn-sm.btn-success(ng-click='searchResult()')
+                                a.btn.btn-sm.btn-success(ng-click='searchResult(searchKey)')
                                     i.glyphicon.glyphicon-search
                                     |   Search
                 br

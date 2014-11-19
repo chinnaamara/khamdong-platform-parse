@@ -81,6 +81,7 @@ app.controller 'DetailsController', ($scope, DetailsFactory, $rootScope, DataFac
     $scope.age = currentYear - yearOfBirth
     return
 
+  $scope.responseData = {}
   $scope.newValue = (value) ->
     $scope.responce = false
     if value == 'Approve'
@@ -94,12 +95,14 @@ app.controller 'DetailsController', ($scope, DetailsFactory, $rootScope, DataFac
       $scope.accept = true
       $scope.reject = false
       $scope.statusMessage = "Rejected"
-      $scope.message = "Your grievance is rejected due to"
+#      $scope.message = "Your grievance is rejected due to"
       $scope.responceMessage = "Grievance Rejected!"
       $scope.smsText = " is rejected, please get more details from GPU."
     return
 
-  $scope.submit = ->
+  $scope.submit = (responseMessage) ->
+    console.log responseMessage
+    console.log "submit called...."
     resMessage = {
       id: $scope.grievance.id
       grievanceType: $scope.grievance._serverData.grievanceType
@@ -108,8 +111,12 @@ app.controller 'DetailsController', ($scope, DetailsFactory, $rootScope, DataFac
       requirement: $scope.grievance._serverData.requirement
       respondedDate: new Date().toLocaleString()
       status: $scope.statusMessage
-      message: $scope.message
+#      message: responseMessage ? responseMessage : $scope.message
     }
+    if responseMessage
+      resMessage.message = responseMessage
+    else
+      resMessage.message = $scope.message
     DetailsFactory.submitResponse(resMessage, (res) ->
       if res
         $scope.$apply(() ->

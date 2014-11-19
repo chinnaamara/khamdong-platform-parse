@@ -4,6 +4,7 @@ app.factory 'MessagesFactory', () ->
   getMessages = (filterKey, callback) ->
     getQuery = new Parse.Query 'SentMessages'
     getQuery.descending "createdAt"
+    getQuery.equalTo filterKey.columnName, filterKey.keyValue
     getQuery.limit filterKey.pageLimit
     getQuery.skip(filterKey.pageLimit * (filterKey.pageNumber - 1))
     getQuery.find({
@@ -101,6 +102,21 @@ app.controller 'MessagesController', ($scope, $rootScope, MessagesFactory, $loca
     $scope.noPrevious = $scope.filterKey.pageNumber == 1 ? true : false
     $scope.getMessages($scope.filterKey)
     $scope.noNext = false
+    return
+
+  $scope.searchResult = (searchKey) ->
+    console.log searchKey
+    if $scope.currentUser.role == 'Super User'
+      if searchKey
+        $scope.filterKey.columnName = 'mobileNumber'
+        $scope.filterKey.keyValue = searchKey
+      else
+        $scope.filterKey.columnName = undefined
+        $scope.filterKey.keyValue = undefined
+      $scope.getMessages($scope.filterKey)
+      $scope.NumberOfPages()
+    else
+      alert 'You are not authorized!'
     return
 
   $scope.init()

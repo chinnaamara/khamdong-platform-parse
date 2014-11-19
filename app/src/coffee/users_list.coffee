@@ -292,11 +292,11 @@ app.controller 'MembersController', ($scope, MembersFactory, $rootScope, $locati
       alert 'You are not authorized!'
     return
 
-  $scope.getCategoryMembers = ->
+  $scope.getCategoryMembers = (selectedCategory) ->
     if $scope.currentUser.role == 'Super User'
-      if $scope.selectedCategory
+      if selectedCategory
         $scope.filterKey.columnName = 'category'
-        $scope.filterKey.keyValue = $scope.selectedCategory
+        $scope.filterKey.keyValue = selectedCategory
       else
         $scope.filterKey.columnName = undefined
         $scope.filterKey.keyValue = undefined
@@ -306,11 +306,11 @@ app.controller 'MembersController', ($scope, MembersFactory, $rootScope, $locati
       alert 'You are not authorized!'
     return
 
-  $scope.searchResult = ->
+  $scope.searchResult = (searchKey) ->
     if $scope.currentUser.role == 'Super User'
-      if $scope.searchKey
+      if searchKey
         $scope.filterKey.columnName = 'mobileNumber'
-        $scope.filterKey.keyValue = $scope.searchKey
+        $scope.filterKey.keyValue = searchKey
       else
         $scope.filterKey.columnName = undefined
         $scope.filterKey.keyValue = undefined
