@@ -138,7 +138,7 @@ td,th {
 
 }
 .btn-vertical{
-    display: initial;
+    display: inline;
 }
 .table-head{
     color:white;

@@ -53,6 +53,7 @@ section.container(ng-if='administrator')
                                 select#role.form-control(name='role',ng-model='user.role', required)
                                     option(value='',selected) -- Select Role --
                                     option(value='{{role._serverData.userRole}}', ng-repeat='role in roles') {{role._serverData.userRole}}
+                        .col-lg-12
                             .form-group.pull-right
                                 button.btn.btn-primary(id='btn-createUser', ng-click='addUser(user)', ng-disabled='createUserForm.$invalid')
                                     i.glyphicon.glyphicon-plus
