@@ -61,6 +61,9 @@ li a  strong{
     margin:1%;
     font: bold normal normal 15px/1.0 "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
+#printThis header{
+    margin:1%;
+}
 #printThis p{
     margin: 12px 75px;
     color: rgb(50, 1, 119);
@@ -79,10 +82,10 @@ li a  strong{
 header img #printLogo{
     margin: 10px;
 }
-header div {
+#printThis header div {
     text-align: center;
-    color: lightslategrey;
-    font-size:30px;
+    color: rgb(44, 95, 145);
+    font-size:35px;
 }
 /* ----------
     ends here
