@@ -33,8 +33,8 @@ section.container(ng-if='superUser')
                                         i.glyphicon.glyphicon-remove
                                 td(ng-bind='cat.id')
                                 td(ng-bind='cat._serverData.categoryName')
-                                td(ng-bind='cat.cat.createdAt')
-                                td(ng-bind='cat.cat.updatedAt')
+                                td(ng-bind='cat.createdAt.toLocaleString()')
+                                td(ng-bind='cat.updatedAt.toLocaleString()')
                 .pull-right
                     button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
                         i.glyphicon.glyphicon-arrow-left

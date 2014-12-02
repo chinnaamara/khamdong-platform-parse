@@ -33,8 +33,8 @@ section.container(ng-if='administrator')
                                         span.glyphicon.glyphicon-remove
                                 td(ng-bind='ward.id')
                                 td(ng-bind='ward._serverData.wardName')
-                                td(ng-bind='ward.createdAt')
-                                td(ng-bind='ward.updatedAt')
+                                td(ng-bind='ward.createdAt.toLocaleString()')
+                                td(ng-bind='ward.updatedAt.toLocaleString()')
                     .pull-right
                         button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
                             span.glyphicon.glyphicon-arrow-left

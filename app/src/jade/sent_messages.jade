@@ -34,7 +34,7 @@ section.container(ng-if='superUser')
                                         i.glyphicon.glyphicon-remove
                                 td(ng-bind='msg._serverData.mobileNumber')
                                 td(ng-bind='msg._serverData.text')
-                                td(ng-bind='msg.createdAt')
+                                td(ng-bind='msg.createdAt.toLocaleString()')
                     .pull-right
                         button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
                             i.glyphicon.glyphicon-arrow-left

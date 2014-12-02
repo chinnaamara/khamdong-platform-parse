@@ -37,8 +37,8 @@ section.container(ng-if='administrator')
                                 td(ng-bind='scheme._serverData.schemeCode')
                                 td(ng-bind='scheme._serverData.schemeName')
                                 td(ng-bind='scheme._serverData.departmentName')
-                                td(ng-bind='scheme.createdAt')
-                                td(ng-bind='scheme.updatedAt')
+                                td(ng-bind='scheme.createdAt.toLocaleString()')
+                                td(ng-bind='scheme.updatedAt.toLocaleString()')
 
                     .pull-right
                         button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')

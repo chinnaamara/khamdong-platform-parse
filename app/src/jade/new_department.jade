@@ -34,8 +34,8 @@ section.container(ng-if='administrator')
                                 td(ng-bind='dept.id')
                                 td(ng-bind='dept._serverData.departmentCode')
                                 td(ng-bind='dept._serverData.departmentName')
-                                td(ng-bind='dept.createdAt')
-                                td(ng-bind='dept.updatedAt')
+                                td(ng-bind='dept.createdAt.toLocaleString()')
+                                td(ng-bind='dept.updatedAt.toLocaleString()')
                     .pull-right
                         button.btn.btn-info.btn-sm#prev(ng-click='pageBack()', ng-disabled='noPrevious')
                             i.glyphicon.glyphicon-arrow-left
